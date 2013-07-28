@@ -2,7 +2,6 @@ package editing;
 
 import model.Note;
 import model.Tune;
-import view.NoteView;
 import editing.actions.ChangePitchAction;
 import editing.actions.EditAction;
 

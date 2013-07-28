@@ -17,6 +17,9 @@ public abstract class EmbellishmentFamily {
 	public static final EmbellishmentFamily D_GRACE = new SingleGraceEmbellishment(Pitch.D);
 	public static final EmbellishmentFamily E_GRACE = new SingleGraceEmbellishment(Pitch.E);
 
+	// Strikes
+	public static final EmbellishmentFamily STRIKE = new Strike();
+
 	// *luaths
 	public static final EmbellishmentFamily GRIP = new Grip();
 	public static final EmbellishmentFamily TAOR = new Taorluath();
@@ -25,7 +28,7 @@ public abstract class EmbellishmentFamily {
 	// Strikes
 	public static final EmbellishmentFamily E_STRIKE = new StandardEmbellishment("Strike", "str", GraceNote.LOW_A);
 	
-	public static final EmbellishmentFamily[] EMBELLISHMENTS = {THROW, BIRL, DOUBLING, GRIP, TAOR, CRUN, G_GRACE, D_GRACE, E_GRACE, A_GRACE};
+	public static final EmbellishmentFamily[] EMBELLISHMENTS = {THROW, BIRL, DOUBLING, STRIKE, GRIP, TAOR, CRUN, G_GRACE, D_GRACE, E_GRACE, A_GRACE};
 	
 	private static final HashMap<String, EmbellishmentFamily> familiesByNames = new HashMap<String, EmbellishmentFamily>() {
 		private static final long serialVersionUID = 1L;
@@ -33,6 +36,7 @@ public abstract class EmbellishmentFamily {
 			put(THROW.getShortName(), THROW);
 			put(BIRL.getShortName(), BIRL);
 			put(DOUBLING.getShortName(), DOUBLING);
+			put(STRIKE.getShortName(), STRIKE);
 			put(GRIP.getShortName(), GRIP);
 			put(TAOR.getShortName(), TAOR);
 			put(CRUN.getShortName(), CRUN);

@@ -17,6 +17,7 @@ EMBELLISHMENT :
 	| '\'e' 
 	| 'dbl'
 	| 'thrw'
+	| 'str'
 	| 'birl'
 	| 'grip'
 	| 'taor'

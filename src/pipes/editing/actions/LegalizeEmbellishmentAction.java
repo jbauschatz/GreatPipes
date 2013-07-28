@@ -6,7 +6,7 @@ import pipes.model.embellishment.EmbellishmentFamily;
 public class LegalizeEmbellishmentAction implements EditAction {
 
 	public void execute() {
-		if (oldFamily != null && !oldFamily.canEmbellish(target))
+		if (oldFamily != null && !oldFamily.canEmbellish(target, target.getTune().getNoteAfter(target)))
 			target.setEmbellishmentFamily(null);
 		else
 			target.setEmbellishmentFamily(oldFamily);

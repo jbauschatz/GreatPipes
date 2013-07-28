@@ -8,11 +8,7 @@ public class StandardEmbellishment extends EmbellishmentFamily {
 		return name;
 	}
 
-	public boolean canEmbellish(Note note) {
-		return true;
-	}
-
-	public boolean canComeAfter(Note note) {
+	public boolean canEmbellish(Note noteBefore, Note embellishedNote) {
 		return true;
 	}
 
@@ -23,11 +19,6 @@ public class StandardEmbellishment extends EmbellishmentFamily {
 	public StandardEmbellishment(String name, String shortName, Embellishment model) {
 		super(name, shortName);
 		this.model = model;
-	}
-	
-	public StandardEmbellishment(String name, String shortName, GraceNote... notes) {
-		super(name, shortName);
-		this.model = new Embellishment(name, notes);
 	}
 
 	private String name;

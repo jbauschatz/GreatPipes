@@ -5,12 +5,8 @@ import pipes.model.Pitch;
 
 public class Grip extends EmbellishmentFamily {
 
-	public boolean canEmbellish(Note note) {
-		return note.getPitch() != Pitch.LOW_G;
-	}
-
-	public boolean canComeAfter(Note note) {
-		return true;
+	public boolean canEmbellish(Note noteBefore, Note embellishedNote) {
+		return embellishedNote.getPitch() != Pitch.LOW_G;
 	}
 
 	public Embellishment getEmbellishment(Note noteBefore, Note embellishedNote) {
