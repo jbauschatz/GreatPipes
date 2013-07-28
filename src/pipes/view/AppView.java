@@ -18,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -57,12 +58,13 @@ public class AppView extends JFrame implements TuneEditListener {
 		tuneView = new TuneView();
 		tuneView.setSize(1100, 850);
 		tuneView.setPreferredSize(new Dimension(1100, 850));
+		JScrollPane tuneScroller = new JScrollPane(tuneView);
 
 		controller = new TuneEditController(tuneView);
 		controller.addEditListener(this);
 		
 		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(tuneView, BorderLayout.CENTER);
+		getContentPane().add(tuneScroller, BorderLayout.CENTER);
 		
 		Toolbar toolbar = new Toolbar(tuneView, controller);
 		controller.addEditListener(toolbar);
