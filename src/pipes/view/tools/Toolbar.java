@@ -86,7 +86,7 @@ public class Toolbar extends JPanel implements TuneEditListener {
 		toolGroup.add(addWhole);
 		
 		for (EmbellishmentFamily f : EmbellishmentFamily.EMBELLISHMENTS) {
-			JToggleButton eButton = new ToolButton(new SetEmbellishmentFamilyTool(view, controller, f));
+			JToggleButton eButton = new ToolButton(new SetEmbellishmentFamilyTool(view, controller, f), f.getShortName()+"_icon");
 			add(eButton);
 			toolGroup.add(eButton);
 		}
@@ -96,20 +96,6 @@ public class Toolbar extends JPanel implements TuneEditListener {
 	
 	private class ToolButton extends JToggleButton {
 		private static final long serialVersionUID = 1L;
-
-		ToolButton(final EditTool tool) {
-			super(tool.getName());
-			setToolTipText(tool.getName());
-
-			setSize(new Dimension(40, 40));
-			setPreferredSize(new Dimension(40, 40));
-			
-			addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					controller.setCurrentTool(tool);
-				}
-			});
-		}
 		
 		ToolButton(final EditTool tool, String iconName) {
 			setIcon(new ImageIcon(ICON_PATH + iconName + ".png"));
