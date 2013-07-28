@@ -22,7 +22,7 @@ public class AddNoteTool extends EditTool {
 	}
 	
 	public AddNoteTool(BeatDivision beat, TuneView view, TuneEditController controller) {
-		super("Add " + beat.name());
+		super("Add " + beat.name + " note");
 		this.beat = beat;
 		this.view = view;
 		this.controller = controller;

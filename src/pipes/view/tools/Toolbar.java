@@ -18,7 +18,7 @@ import pipes.view.TuneView;
 
 public class Toolbar extends JPanel implements TuneEditListener {
 	private static final long serialVersionUID = 1L;
-	private static final String ICON_PATH = "/images/";
+	private static final String ICON_PATH = "images/";
 
 	public void tuneEdited() {
 		undoButton.setEnabled(controller.canUndo());
@@ -49,15 +49,15 @@ public class Toolbar extends JPanel implements TuneEditListener {
 		
 		ButtonGroup toolGroup = new ButtonGroup();
 		
-		JToggleButton pitchButton = new ToolButton(new ChangePitchTool(view, controller));
+		JToggleButton pitchButton = new ToolButton(new ChangePitchTool(view, controller), "adjust_pitch_icon");
 		add(pitchButton);
 		toolGroup.add(pitchButton);
 
-		JToggleButton deleteButton = new ToolButton(new DeleteTool(view, controller));
+		JToggleButton deleteButton = new ToolButton(new DeleteTool(view, controller), "delete_note_icon");
 		add(deleteButton);
 		toolGroup.add(deleteButton);
 
-		JToggleButton dotButton = new ToolButton(new ToggleDotTool(view, controller));
+		JToggleButton dotButton = new ToolButton(new ToggleDotTool(view, controller), "toggle_dot_icon");
 		add(dotButton);
 		toolGroup.add(dotButton);
 
@@ -99,9 +99,10 @@ public class Toolbar extends JPanel implements TuneEditListener {
 
 		ToolButton(final EditTool tool) {
 			super(tool.getName());
+			setToolTipText(tool.getName());
 
-			setSize(new Dimension(45, 45));
-			setPreferredSize(new Dimension(45, 45));
+			setSize(new Dimension(40, 40));
+			setPreferredSize(new Dimension(40, 40));
 			
 			addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -111,7 +112,8 @@ public class Toolbar extends JPanel implements TuneEditListener {
 		}
 		
 		ToolButton(final EditTool tool, String iconName) {
-			setIcon(new ImageIcon(ICON_PATH + iconName));
+			setIcon(new ImageIcon(ICON_PATH + iconName + ".png"));
+			setToolTipText(tool.getName());
 			
 			setSize(new Dimension(40, 40));
 			setPreferredSize(new Dimension(40, 40));

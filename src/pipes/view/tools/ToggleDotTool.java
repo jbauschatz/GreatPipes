@@ -26,7 +26,7 @@ public class ToggleDotTool extends EditTool {
 	}
 	
 	public ToggleDotTool(TuneView view, TuneEditController controller) {
-		super(".");
+		super("Dotted Note");
 		this.view = view;
 		this.controller = controller;
 	}
