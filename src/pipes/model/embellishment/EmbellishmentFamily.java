@@ -25,7 +25,7 @@ public abstract class EmbellishmentFamily {
 	// Strikes
 	public static final EmbellishmentFamily E_STRIKE = new StandardEmbellishment("Strike", "str", GraceNote.LOW_A);
 	
-	public static final EmbellishmentFamily[] EMBELLISHMENTS = {THROW, BIRL, DOUBLING, GRIP, TAOR, CRUN};
+	public static final EmbellishmentFamily[] EMBELLISHMENTS = {THROW, BIRL, DOUBLING, GRIP, TAOR, CRUN, G_GRACE, D_GRACE, E_GRACE, A_GRACE};
 	
 	private static final HashMap<String, EmbellishmentFamily> familiesByNames = new HashMap<String, EmbellishmentFamily>() {
 		private static final long serialVersionUID = 1L;

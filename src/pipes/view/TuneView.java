@@ -38,9 +38,9 @@ public class TuneView extends JPanel {
 	
 	public TuneView() {		
 		setOpaque(true);
-		sheetWidth = 1000;
+		sheetWidth = 1100;
 		sheetHeight = 800;
-		lineWidth = 800;
+		lineWidth = 1000;
 		
 		addMouseMotionListener(new MouseMotionListener() {
 			public void mouseMoved(MouseEvent e) {
