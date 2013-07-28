@@ -6,7 +6,7 @@ import pipes.model.embellishment.EmbellishmentFamily;
 public class SetEmbellishmentFamilyAction implements EditAction {
 	
 	public boolean isLegal() {
-		return newEmbellishment.canEmbellish(note, note.getTune().getNoteAfter(note));
+		return newEmbellishment.canEmbellish(note.getTune().getNoteBefore(note), note);
 	}
 	
 	public void execute() {
