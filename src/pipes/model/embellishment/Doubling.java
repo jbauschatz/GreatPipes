@@ -8,11 +8,7 @@ import static pipes.model.embellishment.GraceNote.*;
 
 public class Doubling extends EmbellishmentFamily {
 
-	public boolean canEmbellish(Note note) {
-		return true;
-	}
-
-	public boolean canComeAfter(Note note) {
+	public boolean canEmbellish(Note noteBefore, Note embellishedNote) {
 		return true;
 	}
 

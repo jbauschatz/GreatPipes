@@ -5,12 +5,8 @@ import pipes.model.Pitch;
 
 public class BasicBirl extends EmbellishmentFamily {
 
-	public boolean canEmbellish(Note note) {
-		return note.getPitch() == Pitch.LOW_A;
-	}
-
-	public boolean canComeAfter(Note note) {
-		return true;
+	public boolean canEmbellish(Note noteBefore, Note embellishedNote) {
+		return embellishedNote.getPitch() == Pitch.LOW_A;
 	}
 
 	public Embellishment getEmbellishment(Note noteBefore, Note embellishedNote) {

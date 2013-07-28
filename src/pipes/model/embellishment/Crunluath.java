@@ -5,9 +5,10 @@ import pipes.model.Pitch;
 
 public class Crunluath extends Grip {
 
-	public boolean canEmbellish(Note note) {
-		return note.getPitch() == Pitch.E;
+	public boolean canEmbellish(Note noteBefore, Note embellishedNote) {
+		return embellishedNote.getPitch() == Pitch.E;
 	}
+
 	public Crunluath() {
 		super("Crunluath", "crun");
 		notAfterD = new Embellishment("Crunluath", GraceNote.LOW_G, GraceNote.D, GraceNote.LOW_G, GraceNote.E, GraceNote.LOW_A, GraceNote.F, GraceNote.LOW_A);

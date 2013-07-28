@@ -8,8 +8,8 @@ public class DThrow extends EmbellishmentFamily {
 	private static Embellishment afterG = new Embellishment("D throw", GraceNote.D, GraceNote.C);
 	private static Embellishment notAfterG = new Embellishment("D throw", GraceNote.LOW_G, GraceNote.D, GraceNote.C);
 	
-	public boolean canEmbellish(Note note) {
-		return note.getPitch() == Pitch.D;
+	public boolean canEmbellish(Note noteBefore, Note embellishedNote) {
+		return embellishedNote.getPitch() == Pitch.D;
 	}
 
 	public Embellishment getEmbellishment(Note noteBefore, Note embellishedNote) {
