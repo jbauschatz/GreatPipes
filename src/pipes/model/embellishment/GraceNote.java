@@ -14,8 +14,19 @@ public class GraceNote {
 	public static final GraceNote LOW_G = new GraceNote(Pitch.LOW_G);
 	
 	public final Pitch pitch;
+	public final boolean isLong;
+
+	public GraceNote asLong() {
+		return new GraceNote(pitch, true);
+	}
 	
-	public GraceNote(Pitch pitch) {
+	private GraceNote(Pitch pitch) {
 		this.pitch = pitch;
+		isLong = false;
+	}
+	
+	private GraceNote(Pitch pitch, boolean isLong) {
+		this.pitch = pitch;
+		this.isLong = isLong;
 	}
 }

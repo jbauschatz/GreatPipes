@@ -13,8 +13,9 @@ public class TuneToMidi {
 	public MidiTune convert(Tune tune) {
 		int ticksPerQuarter = 128;
 		int ticksPerTimeUnit = ticksPerQuarter / BeatDivision.QUARTER.duration;
-		
-		int graceNoteTicks = ticksPerQuarter/10;
+
+		int shortGraceNoteTicks = ticksPerQuarter/10;
+		int longGraceNoteTicks = 3*shortGraceNoteTicks/2;
 		
 		MidiTune midi = new MidiTune(ticksPerQuarter);
 		
@@ -24,7 +25,7 @@ public class TuneToMidi {
 					if (n.hasEmbellishment()) {
 						Embellishment e = n.getEmbellishment();
 						for (GraceNote g : e)
-							midi.appendNote(g.pitch, graceNoteTicks);
+							midi.appendNote(g.pitch, g.isLong ? longGraceNoteTicks : shortGraceNoteTicks);
 					}
 					
 					midi.appendNote(n.getPitch(), ticksPerTimeUnit*n.getDuration());

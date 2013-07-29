@@ -25,14 +25,14 @@ public class Grip extends EmbellishmentFamily {
 	
 	public Grip() {
 		super("Grip", "grip");
-		notAfterD = new Embellishment("Grip", GraceNote.LOW_G, GraceNote.D, GraceNote.LOW_G);
-		afterD = new Embellishment("Grip", GraceNote.LOW_G, GraceNote.B, GraceNote.LOW_G);
+		notAfterD = new Embellishment("Grip", GraceNote.LOW_G.asLong(), GraceNote.D, GraceNote.LOW_G.asLong());
+		afterD = new Embellishment("Grip", GraceNote.LOW_G.asLong(), GraceNote.B, GraceNote.LOW_G.asLong());
 	}
 	
 	protected Grip(String name, String shortName) {
 		super(name, shortName);
-		notAfterD = new Embellishment(name, GraceNote.LOW_G, GraceNote.D, GraceNote.LOW_G);
-		afterD = new Embellishment(name, GraceNote.LOW_G, GraceNote.B, GraceNote.LOW_G);
+		notAfterD = new Embellishment(name, GraceNote.LOW_G.asLong(), GraceNote.D, GraceNote.LOW_G.asLong());
+		afterD = new Embellishment(name, GraceNote.LOW_G.asLong(), GraceNote.B, GraceNote.LOW_G.asLong());
 	}
 
 	protected Embellishment afterD;

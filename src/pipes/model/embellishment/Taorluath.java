@@ -11,7 +11,7 @@ public class Taorluath extends Grip {
 
 	public Taorluath() {
 		super("Taorluath", "taor");
-		notAfterD = new Embellishment("Taorluath", GraceNote.LOW_G, GraceNote.D, GraceNote.LOW_G, GraceNote.E);
-		afterD = new Embellishment("Taorluath", GraceNote.LOW_G, GraceNote.B, GraceNote.LOW_G, GraceNote.E);
+		notAfterD = new Embellishment("Taorluath", GraceNote.LOW_G.asLong(), GraceNote.D, GraceNote.LOW_G.asLong(), GraceNote.E);
+		afterD = new Embellishment("Taorluath", GraceNote.LOW_G.asLong(), GraceNote.B, GraceNote.LOW_G.asLong(), GraceNote.E);
 	}
 }

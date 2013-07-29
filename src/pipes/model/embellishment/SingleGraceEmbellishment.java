@@ -1,7 +1,6 @@
 package pipes.model.embellishment;
 
 import pipes.model.Note;
-import pipes.model.Pitch;
 
 public class SingleGraceEmbellishment extends EmbellishmentFamily {
 
@@ -14,9 +13,9 @@ public class SingleGraceEmbellishment extends EmbellishmentFamily {
 		return new Embellishment(toString(), grace);
 	}
 	
-	public SingleGraceEmbellishment(Pitch p) {
-		super(p.shortName+"-grace", "'"+p.shortName);
-		grace = new GraceNote(p);
+	public SingleGraceEmbellishment(GraceNote g) {
+		super(g.pitch.shortName+"-grace", "'"+g.pitch.shortName);
+		grace = g;
 	}
 
 	private GraceNote grace;

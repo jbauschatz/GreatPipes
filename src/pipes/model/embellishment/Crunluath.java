@@ -11,7 +11,7 @@ public class Crunluath extends Grip {
 
 	public Crunluath() {
 		super("Crunluath", "crun");
-		notAfterD = new Embellishment("Crunluath", GraceNote.LOW_G, GraceNote.D, GraceNote.LOW_G, GraceNote.E, GraceNote.LOW_A, GraceNote.F, GraceNote.LOW_A);
-		afterD = new Embellishment("Crunluath", GraceNote.LOW_G, GraceNote.B, GraceNote.LOW_G, GraceNote.E, GraceNote.LOW_A, GraceNote.F, GraceNote.LOW_A);
+		notAfterD = new Embellishment("Crunluath", GraceNote.LOW_G.asLong(), GraceNote.D, GraceNote.LOW_G.asLong(), GraceNote.E, GraceNote.LOW_A.asLong(), GraceNote.F, GraceNote.LOW_A.asLong());
+		afterD = new Embellishment("Crunluath", GraceNote.LOW_G.asLong(), GraceNote.B, GraceNote.LOW_G.asLong(), GraceNote.E, GraceNote.LOW_A.asLong(), GraceNote.F, GraceNote.LOW_A.asLong());
 	}
 }

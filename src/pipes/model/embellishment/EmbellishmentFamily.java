@@ -3,7 +3,6 @@ package pipes.model.embellishment;
 import java.util.HashMap;
 
 import pipes.model.Note;
-import pipes.model.Pitch;
 
 public abstract class EmbellishmentFamily {
 	
@@ -12,10 +11,10 @@ public abstract class EmbellishmentFamily {
 	public static final EmbellishmentFamily THROW = new DThrow();
 	
 	// Single grace notes
-	public static final EmbellishmentFamily A_GRACE = new SingleGraceEmbellishment(Pitch.A);
-	public static final EmbellishmentFamily G_GRACE = new SingleGraceEmbellishment(Pitch.G);
-	public static final EmbellishmentFamily D_GRACE = new SingleGraceEmbellishment(Pitch.D);
-	public static final EmbellishmentFamily E_GRACE = new SingleGraceEmbellishment(Pitch.E);
+	public static final EmbellishmentFamily A_GRACE = new SingleGraceEmbellishment(GraceNote.A);
+	public static final EmbellishmentFamily G_GRACE = new SingleGraceEmbellishment(GraceNote.G);
+	public static final EmbellishmentFamily D_GRACE = new SingleGraceEmbellishment(GraceNote.D);
+	public static final EmbellishmentFamily E_GRACE = new SingleGraceEmbellishment(GraceNote.E);
 
 	// Strikes
 	public static final EmbellishmentFamily STRIKE = new Strike();
