@@ -29,9 +29,9 @@ public class BeamGroupingStrategy {
 		// Create views for all the notes in the measure
 		for (Note n : measure) {
 			// Add to run or make a new run
-			if (n.getBeatDivision().hasFlag && beamedRunLength + n.getNoteLength() <= groupDuration) {
+			if (n.getBeatDivision().hasFlag && beamedRunLength + n.getDuration() <= groupDuration) {
 				beamedRun.add(n);
-				beamedRunLength += n.getNoteLength();
+				beamedRunLength += n.getDuration();
 			} else {
 				if (beamedRunLength > 0) {
 					beams.add(beamedRun);
@@ -41,7 +41,7 @@ public class BeamGroupingStrategy {
 
 				if (n.getBeatDivision().hasStick) {
 					beamedRun.add(n);
-					beamedRunLength += n.getNoteLength();
+					beamedRunLength += n.getDuration();
 				}
 			}
 		}

@@ -113,7 +113,7 @@ public class MeasureView {
 				x += embView.getWidth();
 			}
 			
-			int notePadding = noteSpacing * n.getNoteLength();
+			int notePadding = noteSpacing * n.getDuration();
 			MelodyElementView noteView = elementViews.get(n);
 			noteView.setX(x);
 			x += noteView.getWidth() + notePadding;

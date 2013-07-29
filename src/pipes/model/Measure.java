@@ -77,7 +77,7 @@ public class Measure implements Iterable<Note> {
 	public int getDuration() {
 		int d = 0;
 		for (Note n : internal)
-			d += n.getNoteLength();
+			d += n.getDuration();
 		
 		return d;
 	}

@@ -6,7 +6,7 @@ import pipes.model.Note;
 public class AddNoteAction implements EditAction {
 
 	public boolean isLegal() {
-		return measure.getDuration() + addThis.getNoteLength() <= measure.getTimeSignature().getMeasureDuration();
+		return measure.getDuration() + addThis.getDuration() <= measure.getTimeSignature().getMeasureDuration();
 	}
 	
 	public void execute() {

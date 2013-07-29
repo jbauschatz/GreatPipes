@@ -74,7 +74,7 @@ public class Note implements MelodyElement {
 		return beatDivision;
 	}
 	
-	public int getNoteLength() {
+	public int getDuration() {
 		int length = beatDivision.duration;
 		int dotValue = length/2;
 		
