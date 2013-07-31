@@ -8,7 +8,7 @@ import pipes.model.Tune;
 import pipes.model.embellishment.Embellishment;
 import pipes.model.embellishment.GraceNote;
 
-public class TuneToMidi {
+public class BasicMidiConverter implements TuneToMidiConverter {
 
 	public MidiTune convert(Tune tune) {
 		int ticksPerQuarter = 128;

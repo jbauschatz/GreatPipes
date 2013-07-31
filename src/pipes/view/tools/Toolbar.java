@@ -14,6 +14,7 @@ import pipes.editing.TuneEditController;
 import pipes.editing.TuneEditListener;
 import pipes.model.BeatDivision;
 import pipes.model.embellishment.EmbellishmentFamily;
+import pipes.sound.TunePlayer;
 import pipes.view.TuneView;
 
 public class Toolbar extends JPanel implements TuneEditListener {
@@ -25,8 +26,10 @@ public class Toolbar extends JPanel implements TuneEditListener {
 		redoButton.setEnabled(controller.canRedo());
 	}
 	
-	public Toolbar(TuneView view, final TuneEditController controller) {
+	public Toolbar(TuneView view, final TuneEditController controller, TunePlayer player) {
 		this.controller = controller;
+		
+		add(new PlaybackControls(player));
 		
 		undoButton = new JButton("undo");
 		undoButton.addActionListener(new ActionListener() {

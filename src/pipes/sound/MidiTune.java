@@ -49,7 +49,7 @@ public class MidiTune {
 			case LOW_A: return 57;
 			case LOW_G: return 55;
 			default: return 0;
-		}		
+		}
 	}
 
 	private Track mainTrack;
