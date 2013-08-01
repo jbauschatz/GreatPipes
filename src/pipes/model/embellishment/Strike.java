@@ -9,8 +9,9 @@ import static pipes.model.embellishment.GraceNote.*;
 public class Strike extends EmbellishmentFamily {
 
 	public boolean canEmbellish(Note noteBefore, Note embellishedNote) {
-		return embellishedNote.getPitch().higherThan(Pitch.LOW_G) 
-				&& noteBefore != null && noteBefore.getPitch() == embellishedNote.getPitch();
+		return embellishedNote.getPitch().higherThan(Pitch.LOW_G) &&
+				(embellishedNote.getPitch() == Pitch.LOW_A || 
+				(noteBefore != null && noteBefore.getPitch() == embellishedNote.getPitch()));
 	}
 
 	public Embellishment getEmbellishment(Note noteBefore, Note embellishedNote) {
