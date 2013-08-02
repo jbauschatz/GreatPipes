@@ -6,16 +6,17 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import pipes.sound.TunePlayer;
+import pipes.editing.TuneEditController;
 
 public class PlaybackControls extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	public PlaybackControls(final TunePlayer player) {
+	public PlaybackControls(final TuneEditController controller) {
 		JButton playButton = new JButton("Play");
 		playButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				player.play();
+				controller.getPlayer().setTune(controller.getTune());
+				controller.getPlayer().play();
 			}
 		});
 		add(playButton);
@@ -23,7 +24,7 @@ public class PlaybackControls extends JPanel {
 		JButton pauseButton = new JButton("Pause");
 		pauseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				player.pause();
+				controller.getPlayer().pause();
 			}
 		});
 		add(pauseButton);
@@ -31,7 +32,7 @@ public class PlaybackControls extends JPanel {
 		JButton stopButton = new JButton("Stop");
 		stopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				player.stop();
+				controller.getPlayer().stop();
 			}
 		});
 		add(stopButton);

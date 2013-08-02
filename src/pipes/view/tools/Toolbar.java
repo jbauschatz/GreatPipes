@@ -30,7 +30,7 @@ public class Toolbar extends JPanel implements TuneEditListener {
 		this.controller = controller;
 		controller.addEditListener(this);
 		
-		add(new PlaybackControls(controller.getPlayer()));
+		add(new PlaybackControls(controller));
 		
 		undoButton = new JButton("undo");
 		undoButton.addActionListener(new ActionListener() {
