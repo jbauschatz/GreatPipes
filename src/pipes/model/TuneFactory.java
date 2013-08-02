@@ -22,14 +22,14 @@ import static pipes.model.embellishment.EmbellishmentFamily.THROW;
 
 public class TuneFactory {
 
-	public static Tune getNewTune(TimeSignature baseTime, int numLines, int measuresPerLine) {
+	public static Tune getNewTune(NewTuneParameters parameters) {
 		Tune t = new Tune();
 		
-		for (int i = 0; i<numLines; ++i) {
+		for (int i = 0; i<parameters.lines; ++i) {
 			Line l = new Line();
 			t.add(l);
-			for (int j = 0; j<measuresPerLine; ++j)
-				l.add(new Measure(baseTime));
+			for (int j = 0; j<parameters.measuresPerLine; ++j)
+				l.add(new Measure(parameters.timeSignature));
 		}
 		
 		t.getFirst().getFirst().setIsTimeSignatureChange(true);

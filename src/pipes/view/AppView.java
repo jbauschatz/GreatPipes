@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JComboBox;
@@ -28,9 +27,8 @@ import pipes.editing.TuneEditController;
 import pipes.editing.TuneEditListener;
 import pipes.editing.actions.EditAction;
 import pipes.editing.io.TuneSerializer;
+import pipes.model.NewTuneParameters;
 import pipes.model.TimeSignature;
-import pipes.model.Tune;
-import pipes.model.TuneFactory;
 import pipes.view.tools.Toolbar;
 
 public class AppView extends JFrame implements TuneEditListener {
@@ -42,7 +40,6 @@ public class AppView extends JFrame implements TuneEditListener {
 	}
 	
 	public void tuneEdited(EditAction ation) {
-		editState.isDirty = true;
 		updateTitle();
 	}
 	
@@ -54,8 +51,6 @@ public class AppView extends JFrame implements TuneEditListener {
 			e1.printStackTrace();
 		}
 		
-		editState = new TuneEditingState();
-		
 		tuneView = new TuneView();
 		tuneView.setSize(1100, 850);
 		tuneView.setPreferredSize(new Dimension(1100, 850));
@@ -63,12 +58,12 @@ public class AppView extends JFrame implements TuneEditListener {
 
 		controller = new TuneEditController(tuneView);
 		controller.addEditListener(this);
+		controller.newTune(NewTuneParameters.DEFAULT);
 		
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(tuneScroller, BorderLayout.CENTER);
 		
 		Toolbar toolbar = new Toolbar(tuneView, controller);
-		controller.addEditListener(toolbar);
 		getContentPane().add(toolbar, BorderLayout.NORTH);
 
 		buildMenu();
@@ -78,8 +73,6 @@ public class AppView extends JFrame implements TuneEditListener {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		setEditingTune(TuneFactory.getNewTune(TimeSignature.FOUR_FOUR, 4, 4));
 		
 		addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
@@ -130,13 +123,12 @@ public class AppView extends JFrame implements TuneEditListener {
 	}
 	
 	private void save() {
-		if (editState.isDirty) {
-			if (editState.editingFile == null) {
+		if (controller.getIsDirty()) {
+			if (controller.getEditingFile() == null) {
 				saveAs();
 			} else {
 				try {
-					TuneSerializer.saveTune(editState.tune, editState.editingFile);
-					editState.isDirty = false;
+					controller.saveTune();
 					updateTitle();
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(this, "An error occured while saving your tune.");
@@ -153,8 +145,7 @@ public class AppView extends JFrame implements TuneEditListener {
 				
 		if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 			try {
-				editState.editingFile = TuneSerializer.saveTune(editState.tune, chooser.getSelectedFile());
-				editState.isDirty = false;
+				controller.saveTune(chooser.getSelectedFile());
 				updateTitle();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "An error occured while saving your tune.");
@@ -173,9 +164,7 @@ public class AppView extends JFrame implements TuneEditListener {
 		
 		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			try {
-				setEditingTune(TuneSerializer.loadTune(chooser.getSelectedFile()));
-				editState.editingFile = chooser.getSelectedFile();
-				editState.isDirty = false;
+				controller.loadTune(chooser.getSelectedFile());
 				updateTitle();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "An error occured while loading the file.");
@@ -206,10 +195,10 @@ public class AppView extends JFrame implements TuneEditListener {
 			if (JOptionPane.showOptionDialog(this, message, "New tune", JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION, null, inputs, inputs[0])
 					== JOptionPane.OK_OPTION) {
 				try {
-					int numLinesChosen = Integer.parseInt(numLines.getText());
-					int measuresPerChosen = Integer.parseInt(measuresPerLine.getText());
-					setEditingTune(TuneFactory.getNewTune((TimeSignature)timeSigs.getSelectedItem(), numLinesChosen, measuresPerChosen));
-					editState.isDirty = false;
+					int numLinesChoice = Integer.parseInt(numLines.getText());
+					int measuresPerChoice = Integer.parseInt(measuresPerLine.getText());
+					TimeSignature timeSigChoice = (TimeSignature)timeSigs.getSelectedItem();
+					controller.newTune(new NewTuneParameters(timeSigChoice, numLinesChoice, measuresPerChoice));
 					updateTitle();
 					valid = true;
 				} catch (NumberFormatException ex) {
@@ -222,28 +211,13 @@ public class AppView extends JFrame implements TuneEditListener {
 	}
 	
 	private void updateTitle() {
-		if (editState.editingFile != null) {
-			setTitle(WINDOW_CAPTION + " - " + editState.editingFile.getName() + (editState.isDirty ? "*" : ""));
+		if (controller.getEditingFile() != null) {
+			setTitle(WINDOW_CAPTION + " - " + controller.getEditingFile().getName() + (controller.getIsDirty() ? "*" : ""));
 		} else {
 			setTitle(WINDOW_CAPTION);
 		}
 	}
 
-	private void setEditingTune(Tune t) {
-		editState.tune = t;
-		tuneView.setTune(t);
-		controller.setTune(t);
-		controller.getPlayer().setTune(t);
-		tuneView.updateMusic();
-	}
-	
-	private class TuneEditingState {
-		Tune tune;
-		File editingFile;
-		boolean isDirty;
-	}
-	
 	private TuneEditController controller;
 	private TuneView tuneView;
-	private TuneEditingState editState;
 }

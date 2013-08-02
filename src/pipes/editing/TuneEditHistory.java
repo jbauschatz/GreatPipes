@@ -30,6 +30,11 @@ public class TuneEditHistory {
 		return redoAction;
 	}
 	
+	public void clear() {
+		undoActions.clear();
+		redoActions.clear();
+	}
+	
 	public TuneEditHistory() {
 		undoActions = new Stack<EditAction>();
 		redoActions = new Stack<EditAction>();

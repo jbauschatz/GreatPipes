@@ -3,10 +3,15 @@ package pipes.editing;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 
 import pipes.editing.actions.EditAction;
+import pipes.editing.io.TuneSerializer;
+import pipes.model.NewTuneParameters;
 import pipes.model.Tune;
+import pipes.model.TuneFactory;
 import pipes.sound.TunePlayer;
 import pipes.view.TuneView;
 import pipes.view.tools.EditTool;
@@ -24,7 +29,7 @@ public class TuneEditController {
 	public void undo() {
 		EditAction undone = history.pullFromUndoHistory();
 		undone.undo();
-		notifyEdit(undone);
+		notifyEdit(null);
 	}
 	
 	public void redo() {
@@ -34,6 +39,7 @@ public class TuneEditController {
 	}
 
 	public void execute(EditAction action) {
+		isDirty = true;
 		action.execute();
 		history.addToHistory(action);
 		notifyEdit(action);
@@ -52,10 +58,6 @@ public class TuneEditController {
 		currentTool = tool;
 	}
 
-	public void setTune(Tune tune) {
-		this.tune = tune;
-	}
-	
 	public Tune getTune() {
 		return tune;
 	}
@@ -64,7 +66,42 @@ public class TuneEditController {
 		return player;
 	}
 	
+	public boolean getIsDirty() {
+		return isDirty;
+	}
+
+	public File getEditingFile() {
+		return editingFile;
+	}
+	
+	public void newTune(NewTuneParameters parameters) {
+		tune = TuneFactory.getNewTune(parameters);
+		view.setTune(tune);
+		editingFile = null;
+		isDirty = false;
+		history.clear();
+	}
+	
+	public void loadTune(File file) throws IOException {
+		tune = TuneSerializer.loadTune(file);
+		view.setTune(tune);
+		editingFile = file;
+		isDirty = false;
+		history.clear();
+	}
+
+	public void saveTune() throws IOException {
+		saveTune(editingFile);
+	}
+
+	public void saveTune(File saveTo) throws IOException {
+		editingFile = TuneSerializer.saveTune(tune, saveTo);
+		isDirty = false;
+		history.clear();
+	}
+
 	public TuneEditController(final TuneView view) {
+		this.view = view;
 		player = new TunePlayer();
 		history = new TuneEditHistory();
 		currentTool = new NullTool();
@@ -108,9 +145,21 @@ public class TuneEditController {
 	}
 
 	private Tune tune;
+	private TuneView view;
 	private TunePlayer player;
 	private EditTool currentTool;
 	private TuneEditHistory history;
+	
+	/**
+	 * Whether the tune has been edited since the last save.
+	 */
+	private boolean isDirty;
+
+	/**
+	 * The file that we are currently editing.
+	 * Null when the tune is new and has never been saved.
+	 */
+	private File editingFile;
 	
 	private LinkedList<TuneEditListener> listeners;
 }
