@@ -156,7 +156,15 @@ public class AppView extends JFrame implements TuneEditListener {
 
 	private void open() {
 		// save changes
+		if (controller.getIsDirty()) {
+			int result = JOptionPane.showConfirmDialog(this, "Save changes to your tune?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (result == JOptionPane.CANCEL_OPTION)
+				return;
+			if (result == JOptionPane.YES_OPTION)
+				save();
+		}
 		
+		// open
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileFilter(new FileNameExtensionFilter("Great Pipes tune file", TuneSerializer.FILE_EXTENSION));
 		chooser.setMultiSelectionEnabled(false);
@@ -174,7 +182,14 @@ public class AppView extends JFrame implements TuneEditListener {
 	}
 	
 	private void newTune() {
-		// Save changes
+		// save changes
+		if (controller.getIsDirty()) {
+			int result = JOptionPane.showConfirmDialog(this, "Save changes to your tune?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (result == JOptionPane.CANCEL_OPTION)
+				return;
+			if (result == JOptionPane.YES_OPTION)
+				save();
+		}
 		
 		// New tune
 		JTextField numLines = new JTextField("4", 2);
