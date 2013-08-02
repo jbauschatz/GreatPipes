@@ -11,12 +11,6 @@ import pipes.model.embellishment.GraceNote;
 public class BasicMidiConverter implements TuneToMidiConverter {
 
 	public MidiTune convert(Tune tune) {
-		int ticksPerQuarter = 128;
-		int ticksPerTimeUnit = ticksPerQuarter / BeatDivision.QUARTER.duration;
-
-		int shortGraceNoteTicks = ticksPerQuarter/10;
-		int longGraceNoteTicks = 3*shortGraceNoteTicks/2;
-		
 		MidiTune midi = new MidiTune(ticksPerQuarter);
 		
 		for (Line l : tune) {
@@ -35,4 +29,31 @@ public class BasicMidiConverter implements TuneToMidiConverter {
 
 		return midi;
 	}
+	
+	public MidiTune convert(Note n) {
+		MidiTune midi = new MidiTune(ticksPerQuarter);
+
+		if (n.hasEmbellishment()) {
+			Embellishment e = n.getEmbellishment();
+			for (GraceNote g : e)
+				midi.appendNote(g.pitch, g.isLong ? longGraceNoteTicks : shortGraceNoteTicks);
+		}
+		
+		midi.appendNote(n.getPitch(), ticksPerTimeUnit*n.getDuration());
+		return midi;
+	}
+	
+	public BasicMidiConverter() {
+		ticksPerQuarter = 128;
+		ticksPerTimeUnit = ticksPerQuarter / BeatDivision.QUARTER.duration;
+
+		shortGraceNoteTicks = ticksPerQuarter/10;
+		longGraceNoteTicks = 3*shortGraceNoteTicks/2;
+	}
+	
+	private int ticksPerQuarter;
+	private int ticksPerTimeUnit;
+
+	private int shortGraceNoteTicks;
+	private int longGraceNoteTicks;
 }

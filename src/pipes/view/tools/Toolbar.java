@@ -12,40 +12,41 @@ import javax.swing.JToggleButton;
 
 import pipes.editing.TuneEditController;
 import pipes.editing.TuneEditListener;
+import pipes.editing.actions.EditAction;
 import pipes.model.BeatDivision;
 import pipes.model.embellishment.EmbellishmentFamily;
-import pipes.sound.TunePlayer;
 import pipes.view.TuneView;
 
 public class Toolbar extends JPanel implements TuneEditListener {
 	private static final long serialVersionUID = 1L;
 	private static final String ICON_PATH = "images/";
 
-	public void tuneEdited() {
+	public void tuneEdited(EditAction action) {
 		undoButton.setEnabled(controller.canUndo());
 		redoButton.setEnabled(controller.canRedo());
 	}
 	
-	public Toolbar(TuneView view, final TuneEditController controller, TunePlayer player) {
+	public Toolbar(TuneView view, final TuneEditController controller) {
 		this.controller = controller;
+		controller.addEditListener(this);
 		
-		add(new PlaybackControls(player));
+		add(new PlaybackControls(controller.getPlayer()));
 		
 		undoButton = new JButton("undo");
 		undoButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.undo();
-				tuneEdited();
 			}
 		});
+		undoButton.setEnabled(controller.canUndo());
 		
 		redoButton = new JButton("redo");
 		redoButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.redo();
-				tuneEdited();
 			}
 		});
+		redoButton.setEnabled(controller.canRedo());
 		
 		add(undoButton);
 		add(redoButton);
@@ -93,8 +94,6 @@ public class Toolbar extends JPanel implements TuneEditListener {
 			add(eButton);
 			toolGroup.add(eButton);
 		}
-		
-		tuneEdited();
 	}
 	
 	private class ToolButton extends JToggleButton {

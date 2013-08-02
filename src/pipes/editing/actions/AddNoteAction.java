@@ -21,6 +21,10 @@ public class AddNoteAction implements EditAction {
 			legalizeNextNote.undo();
 	}
 
+	public Note getNoteAdded() {
+		return addThis;
+	}
+	
 	public AddNoteAction(Note addThis, Note afterThis, Measure measure) {
 		this.addThis = addThis;
 		this.afterThis = afterThis;

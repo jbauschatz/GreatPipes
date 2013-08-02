@@ -17,6 +17,14 @@ public class SetEmbellishmentFamilyAction implements EditAction {
 		note.setEmbellishmentFamily(oldEmbellishment);
 	}
 	
+	public EmbellishmentFamily getFamily() {
+		return newEmbellishment;
+	}
+	
+	public Note getNote() {
+		return note;
+	}
+	
 	public SetEmbellishmentFamilyAction(Note note, EmbellishmentFamily newEmbellishment) {
 		this.note = note;
 		this.newEmbellishment = newEmbellishment;

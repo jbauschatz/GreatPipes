@@ -5,11 +5,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 
+import pipes.editing.actions.EditAction;
 import pipes.model.Tune;
+import pipes.sound.TunePlayer;
 import pipes.view.TuneView;
 import pipes.view.tools.EditTool;
 import pipes.view.tools.NullTool;
-import pipes.editing.actions.EditAction;
 
 public class TuneEditController {
 	public boolean canUndo() {
@@ -23,24 +24,24 @@ public class TuneEditController {
 	public void undo() {
 		EditAction undone = history.pullFromUndoHistory();
 		undone.undo();
-		notifyEdit();
+		notifyEdit(undone);
 	}
 	
 	public void redo() {
 		EditAction redone = history.pullFromRedoHistory();
 		redone.execute();
-		notifyEdit();
+		notifyEdit(redone);
 	}
 
 	public void execute(EditAction action) {
 		action.execute();
 		history.addToHistory(action);
-		notifyEdit();
+		notifyEdit(action);
 	}
 
 	public void executeNoHistory(EditAction action) {
 		action.execute();
-		notifyEdit();
+		notifyEdit(action);
 	}
 	
 	public void addEditListener(TuneEditListener l) {
@@ -59,7 +60,12 @@ public class TuneEditController {
 		return tune;
 	}
 
+	public TunePlayer getPlayer() {
+		return player;
+	}
+	
 	public TuneEditController(final TuneView view) {
+		player = new TunePlayer();
 		history = new TuneEditHistory();
 		currentTool = new NullTool();
 		
@@ -89,18 +95,20 @@ public class TuneEditController {
 		
 		listeners = new LinkedList<TuneEditListener>();
 		listeners.add(new TuneEditListener() {
-			public void tuneEdited() {
+			public void tuneEdited(EditAction action) {
 				view.updateMusic();
 			}
 		});
+		listeners.add(player);
 	}
 
-	private void notifyEdit() {
+	private void notifyEdit(EditAction action) {
 		for (TuneEditListener l : listeners)
-			l.tuneEdited();
+			l.tuneEdited(action);
 	}
 
 	private Tune tune;
+	private TunePlayer player;
 	private EditTool currentTool;
 	private TuneEditHistory history;
 	

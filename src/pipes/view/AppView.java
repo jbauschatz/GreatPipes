@@ -26,11 +26,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import pipes.editing.TuneEditController;
 import pipes.editing.TuneEditListener;
+import pipes.editing.actions.EditAction;
 import pipes.editing.io.TuneSerializer;
 import pipes.model.TimeSignature;
 import pipes.model.Tune;
 import pipes.model.TuneFactory;
-import pipes.sound.TunePlayer;
 import pipes.view.tools.Toolbar;
 
 public class AppView extends JFrame implements TuneEditListener {
@@ -41,7 +41,7 @@ public class AppView extends JFrame implements TuneEditListener {
 		new AppView();
 	}
 	
-	public void tuneEdited() {
+	public void tuneEdited(EditAction ation) {
 		editState.isDirty = true;
 		updateTitle();
 	}
@@ -67,9 +67,7 @@ public class AppView extends JFrame implements TuneEditListener {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(tuneScroller, BorderLayout.CENTER);
 		
-		player = new TunePlayer();
-		
-		Toolbar toolbar = new Toolbar(tuneView, controller, player);
+		Toolbar toolbar = new Toolbar(tuneView, controller);
 		controller.addEditListener(toolbar);
 		getContentPane().add(toolbar, BorderLayout.NORTH);
 
@@ -235,7 +233,7 @@ public class AppView extends JFrame implements TuneEditListener {
 		editState.tune = t;
 		tuneView.setTune(t);
 		controller.setTune(t);
-		player.setTune(t);
+		controller.getPlayer().setTune(t);
 		tuneView.updateMusic();
 	}
 	
@@ -248,5 +246,4 @@ public class AppView extends JFrame implements TuneEditListener {
 	private TuneEditController controller;
 	private TuneView tuneView;
 	private TuneEditingState editState;
-	private TunePlayer player;
 }
