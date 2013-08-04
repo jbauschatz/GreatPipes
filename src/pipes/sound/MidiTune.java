@@ -9,21 +9,37 @@ import javax.sound.midi.Track;
 import pipes.model.Pitch;
 
 public class MidiTune {
+	private static final int MIDI_OCTAVE = 12;
+	private static final int MELODY_TRACK = 0;
+	private static final int TENOR_TRACK = 1;
+	private static final int BASS_TRACK = 2;
+	
 	public Sequence sequence() {
 		return sequence;
 	}
 
 	public void appendNote(Pitch p, int ticks) {
 		try {
-			MidiEvent onEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, 0, getMidiCode(p), 100), endTime);
+			MidiEvent onEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, MELODY_TRACK, getMidiCode(p), 100), endTime);
 			mainTrack.add(onEvent);
 
 			endTime += ticks;
 	
-			MidiEvent offEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, 0, getMidiCode(p), 100), endTime);
+			MidiEvent offEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, MELODY_TRACK, getMidiCode(p), 100), endTime);
 			mainTrack.add(offEvent);
 		} catch (InvalidMidiDataException imde) {
 
+		}
+	}
+	
+	public void engageDrones() {
+		try {
+			MidiEvent tenorOnEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, TENOR_TRACK, getMidiCode(Pitch.LOW_A)-MIDI_OCTAVE, 60), 0);
+			MidiEvent bassOnEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, BASS_TRACK, getMidiCode(Pitch.LOW_A)-MIDI_OCTAVE*2, 60), 0);
+			mainTrack.add(bassOnEvent);
+			mainTrack.add(tenorOnEvent);
+		} catch (InvalidMidiDataException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -31,7 +47,19 @@ public class MidiTune {
 		try {
 			sequence = new Sequence(Sequence.PPQ, ticksPerQuarter);
 			mainTrack = sequence.createTrack();
-			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.PROGRAM_CHANGE, 0, 111, 0), 0));
+			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.PROGRAM_CHANGE, MELODY_TRACK, 111, 0), 0));
+			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.PROGRAM_CHANGE, TENOR_TRACK, 111, 0), 0));
+			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.PROGRAM_CHANGE, BASS_TRACK, 111, 0), 0));
+			
+			// Controller 73 = Attack Time
+			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, MELODY_TRACK, 73, 0), 0));
+			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, TENOR_TRACK, 73, 0), 0));
+			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, BASS_TRACK, 73, 0), 0));
+			
+			// Controller 75 = Decay Time
+			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, MELODY_TRACK, 75, 0), 0));
+			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, TENOR_TRACK, 75, 0), 0));
+			mainTrack.add(new MidiEvent(new ShortMessage(ShortMessage.CONTROL_CHANGE, BASS_TRACK, 75, 0), 0));
 		} catch (InvalidMidiDataException imde) {
 
 		}

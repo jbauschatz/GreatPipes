@@ -27,6 +27,8 @@ public class BasicMidiConverter implements TuneToMidiConverter {
 			}
 		}
 
+		midi.engageDrones();
+		
 		return midi;
 	}
 	

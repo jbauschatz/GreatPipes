@@ -37,7 +37,7 @@ public class TunePlayer implements TuneEditListener {
 	public void setTune(Tune t) {
 		sequencer.close();
 		try {
-			sequencer.open();
+			sequencer.open();			
 			sequencer.setSequence(converter.convert(t).sequence());
 		} catch (MidiUnavailableException | InvalidMidiDataException e) {
 			e.printStackTrace();
