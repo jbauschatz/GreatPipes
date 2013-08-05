@@ -5,6 +5,10 @@ import java.util.LinkedList;
 public class Tune extends LinkedList<Line> {
 	private static final long serialVersionUID = 1L;
 
+	public boolean isPortraitLayout() {
+		return false;
+	}
+	
 	public Note getNoteBefore(Note n) {
 		int mIndex;
 		int lineIndex;

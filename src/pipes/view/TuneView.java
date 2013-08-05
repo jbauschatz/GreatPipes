@@ -1,6 +1,7 @@
 package pipes.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -14,6 +15,8 @@ import pipes.model.Tune;
 
 public class TuneView extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private static final int PAPER_LONG_SIDE = 1100;
+	private static final int PAPER_SHORT_SIDE = 850;
 	
 	public void paint(Graphics g) {
 		g.setColor(Color.GRAY);
@@ -36,11 +39,8 @@ public class TuneView extends JPanel {
 		updateMusic();
 	}
 	
-	public TuneView() {		
+	public TuneView() {
 		setOpaque(true);
-		sheetWidth = 1100;
-		sheetHeight = 800;
-		lineWidth = 1000;
 		
 		addMouseMotionListener(new MouseMotionListener() {
 			public void mouseMoved(MouseEvent e) {
@@ -86,6 +86,18 @@ public class TuneView extends JPanel {
 	}
 
 	private void layoutMusic() {
+		if (tune.isPortraitLayout()) {
+			sheetWidth = PAPER_SHORT_SIDE;
+			sheetHeight = PAPER_LONG_SIDE;
+		} else {
+			sheetWidth = PAPER_LONG_SIDE;
+			sheetHeight = PAPER_SHORT_SIDE;
+		}
+		lineWidth = (int)(sheetWidth * .9);
+		
+		setSize(new Dimension(sheetWidth+50, sheetHeight+50));		
+		setPreferredSize(new Dimension(sheetWidth+50, sheetHeight+50));
+		
 		sheetLeft = (getWidth() - sheetWidth) / 2;
 		sheetTop = (getHeight() - sheetHeight) / 2;
 

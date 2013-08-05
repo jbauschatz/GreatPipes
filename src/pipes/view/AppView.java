@@ -1,7 +1,6 @@
 package pipes.view;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -52,8 +51,6 @@ public class AppView extends JFrame implements TuneEditListener {
 		}
 		
 		tuneView = new TuneView();
-		tuneView.setSize(1100, 850);
-		tuneView.setPreferredSize(new Dimension(1100, 850));
 		JScrollPane tuneScroller = new JScrollPane(tuneView);
 
 		controller = new TuneEditController(tuneView);
