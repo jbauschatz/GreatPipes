@@ -4,6 +4,12 @@ import java.util.HashMap;
 
 import pipes.model.Note;
 
+/**
+ * Represents the range of forms an Embellishment could take based on the Notes it could be placed on.
+ * 
+ * Embellishment Family is not a piping term, it's meant to group Embellishments that are strictly different,
+ * like an F-doubling vs. an E-doubling, under the idea of the "doubling family". 
+ */
 public abstract class EmbellishmentFamily {
 	
 	public static final EmbellishmentFamily BIRL = new BasicBirl();
@@ -50,16 +56,34 @@ public abstract class EmbellishmentFamily {
 		return null;
 	}
 	
+	/**
+	 * @return the full name of the Embellishments in this family, for example "Taorluath"
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * @return the abbreviated name of the Embellishments in this family, for example "taor"
+	 */
 	public String getShortName() {
 		return shortName;
 	}
 	
+	/**
+	 * Validates whether placing an Embellishment from this family would be legal between the given Notes
+	 * @param noteBefore the Note before the Note the Embellishment would be placed on
+	 * @param embellishedNote the Note the Embellishment would be placed on
+	 * @return true if the Embellishment can legally be placed
+	 */
 	public abstract boolean canEmbellish(Note noteBefore, Note embellishedNote);
 	
+	/**
+	 * Gets the very specific form of this family given the Notes in context
+	 * @param noteBefore the Note before the Note the Embellishment would be placed on
+	 * @param embellishedNote the Note the Embellishment would be placed on
+	 * @return a specific instance of Embellishment that represents the legal form based on the given Notes
+	 */
 	public abstract Embellishment getEmbellishment(Note noteBefore, Note embellishedNote);
 	
 	public EmbellishmentFamily(String name, String shortName) {

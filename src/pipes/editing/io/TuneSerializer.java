@@ -3,7 +3,6 @@ package pipes.editing.io;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
 
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CharStream;
@@ -21,6 +20,9 @@ import pipes.model.Tune;
 import pipes.model.embellishment.EmbellishmentFamily;
 
 public class TuneSerializer {
+	/**
+	 * The file extension associated with Tune files
+	 */
 	public static final String FILE_EXTENSION = "grp";
 	
 	public static void main(String... args) {
@@ -106,11 +108,5 @@ public class TuneSerializer {
 		}
 		
 		return tune;
-	}
-	
-	public static Tune parseTune(Scanner s) {
-		Tune t = new Tune();
-		
-		return t;
 	}
 }

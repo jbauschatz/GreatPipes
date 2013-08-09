@@ -7,6 +7,12 @@ import pipes.model.Measure;
 import pipes.model.Note;
 import pipes.model.TimeSignature;
 
+/**
+ * Takes a list of Notes and produces groups of Notes that should share a beam.
+ * This follows the typesetting rules that depend on the time signature. In a 2/2 or 4/4, groups should be no longer than a quarter note.
+ * In a 6/8, 9/8, or the like, group length is that of a dotted quarter.
+ *
+ */
 public class BeamGroupingStrategy {
 
 	public static BeamGroupingStrategy getStrategy(TimeSignature time) {
@@ -55,5 +61,8 @@ public class BeamGroupingStrategy {
 		this.groupDuration = groupDuration;
 	}
 	
+	/**
+	 * The maximum sum a group of Notes' durations should be
+	 */
 	private int groupDuration;
 }
