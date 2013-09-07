@@ -51,10 +51,11 @@ public class LineView {
 	public void draw(Graphics g) {		
 		// Draw staff
 		g.setColor(Color.black);
-		for (int l = 0; l<5; ++l) {
+		for (int l = 0; l<4; ++l) {
 			int lineY = staffY + lineSpacing*l;
 			g.drawLine(x, lineY, x+width, lineY);
 		}
+		g.drawLine(x, staffY+staffHeight, x+width, staffY+staffHeight);
 
 		// Draw each measure
 		for (MeasureView m : measures)
@@ -81,7 +82,11 @@ public class LineView {
 		int measureWidth = width / line.size();
 		int measureX = x;
 		for (MeasureView m : measures) {
-			m.setDimensions(measureX, staffY, measureWidth, staffHeight);
+			// Give the last MeasureView the remainder of the space
+			if (m == measures.getLast())
+				m.setDimensions(measureX, staffY, width-measureX+x, staffHeight);
+			else
+				m.setDimensions(measureX, staffY, measureWidth, staffHeight);
 			measureX += measureWidth;
 		}
 	}
