@@ -1,6 +1,7 @@
 package pipes.view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import pipes.model.TimeSignature;
@@ -33,6 +34,7 @@ public class TimeSignatureView implements MelodyElementView {
 		int middle = top + (bottom-top)/2;
 		
 		g.setColor(Color.black);
+		g.setFont(font);
 		g.drawString(model.getBeatsInMeasure()+"", x, middle);
 		g.drawString(model.getBeatUnit().denominator+"", x, bottom);
 	}
@@ -48,8 +50,10 @@ public class TimeSignatureView implements MelodyElementView {
 	public TimeSignatureView(TimeSignature sig, MeasureView enclosingMeasure) {
 		model = sig;
 		this.enclosingMeasure = enclosingMeasure;
+		font = new Font("Times New Roman", Font.PLAIN, 16);
 	}
 	
+	private Font font;
 	private int x;
 	private TimeSignature model;
 	private MeasureView enclosingMeasure;

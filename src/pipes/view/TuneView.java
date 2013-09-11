@@ -28,6 +28,8 @@ public class TuneView extends JPanel {
 		g.setColor(Color.BLACK);
 		g.drawRect(sheetLeft, sheetTop, sheetWidth, sheetHeight);
 		
+		title.draw(g);
+		
 		if (lines != null) {
 			for (LineView lv : lines)
 				lv.draw(g);
@@ -76,6 +78,7 @@ public class TuneView extends JPanel {
 	}
 	
 	public void updateMusic() {
+		title = new TitleAreaView();
 		lines = new LinkedList<LineView>();
 
 		for (Line l : tune)
@@ -94,15 +97,19 @@ public class TuneView extends JPanel {
 			sheetHeight = PAPER_SHORT_SIDE;
 		}
 		lineWidth = (int)(sheetWidth * .9);
-		
-		setSize(new Dimension(sheetWidth+50, sheetHeight+50));		
+
+		setSize(new Dimension(sheetWidth+50, sheetHeight+50));
 		setPreferredSize(new Dimension(sheetWidth+50, sheetHeight+50));
 		
 		sheetLeft = (getWidth() - sheetWidth) / 2;
 		sheetTop = (getHeight() - sheetHeight) / 2;
-
+		int lineLeft = sheetLeft + (sheetWidth-lineWidth)/2;
+		
+		title.setPosition(lineLeft, sheetTop);
+		title.setSize(lineWidth, 180);
+		
 		// Layout lines
-		int lineY = sheetTop + topLineMargin;
+		int lineY = sheetTop + title.getHeight() + 80;
 		for (LineView lv : lines) {
 			lv.setDimensions(sheetLeft + (sheetWidth-lineWidth)/2, lineY, lineWidth, 50, 30);			
 			lineY += 80;
@@ -137,12 +144,12 @@ public class TuneView extends JPanel {
 	private int sheetHeight;
 	private int sheetLeft;
 	private int sheetTop;
-	
-	private int topLineMargin = 80;
+
 	private int lineWidth;
 	
 	private Tune tune;
 	
+	private TitleAreaView title;
 	private LinkedList<LineView> lines;
 	
 	private MelodyElementView highlight;
