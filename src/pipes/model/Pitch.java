@@ -9,7 +9,8 @@ public enum Pitch {
 	E ("e"),
 	F ("f"),
 	G ("G"),
-	A ("A");
+	A ("A"),
+	Silent ("");
 
 	public static Pitch fromString(String s) {
 		switch (s) {
