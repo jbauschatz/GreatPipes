@@ -56,7 +56,7 @@ public class TuneEditController {
 	}
 
 	/**
-	 * Performs and EditAction on the Tune being edited.
+	 * Performs an EditAction on the Tune being edited.
 	 * The action is committed to the edit history and dependents are notified of the edit.
 	 */
 	public void execute(EditAction action) {
