@@ -4,7 +4,6 @@ import pipes.model.BeatDivision;
 import pipes.model.Line;
 import pipes.model.Measure;
 import pipes.model.Note;
-import pipes.model.Pitch;
 import pipes.model.Tune;
 import pipes.model.embellishment.Embellishment;
 import pipes.model.embellishment.GraceNote;
@@ -16,17 +15,18 @@ public class BasicMidiConverter implements TuneToMidiConverter {
 		
 		for (Line l : tune) {
 			for (Measure m : l) {
-				int count=0;
 				for (Note n : m) {
 					if (n.hasEmbellishment()) {
 						Embellishment e = n.getEmbellishment();
 						for (GraceNote g : e)
 							midi.appendNote(g.pitch, g.isLong ? longGraceNoteTicks : shortGraceNoteTicks);
 					}
-					count+=n.getDuration();
 					midi.appendNote(n.getPitch(), ticksPerTimeUnit*n.getDuration());
 				}
-				midi.appendNote(Pitch.Silent, (32-count) * ticksPerTimeUnit);
+				
+				// Fill the unused time in the measure with silence
+				int unusedTime = m.getTimeSignature().getMeasureDuration() - m.getDuration();
+				midi.appendRest(ticksPerTimeUnit * unusedTime);
 			}
 		}
 

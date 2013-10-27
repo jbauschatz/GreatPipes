@@ -31,6 +31,13 @@ public class MidiTune {
 
 		}
 	}
+
+	/**
+	 * Adds a duration of musical "rest", or silence, during which no melody note is played.
+	 */
+	public void appendRest(int ticks) {
+		endTime += ticks;
+	}
 	
 	public void engageDrones() {
 		try {
