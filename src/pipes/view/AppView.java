@@ -189,28 +189,36 @@ public class AppView extends JFrame implements TuneEditListener {
 		}
 		
 		// New tune
-		JTextField numLines = new JTextField("4", 2);
-		JTextField measuresPerLine = new JTextField("4", 4);
+		JTextField songName = new JTextField(NewTuneParameters.DEFAULT.getName(), 2);
+		JTextField songAuthor = new JTextField(NewTuneParameters.DEFAULT.getAuthor(), 2);
+		JTextField numLines = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getLines()), 2);
+		JTextField measuresPerLine = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getMeasuresPerLine()), 4);
 		JComboBox<TimeSignature> timeSigs = new JComboBox<TimeSignature>(TimeSignature.STANDARD_TIMES);
 		
 		JComponent[] message = new JComponent[] {
+				new JLabel("Name: "),
+				songName,
+				new JLabel("Author: "),
+				songAuthor,
 				new JLabel("Lines: "),
 				numLines,
-				new JLabel("Measures per line: "),
+				new JLabel("Measures per Line: "),
 				measuresPerLine,
-				new JLabel("Time signature"),
+				new JLabel("Time Signature: "),
 				timeSigs};
-		Object[] inputs = new Object[] {"Ok", "Cancel"};
+		Object[] inputs = new Object[] {"OK", "Cancel"};
 		
 		boolean valid = false;
 		while (!valid) {
-			if (JOptionPane.showOptionDialog(this, message, "New tune", JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION, null, inputs, inputs[0])
+			if (JOptionPane.showOptionDialog(this, message, "New tune", JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION, null, inputs, message[0])
 					== JOptionPane.OK_OPTION) {
 				try {
+					String songNameChoice = songName.getText();
+					String songAuthorChoice = songAuthor.getText();
 					int numLinesChoice = Integer.parseInt(numLines.getText());
 					int measuresPerChoice = Integer.parseInt(measuresPerLine.getText());
 					TimeSignature timeSigChoice = (TimeSignature)timeSigs.getSelectedItem();
-					controller.newTune(new NewTuneParameters(timeSigChoice, numLinesChoice, measuresPerChoice));
+					controller.newTune(new NewTuneParameters(songNameChoice, songAuthorChoice, timeSigChoice, numLinesChoice, measuresPerChoice));
 					updateTitle();
 					valid = true;
 				} catch (NumberFormatException ex) {
