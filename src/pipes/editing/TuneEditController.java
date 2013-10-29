@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import pipes.editing.actions.EditAction;
 import pipes.editing.io.TuneSerializer;
+import pipes.model.EditTuneParameters;
 import pipes.model.NewTuneParameters;
 import pipes.model.Tune;
 import pipes.model.TuneFactory;
@@ -126,6 +127,15 @@ public class TuneEditController {
 		editingFile = null;
 		isDirty = false;
 		history.clear();
+	}
+
+	/**
+	 * Edits the current tune (name, author, etc)
+	 */
+	public void editTune(EditTuneParameters params) {
+		tune.setName(params.getName());
+		tune.setAuthor(params.getAuthor());
+		view.updateMusic();
 	}
 	
 	/**

@@ -26,8 +26,10 @@ import pipes.editing.TuneEditController;
 import pipes.editing.TuneEditListener;
 import pipes.editing.actions.EditAction;
 import pipes.editing.io.TuneSerializer;
+import pipes.model.EditTuneParameters;
 import pipes.model.NewTuneParameters;
 import pipes.model.TimeSignature;
+import pipes.model.Tune;
 import pipes.view.tools.Toolbar;
 
 public class AppView extends JFrame implements TuneEditListener {
@@ -81,53 +83,61 @@ public class AppView extends JFrame implements TuneEditListener {
 	private void buildMenu() {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
-		JMenu fileMenu = new JMenu("File");
+
+        // FILE
+
+        JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic('f');
 		menuBar.add(fileMenu);
 
 		JMenuItem newItem = new JMenuItem("New");
 		fileMenu.add(newItem);
-		newItem.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		newItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				newTune();
 			}
 		});
 
 		JMenuItem openItem = new JMenuItem("Open...");
 		fileMenu.add(openItem);
-		openItem.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		openItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				open();
 			}
 		});
 
 		JMenuItem saveItem = new JMenuItem("Save");
 		fileMenu.add(saveItem);
-		saveItem.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		saveItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				save();
 			}
 		});
 		
 		JMenuItem saveAsItem = new JMenuItem("Save As...");
 		fileMenu.add(saveAsItem);
-		saveAsItem.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		saveAsItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				saveAs();
 			}
 		});
-	}
-	
-	private void save() {
+
+        // EDIT
+
+        JMenu editMenu = new JMenu("Edit");
+        editMenu.setMnemonic('e');
+        menuBar.add(editMenu);
+
+        JMenuItem editTunePropertiesItem = new JMenuItem("Tune Properties");
+        editMenu.add(editTunePropertiesItem);
+        editTunePropertiesItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                editTuneProperties();
+            }
+        });
+    }
+
+    private void save() {
 		if (controller.getIsDirty()) {
 			if (controller.getEditingFile() == null) {
 				saveAs();
@@ -237,8 +247,40 @@ public class AppView extends JFrame implements TuneEditListener {
 			}
 		}
 	}
-	
-	private void updateTitle() {
+
+    private void editTuneProperties() {
+        Tune currentTune = controller.getTune();
+
+        JTextField tuneName = new JTextField(currentTune.getName(), 2);
+        JTextField tuneAuthor = new JTextField(currentTune.getAuthor(), 2);
+
+        JComponent[] message = new JComponent[]{
+                new JLabel("Name: "),
+                tuneName,
+                new JLabel("Author: "),
+                tuneAuthor};
+        Object[] inputs = new Object[]{"OK", "Cancel"};
+
+        boolean valid = false;
+        while (!valid) {
+            if (JOptionPane.showOptionDialog(this, message, "Edit Tune Properties", JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION, null, inputs, message[0])
+                    == JOptionPane.OK_OPTION) {
+                try {
+                    String tuneNameChoice = tuneName.getText();
+                    String tuneAuthorChoice = tuneAuthor.getText();
+                    controller.editTune(new EditTuneParameters(tuneNameChoice, tuneAuthorChoice));
+                    updateTitle();
+                    valid = true;
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Please enter valid inputs.");
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private void updateTitle() {
 		if (controller.getEditingFile() != null) {
 			setTitle(WINDOW_CAPTION + " - " + controller.getEditingFile().getName() + (controller.getIsDirty() ? "*" : ""));
 		} else {
