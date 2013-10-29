@@ -5,9 +5,6 @@ import java.util.LinkedList;
 public class Tune extends LinkedList<Line> {
 	private static final long serialVersionUID = 1L;
 
-	private String name = "";
-	private String author = "";
-
 	public String getName() {
 		return name;
 	}
@@ -82,4 +79,7 @@ public class Tune extends LinkedList<Line> {
 		
 		return null;
 	}
+
+	private String name = "";
+	private String author = "";
 }

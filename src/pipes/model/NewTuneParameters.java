@@ -2,21 +2,7 @@ package pipes.model;
 
 public class NewTuneParameters {
 	
-	public static final NewTuneParameters DEFAULT = new NewTuneParameters("New Song", "Anonymous", TimeSignature.FOUR_FOUR, 4, 4);
-	
-	private String name = "";
-	private String author = "";
-	private final TimeSignature timeSignature;
-	private final int lines;
-	private final int measuresPerLine;
-
-	public NewTuneParameters(String name, String author, TimeSignature timeSignature, int lines, int measuresPerLine) {
-		this.name = name;
-		this.author = author;
-		this.timeSignature = timeSignature;
-		this.lines = lines;
-		this.measuresPerLine = measuresPerLine;
-	}
+	public static final NewTuneParameters DEFAULT = new NewTuneParameters("New Tune", "Anonymous", TimeSignature.FOUR_FOUR, 4, 4);
 
 	public String getName() {
 		return name;
@@ -45,4 +31,18 @@ public class NewTuneParameters {
 	public int getMeasuresPerLine() {
 		return measuresPerLine;
 	}
+
+	public NewTuneParameters(String name, String author, TimeSignature timeSignature, int lines, int measuresPerLine) {
+		this.name = name;
+		this.author = author;
+		this.timeSignature = timeSignature;
+		this.lines = lines;
+		this.measuresPerLine = measuresPerLine;
+	}
+
+	private String name;
+	private String author;
+	private final TimeSignature timeSignature;
+	private final int lines;
+	private final int measuresPerLine;
 }

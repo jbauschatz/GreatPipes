@@ -88,32 +88,40 @@ public class AppView extends JFrame implements TuneEditListener {
 
 		JMenuItem newItem = new JMenuItem("New");
 		fileMenu.add(newItem);
-		newItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		newItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				newTune();
 			}
 		});
 
 		JMenuItem openItem = new JMenuItem("Open...");
 		fileMenu.add(openItem);
-		openItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		openItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				open();
 			}
 		});
 
 		JMenuItem saveItem = new JMenuItem("Save");
 		fileMenu.add(saveItem);
-		saveItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		saveItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				save();
 			}
 		});
 		
 		JMenuItem saveAsItem = new JMenuItem("Save As...");
 		fileMenu.add(saveAsItem);
-		saveAsItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		saveAsItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				saveAs();
 			}
 		});
@@ -189,17 +197,17 @@ public class AppView extends JFrame implements TuneEditListener {
 		}
 		
 		// New tune
-		JTextField songName = new JTextField(NewTuneParameters.DEFAULT.getName(), 2);
-		JTextField songAuthor = new JTextField(NewTuneParameters.DEFAULT.getAuthor(), 2);
+		JTextField tuneName = new JTextField(NewTuneParameters.DEFAULT.getName(), 2);
+		JTextField tuneAuthor = new JTextField(NewTuneParameters.DEFAULT.getAuthor(), 2);
 		JTextField numLines = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getLines()), 2);
 		JTextField measuresPerLine = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getMeasuresPerLine()), 4);
 		JComboBox<TimeSignature> timeSigs = new JComboBox<TimeSignature>(TimeSignature.STANDARD_TIMES);
 		
 		JComponent[] message = new JComponent[] {
 				new JLabel("Name: "),
-				songName,
+				tuneName,
 				new JLabel("Author: "),
-				songAuthor,
+				tuneAuthor,
 				new JLabel("Lines: "),
 				numLines,
 				new JLabel("Measures per Line: "),
@@ -213,12 +221,12 @@ public class AppView extends JFrame implements TuneEditListener {
 			if (JOptionPane.showOptionDialog(this, message, "New tune", JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION, null, inputs, message[0])
 					== JOptionPane.OK_OPTION) {
 				try {
-					String songNameChoice = songName.getText();
-					String songAuthorChoice = songAuthor.getText();
+					String tuneNameChoice = tuneName.getText();
+					String tuneAuthorChoice = tuneAuthor.getText();
 					int numLinesChoice = Integer.parseInt(numLines.getText());
 					int measuresPerChoice = Integer.parseInt(measuresPerLine.getText());
 					TimeSignature timeSigChoice = (TimeSignature)timeSigs.getSelectedItem();
-					controller.newTune(new NewTuneParameters(songNameChoice, songAuthorChoice, timeSigChoice, numLinesChoice, measuresPerChoice));
+					controller.newTune(new NewTuneParameters(tuneNameChoice, tuneAuthorChoice, timeSigChoice, numLinesChoice, measuresPerChoice));
 					updateTitle();
 					valid = true;
 				} catch (NumberFormatException ex) {
