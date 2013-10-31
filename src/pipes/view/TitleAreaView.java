@@ -1,9 +1,13 @@
 package pipes.view;
 
+import pipes.model.Tune;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TitleAreaView {
 	
@@ -29,32 +33,32 @@ public class TitleAreaView {
 
 		if (subMetrics == null)
 			subMetrics = g.getFontMetrics(subFont);
-		
-		g.setFont(titleFont);
-		g.drawString(titleText, x+(width-titleMetrics.stringWidth(titleText))/2, y+(height+titleMetrics.getHeight())/2);
 
+		String tuneName = tune.getName();
+		g.setFont(titleFont);
+		g.drawString(tuneName, x+(width-titleMetrics.stringWidth(tuneName))/2, y+(height+titleMetrics.getHeight())/2);
+
+		String tuneAuthor = tune.getAuthor();
 		g.setFont(subFont);
 		g.drawString(leftText, x, y+height);
-		int rightWidth = subMetrics.stringWidth(rightText);
-		g.drawString(rightText, x+width-rightWidth, y+height);
+		int rightWidth = subMetrics.stringWidth(tuneAuthor);
+		g.drawString(tuneAuthor, x+width-rightWidth, y+height);
 	}
 	
-	public TitleAreaView() {
-		titleText = "Scotland the Brave";
-		leftText = "March";
-		rightText = "Gordon Duncan";
+	public TitleAreaView(Tune tune) {
+		this.tune = tune;
+		leftText = new SimpleDateFormat("MMMMM yyyy").format(new Date());
 		titleFont = new Font("Times New Roman", Font.BOLD, 24);
 		subFont = new Font("Times New Roman", Font.BOLD, 16);
 	}
 
+	private Tune tune;
 	private Font titleFont;
 	private Font subFont;
 	private FontMetrics titleMetrics;
 	private FontMetrics subMetrics;
-	private String titleText;
 	private String leftText;
-	private String rightText;
-	
+
 	private int height;
 	private int width;
 	private int x;

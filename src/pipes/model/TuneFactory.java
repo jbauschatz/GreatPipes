@@ -25,14 +25,17 @@ public class TuneFactory {
 	public static Tune getNewTune(NewTuneParameters parameters) {
 		Tune t = new Tune();
 		
-		for (int i = 0; i<parameters.lines; ++i) {
+		for (int i = 0; i<parameters.getLines(); ++i) {
 			Line l = new Line();
 			t.add(l);
-			for (int j = 0; j<parameters.measuresPerLine; ++j)
-				l.add(new Measure(parameters.timeSignature));
+			for (int j = 0; j<parameters.getMeasuresPerLine(); ++j)
+				l.add(new Measure(parameters.getTimeSignature()));
 		}
 		
 		t.getFirst().getFirst().setIsTimeSignatureChange(true);
+
+		t.setName(parameters.getName());
+		t.setAuthor(parameters.getAuthor());
 		
 		return t;
 	}

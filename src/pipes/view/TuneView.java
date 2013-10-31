@@ -78,7 +78,7 @@ public class TuneView extends JPanel {
 	}
 	
 	public void updateMusic() {
-		title = new TitleAreaView();
+		title = new TitleAreaView(tune);
 		lines = new LinkedList<LineView>();
 
 		for (Line l : tune)

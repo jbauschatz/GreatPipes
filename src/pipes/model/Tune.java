@@ -5,6 +5,22 @@ import java.util.LinkedList;
 public class Tune extends LinkedList<Line> {
 	private static final long serialVersionUID = 1L;
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
 	public boolean isPortraitLayout() {
 		return false;
 	}
@@ -63,4 +79,7 @@ public class Tune extends LinkedList<Line> {
 		
 		return null;
 	}
+
+	private String name = "";
+	private String author = "";
 }

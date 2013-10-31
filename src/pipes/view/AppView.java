@@ -26,8 +26,10 @@ import pipes.editing.TuneEditController;
 import pipes.editing.TuneEditListener;
 import pipes.editing.actions.EditAction;
 import pipes.editing.io.TuneSerializer;
+import pipes.model.EditTuneParameters;
 import pipes.model.NewTuneParameters;
 import pipes.model.TimeSignature;
+import pipes.model.Tune;
 import pipes.view.tools.Toolbar;
 
 public class AppView extends JFrame implements TuneEditListener {
@@ -81,8 +83,10 @@ public class AppView extends JFrame implements TuneEditListener {
 	private void buildMenu() {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
-		JMenu fileMenu = new JMenu("File");
+
+        // FILE
+
+        JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic('f');
 		menuBar.add(fileMenu);
 
@@ -117,9 +121,23 @@ public class AppView extends JFrame implements TuneEditListener {
 				saveAs();
 			}
 		});
-	}
-	
-	private void save() {
+
+        // EDIT
+
+        JMenu editMenu = new JMenu("Edit");
+        editMenu.setMnemonic('e');
+        menuBar.add(editMenu);
+
+        JMenuItem editTunePropertiesItem = new JMenuItem("Tune Properties");
+        editMenu.add(editTunePropertiesItem);
+        editTunePropertiesItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                editTuneProperties();
+            }
+        });
+    }
+
+    private void save() {
 		if (controller.getIsDirty()) {
 			if (controller.getEditingFile() == null) {
 				saveAs();
@@ -189,28 +207,36 @@ public class AppView extends JFrame implements TuneEditListener {
 		}
 		
 		// New tune
-		JTextField numLines = new JTextField("4", 2);
-		JTextField measuresPerLine = new JTextField("4", 4);
+		JTextField tuneName = new JTextField(NewTuneParameters.DEFAULT.getName(), 2);
+		JTextField tuneAuthor = new JTextField(NewTuneParameters.DEFAULT.getAuthor(), 2);
+		JTextField numLines = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getLines()), 2);
+		JTextField measuresPerLine = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getMeasuresPerLine()), 4);
 		JComboBox<TimeSignature> timeSigs = new JComboBox<TimeSignature>(TimeSignature.STANDARD_TIMES);
 		
 		JComponent[] message = new JComponent[] {
+				new JLabel("Name: "),
+				tuneName,
+				new JLabel("Author: "),
+				tuneAuthor,
 				new JLabel("Lines: "),
 				numLines,
-				new JLabel("Measures per line: "),
+				new JLabel("Measures per Line: "),
 				measuresPerLine,
-				new JLabel("Time signature"),
+				new JLabel("Time Signature: "),
 				timeSigs};
-		Object[] inputs = new Object[] {"Ok", "Cancel"};
+		Object[] inputs = new Object[] {"OK", "Cancel"};
 		
 		boolean valid = false;
 		while (!valid) {
-			if (JOptionPane.showOptionDialog(this, message, "New tune", JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION, null, inputs, inputs[0])
+			if (JOptionPane.showOptionDialog(this, message, "New tune", JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION, null, inputs, message[0])
 					== JOptionPane.OK_OPTION) {
 				try {
+					String tuneNameChoice = tuneName.getText();
+					String tuneAuthorChoice = tuneAuthor.getText();
 					int numLinesChoice = Integer.parseInt(numLines.getText());
 					int measuresPerChoice = Integer.parseInt(measuresPerLine.getText());
 					TimeSignature timeSigChoice = (TimeSignature)timeSigs.getSelectedItem();
-					controller.newTune(new NewTuneParameters(timeSigChoice, numLinesChoice, measuresPerChoice));
+					controller.newTune(new NewTuneParameters(tuneNameChoice, tuneAuthorChoice, timeSigChoice, numLinesChoice, measuresPerChoice));
 					updateTitle();
 					valid = true;
 				} catch (NumberFormatException ex) {
@@ -221,8 +247,40 @@ public class AppView extends JFrame implements TuneEditListener {
 			}
 		}
 	}
-	
-	private void updateTitle() {
+
+    private void editTuneProperties() {
+        Tune currentTune = controller.getTune();
+
+        JTextField tuneName = new JTextField(currentTune.getName(), 2);
+        JTextField tuneAuthor = new JTextField(currentTune.getAuthor(), 2);
+
+        JComponent[] message = new JComponent[]{
+                new JLabel("Name: "),
+                tuneName,
+                new JLabel("Author: "),
+                tuneAuthor};
+        Object[] inputs = new Object[]{"OK", "Cancel"};
+
+        boolean valid = false;
+        while (!valid) {
+            if (JOptionPane.showOptionDialog(this, message, "Edit Tune Properties", JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION, null, inputs, message[0])
+                    == JOptionPane.OK_OPTION) {
+                try {
+                    String tuneNameChoice = tuneName.getText();
+                    String tuneAuthorChoice = tuneAuthor.getText();
+                    controller.editTune(new EditTuneParameters(tuneNameChoice, tuneAuthorChoice));
+                    updateTitle();
+                    valid = true;
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Please enter valid inputs.");
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    private void updateTitle() {
 		if (controller.getEditingFile() != null) {
 			setTitle(WINDOW_CAPTION + " - " + controller.getEditingFile().getName() + (controller.getIsDirty() ? "*" : ""));
 		} else {
