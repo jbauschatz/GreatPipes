@@ -32,6 +32,19 @@ public class TuneBaseListener implements TuneListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterAuthor(@NotNull TuneParser.AuthorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitAuthor(@NotNull TuneParser.AuthorContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterMeasure(@NotNull TuneParser.MeasureContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -45,6 +58,19 @@ public class TuneBaseListener implements TuneListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterName(@NotNull TuneParser.NameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitName(@NotNull TuneParser.NameContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterLine(@NotNull TuneParser.LineContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -52,6 +78,19 @@ public class TuneBaseListener implements TuneListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitLine(@NotNull TuneParser.LineContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterType(@NotNull TuneParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitType(@NotNull TuneParser.TypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

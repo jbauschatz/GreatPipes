@@ -2,7 +2,14 @@ grammar Tune;
 @header {
 package pipes.editing.io;
 }
-tune    : (line LINE)* line ;
+tune :	name LINE 
+		author LINE
+		type LINE 
+		(line LINE)* line ;
+name : TEXT ;
+author : TEXT ;
+type : TEXT ;
+TEXT : '[' ('A'..'Z'|'a'..'z'|'0'..'9'|' '|','|'.')* ']' ;
 line    : measure+  ;
 measure : (TimeSignature)? WS? (melodyElement WS)* WS? '|' ;
 TimeSignature : '[' NUMBER '/' NUMBER ']' ;

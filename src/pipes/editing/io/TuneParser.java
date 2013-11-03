@@ -17,17 +17,18 @@ public class TuneParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__2=1, T__1=2, T__0=3, TimeSignature=4, NOTENAME=5, NUMBER=6, EMBELLISHMENT=7, 
-		WS=8, LINE=9;
+		T__2=1, T__1=2, T__0=3, TEXT=4, TimeSignature=5, NOTENAME=6, NUMBER=7, 
+		EMBELLISHMENT=8, WS=9, LINE=10;
 	public static final String[] tokenNames = {
-		"<INVALID>", "'.'", "'-'", "'|'", "TimeSignature", "NOTENAME", "NUMBER", 
-		"EMBELLISHMENT", "WS", "LINE"
+		"<INVALID>", "'.'", "'-'", "'|'", "TEXT", "TimeSignature", "NOTENAME", 
+		"NUMBER", "EMBELLISHMENT", "WS", "LINE"
 	};
 	public static final int
-		RULE_tune = 0, RULE_line = 1, RULE_measure = 2, RULE_melodyElement = 3, 
-		RULE_note = 4;
+		RULE_tune = 0, RULE_name = 1, RULE_author = 2, RULE_type = 3, RULE_line = 4, 
+		RULE_measure = 5, RULE_melodyElement = 6, RULE_note = 7;
 	public static final String[] ruleNames = {
-		"tune", "line", "measure", "melodyElement", "note"
+		"tune", "name", "author", "type", "line", "measure", "melodyElement", 
+		"note"
 	};
 
 	@Override
@@ -53,10 +54,19 @@ public class TuneParser extends Parser {
 		public TerminalNode LINE(int i) {
 			return getToken(TuneParser.LINE, i);
 		}
+		public AuthorContext author() {
+			return getRuleContext(AuthorContext.class,0);
+		}
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
+		}
 		public List<LineContext> line() {
 			return getRuleContexts(LineContext.class);
 		}
 		public List<TerminalNode> LINE() { return getTokens(TuneParser.LINE); }
+		public NameContext name() {
+			return getRuleContext(NameContext.class,0);
+		}
 		public TuneContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -78,23 +88,137 @@ public class TuneParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(15);
+			setState(16); name();
+			setState(17); match(LINE);
+			setState(18); author();
+			setState(19); match(LINE);
+			setState(20); type();
+			setState(21); match(LINE);
+			setState(27);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 			while ( _alt!=2 && _alt!=-1 ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(10); line();
-					setState(11); match(LINE);
+					setState(22); line();
+					setState(23); match(LINE);
 					}
 					} 
 				}
-				setState(17);
+				setState(29);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 			}
-			setState(18); line();
+			setState(30); line();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class NameContext extends ParserRuleContext {
+		public TerminalNode TEXT() { return getToken(TuneParser.TEXT, 0); }
+		public NameContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_name; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TuneListener ) ((TuneListener)listener).enterName(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TuneListener ) ((TuneListener)listener).exitName(this);
+		}
+	}
+
+	public final NameContext name() throws RecognitionException {
+		NameContext _localctx = new NameContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_name);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(32); match(TEXT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class AuthorContext extends ParserRuleContext {
+		public TerminalNode TEXT() { return getToken(TuneParser.TEXT, 0); }
+		public AuthorContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_author; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TuneListener ) ((TuneListener)listener).enterAuthor(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TuneListener ) ((TuneListener)listener).exitAuthor(this);
+		}
+	}
+
+	public final AuthorContext author() throws RecognitionException {
+		AuthorContext _localctx = new AuthorContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_author);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(34); match(TEXT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class TypeContext extends ParserRuleContext {
+		public TerminalNode TEXT() { return getToken(TuneParser.TEXT, 0); }
+		public TypeContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_type; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TuneListener ) ((TuneListener)listener).enterType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TuneListener ) ((TuneListener)listener).exitType(this);
+		}
+	}
+
+	public final TypeContext type() throws RecognitionException {
+		TypeContext _localctx = new TypeContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_type);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(36); match(TEXT);
 			}
 		}
 		catch (RecognitionException re) {
@@ -131,21 +255,21 @@ public class TuneParser extends Parser {
 
 	public final LineContext line() throws RecognitionException {
 		LineContext _localctx = new LineContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_line);
+		enterRule(_localctx, 8, RULE_line);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(21); 
+			setState(39); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(20); measure();
+				setState(38); measure();
 				}
 				}
-				setState(23); 
+				setState(41); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << 3) | (1L << TimeSignature) | (1L << NOTENAME) | (1L << EMBELLISHMENT) | (1L << WS))) != 0) );
@@ -190,50 +314,50 @@ public class TuneParser extends Parser {
 
 	public final MeasureContext measure() throws RecognitionException {
 		MeasureContext _localctx = new MeasureContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_measure);
+		enterRule(_localctx, 10, RULE_measure);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(26);
+			setState(44);
 			_la = _input.LA(1);
 			if (_la==TimeSignature) {
 				{
-				setState(25); match(TimeSignature);
+				setState(43); match(TimeSignature);
 				}
 			}
 
-			setState(29);
+			setState(47);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				{
-				setState(28); match(WS);
+				setState(46); match(WS);
 				}
 				break;
 			}
-			setState(36);
+			setState(54);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==NOTENAME || _la==EMBELLISHMENT) {
 				{
 				{
-				setState(31); melodyElement();
-				setState(32); match(WS);
+				setState(49); melodyElement();
+				setState(50); match(WS);
 				}
 				}
-				setState(38);
+				setState(56);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(40);
+			setState(58);
 			_la = _input.LA(1);
 			if (_la==WS) {
 				{
-				setState(39); match(WS);
+				setState(57); match(WS);
 				}
 			}
 
-			setState(42); match(3);
+			setState(60); match(3);
 			}
 		}
 		catch (RecognitionException re) {
@@ -268,20 +392,20 @@ public class TuneParser extends Parser {
 
 	public final MelodyElementContext melodyElement() throws RecognitionException {
 		MelodyElementContext _localctx = new MelodyElementContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_melodyElement);
+		enterRule(_localctx, 12, RULE_melodyElement);
 		try {
-			setState(46);
+			setState(64);
 			switch (_input.LA(1)) {
 			case EMBELLISHMENT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(44); match(EMBELLISHMENT);
+				setState(62); match(EMBELLISHMENT);
 				}
 				break;
 			case NOTENAME:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(45); note();
+				setState(63); note();
 				}
 				break;
 			default:
@@ -318,24 +442,24 @@ public class TuneParser extends Parser {
 
 	public final NoteContext note() throws RecognitionException {
 		NoteContext _localctx = new NoteContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_note);
+		enterRule(_localctx, 14, RULE_note);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(48); match(NOTENAME);
-			setState(49); match(2);
-			setState(50); match(NUMBER);
-			setState(54);
+			setState(66); match(NOTENAME);
+			setState(67); match(2);
+			setState(68); match(NUMBER);
+			setState(72);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==1) {
 				{
 				{
-				setState(51); match(1);
+				setState(69); match(1);
 				}
 				}
-				setState(56);
+				setState(74);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -353,22 +477,25 @@ public class TuneParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\13<\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2\7\2\20\n\2\f\2\16\2\23\13\2\3\2"+
-		"\3\2\3\3\6\3\30\n\3\r\3\16\3\31\3\4\5\4\35\n\4\3\4\5\4 \n\4\3\4\3\4\3"+
-		"\4\7\4%\n\4\f\4\16\4(\13\4\3\4\5\4+\n\4\3\4\3\4\3\5\3\5\5\5\61\n\5\3\6"+
-		"\3\6\3\6\3\6\7\6\67\n\6\f\6\16\6:\13\6\3\6\2\7\2\4\6\b\n\2\2>\2\21\3\2"+
-		"\2\2\4\27\3\2\2\2\6\34\3\2\2\2\b\60\3\2\2\2\n\62\3\2\2\2\f\r\5\4\3\2\r"+
-		"\16\7\13\2\2\16\20\3\2\2\2\17\f\3\2\2\2\20\23\3\2\2\2\21\17\3\2\2\2\21"+
-		"\22\3\2\2\2\22\24\3\2\2\2\23\21\3\2\2\2\24\25\5\4\3\2\25\3\3\2\2\2\26"+
-		"\30\5\6\4\2\27\26\3\2\2\2\30\31\3\2\2\2\31\27\3\2\2\2\31\32\3\2\2\2\32"+
-		"\5\3\2\2\2\33\35\7\6\2\2\34\33\3\2\2\2\34\35\3\2\2\2\35\37\3\2\2\2\36"+
-		" \7\n\2\2\37\36\3\2\2\2\37 \3\2\2\2 &\3\2\2\2!\"\5\b\5\2\"#\7\n\2\2#%"+
-		"\3\2\2\2$!\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\'*\3\2\2\2(&\3\2\2\2"+
-		")+\7\n\2\2*)\3\2\2\2*+\3\2\2\2+,\3\2\2\2,-\7\5\2\2-\7\3\2\2\2.\61\7\t"+
-		"\2\2/\61\5\n\6\2\60.\3\2\2\2\60/\3\2\2\2\61\t\3\2\2\2\62\63\7\7\2\2\63"+
-		"\64\7\4\2\2\648\7\b\2\2\65\67\7\3\2\2\66\65\3\2\2\2\67:\3\2\2\28\66\3"+
-		"\2\2\289\3\2\2\29\13\3\2\2\2:8\3\2\2\2\n\21\31\34\37&*\608";
+		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\fN\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\3\2\3\2\3\2"+
+		"\3\2\3\2\3\2\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\2\3\2\3\3\3\3\3\4\3\4\3"+
+		"\5\3\5\3\6\6\6*\n\6\r\6\16\6+\3\7\5\7/\n\7\3\7\5\7\62\n\7\3\7\3\7\3\7"+
+		"\7\7\67\n\7\f\7\16\7:\13\7\3\7\5\7=\n\7\3\7\3\7\3\b\3\b\5\bC\n\b\3\t\3"+
+		"\t\3\t\3\t\7\tI\n\t\f\t\16\tL\13\t\3\t\2\n\2\4\6\b\n\f\16\20\2\2M\2\22"+
+		"\3\2\2\2\4\"\3\2\2\2\6$\3\2\2\2\b&\3\2\2\2\n)\3\2\2\2\f.\3\2\2\2\16B\3"+
+		"\2\2\2\20D\3\2\2\2\22\23\5\4\3\2\23\24\7\f\2\2\24\25\5\6\4\2\25\26\7\f"+
+		"\2\2\26\27\5\b\5\2\27\35\7\f\2\2\30\31\5\n\6\2\31\32\7\f\2\2\32\34\3\2"+
+		"\2\2\33\30\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36 \3\2\2"+
+		"\2\37\35\3\2\2\2 !\5\n\6\2!\3\3\2\2\2\"#\7\6\2\2#\5\3\2\2\2$%\7\6\2\2"+
+		"%\7\3\2\2\2&\'\7\6\2\2\'\t\3\2\2\2(*\5\f\7\2)(\3\2\2\2*+\3\2\2\2+)\3\2"+
+		"\2\2+,\3\2\2\2,\13\3\2\2\2-/\7\7\2\2.-\3\2\2\2./\3\2\2\2/\61\3\2\2\2\60"+
+		"\62\7\13\2\2\61\60\3\2\2\2\61\62\3\2\2\2\628\3\2\2\2\63\64\5\16\b\2\64"+
+		"\65\7\13\2\2\65\67\3\2\2\2\66\63\3\2\2\2\67:\3\2\2\28\66\3\2\2\289\3\2"+
+		"\2\29<\3\2\2\2:8\3\2\2\2;=\7\13\2\2<;\3\2\2\2<=\3\2\2\2=>\3\2\2\2>?\7"+
+		"\5\2\2?\r\3\2\2\2@C\7\n\2\2AC\5\20\t\2B@\3\2\2\2BA\3\2\2\2C\17\3\2\2\2"+
+		"DE\7\b\2\2EF\7\4\2\2FJ\7\t\2\2GI\7\3\2\2HG\3\2\2\2IL\3\2\2\2JH\3\2\2\2"+
+		"JK\3\2\2\2K\21\3\2\2\2LJ\3\2\2\2\n\35+.\618<BJ";
 	public static final ATN _ATN =
 		ATNSimulator.deserialize(_serializedATN.toCharArray());
 	static {

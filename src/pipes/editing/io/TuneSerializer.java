@@ -35,6 +35,12 @@ public class TuneSerializer {
 			savedFile = new File(f.getAbsolutePath() + "." + FILE_EXTENSION);
 		
 		try (FileWriter w = new FileWriter(savedFile)) {
+			// Name, Author, Type
+			w.write('[' + t.getName() + "]\n");
+			w.write('[' + t.getAuthor() + "]\n");
+			w.write("[]\n");
+			
+			// Lines of music
 			boolean firstLine = true;
 			for (Line l : t) {
 				if (!firstLine)
@@ -76,6 +82,9 @@ public class TuneSerializer {
 
 		Tune tune = new Tune();
 		TuneContext tuneContext = parser.tune();
+		tune.setName(stripFirstLast(tuneContext.getChild(0).getText()));
+		tune.setAuthor(stripFirstLast(tuneContext.getChild(2).getText()));
+		
 		TimeSignature currentTime = null;
 		EmbellishmentFamily family = null;
 		for (LineContext l : tuneContext.line()) {
@@ -108,5 +117,9 @@ public class TuneSerializer {
 		}
 		
 		return tune;
+	}
+	
+	private static String stripFirstLast(String str) {
+		return str.substring(1, str.length()-1);
 	}
 }

@@ -22,6 +22,17 @@ public interface TuneListener extends ParseTreeListener {
 	void exitMelodyElement(@NotNull TuneParser.MelodyElementContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link TuneParser#author}.
+	 * @param ctx the parse tree
+	 */
+	void enterAuthor(@NotNull TuneParser.AuthorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TuneParser#author}.
+	 * @param ctx the parse tree
+	 */
+	void exitAuthor(@NotNull TuneParser.AuthorContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link TuneParser#measure}.
 	 * @param ctx the parse tree
 	 */
@@ -33,6 +44,17 @@ public interface TuneListener extends ParseTreeListener {
 	void exitMeasure(@NotNull TuneParser.MeasureContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link TuneParser#name}.
+	 * @param ctx the parse tree
+	 */
+	void enterName(@NotNull TuneParser.NameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TuneParser#name}.
+	 * @param ctx the parse tree
+	 */
+	void exitName(@NotNull TuneParser.NameContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link TuneParser#line}.
 	 * @param ctx the parse tree
 	 */
@@ -42,6 +64,17 @@ public interface TuneListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLine(@NotNull TuneParser.LineContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link TuneParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterType(@NotNull TuneParser.TypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TuneParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitType(@NotNull TuneParser.TypeContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link TuneParser#tune}.
