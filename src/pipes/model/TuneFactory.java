@@ -36,6 +36,7 @@ public class TuneFactory {
 
 		t.setName(parameters.getName());
 		t.setAuthor(parameters.getAuthor());
+		t.setType(parameters.getType());
 		
 		return t;
 	}

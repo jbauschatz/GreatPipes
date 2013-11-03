@@ -135,6 +135,7 @@ public class TuneEditController {
 	public void editTune(EditTuneParameters params) {
 		tune.setName(params.getName());
 		tune.setAuthor(params.getAuthor());
+		tune.setType(params.getType());
 		view.updateMusic();
 	}
 	

@@ -38,7 +38,7 @@ public class TuneSerializer {
 			// Name, Author, Type
 			w.write('[' + t.getName() + "]\n");
 			w.write('[' + t.getAuthor() + "]\n");
-			w.write("[]\n");
+			w.write('[' + t.getType() + "]\n");
 			
 			// Lines of music
 			boolean firstLine = true;

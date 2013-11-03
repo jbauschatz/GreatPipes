@@ -209,6 +209,7 @@ public class AppView extends JFrame implements TuneEditListener {
 		// New tune
 		JTextField tuneName = new JTextField(NewTuneParameters.DEFAULT.getName(), 2);
 		JTextField tuneAuthor = new JTextField(NewTuneParameters.DEFAULT.getAuthor(), 2);
+		JTextField tuneType = new JTextField(NewTuneParameters.DEFAULT.getType(), 2);
 		JTextField numLines = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getLines()), 2);
 		JTextField measuresPerLine = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getMeasuresPerLine()), 4);
 		JComboBox<TimeSignature> timeSigs = new JComboBox<TimeSignature>(TimeSignature.STANDARD_TIMES);
@@ -218,6 +219,8 @@ public class AppView extends JFrame implements TuneEditListener {
 				tuneName,
 				new JLabel("Author: "),
 				tuneAuthor,
+				new JLabel("Type: "),
+				tuneType,
 				new JLabel("Lines: "),
 				numLines,
 				new JLabel("Measures per Line: "),
@@ -233,10 +236,11 @@ public class AppView extends JFrame implements TuneEditListener {
 				try {
 					String tuneNameChoice = tuneName.getText();
 					String tuneAuthorChoice = tuneAuthor.getText();
+					String tuneTypeChoice = tuneType.getText();
 					int numLinesChoice = Integer.parseInt(numLines.getText());
 					int measuresPerChoice = Integer.parseInt(measuresPerLine.getText());
 					TimeSignature timeSigChoice = (TimeSignature)timeSigs.getSelectedItem();
-					controller.newTune(new NewTuneParameters(tuneNameChoice, tuneAuthorChoice, timeSigChoice, numLinesChoice, measuresPerChoice));
+					controller.newTune(new NewTuneParameters(tuneNameChoice, tuneAuthorChoice, tuneTypeChoice, timeSigChoice, numLinesChoice, measuresPerChoice));
 					updateTitle();
 					valid = true;
 				} catch (NumberFormatException ex) {
@@ -253,12 +257,15 @@ public class AppView extends JFrame implements TuneEditListener {
 
         JTextField tuneName = new JTextField(currentTune.getName(), 2);
         JTextField tuneAuthor = new JTextField(currentTune.getAuthor(), 2);
+        JTextField tuneType = new JTextField(currentTune.getType(), 2);
 
         JComponent[] message = new JComponent[]{
                 new JLabel("Name: "),
                 tuneName,
                 new JLabel("Author: "),
-                tuneAuthor};
+                tuneAuthor,
+                new JLabel("Type: "),
+                tuneType};
         Object[] inputs = new Object[]{"OK", "Cancel"};
 
         boolean valid = false;
@@ -268,7 +275,8 @@ public class AppView extends JFrame implements TuneEditListener {
                 try {
                     String tuneNameChoice = tuneName.getText();
                     String tuneAuthorChoice = tuneAuthor.getText();
-                    controller.editTune(new EditTuneParameters(tuneNameChoice, tuneAuthorChoice));
+                    String tuneTypeChoice = tuneType.getText();
+                    controller.editTune(new EditTuneParameters(tuneNameChoice, tuneAuthorChoice, tuneTypeChoice));
                     updateTitle();
                     valid = true;
                 } catch (NumberFormatException ex) {

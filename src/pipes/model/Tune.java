@@ -20,6 +20,14 @@ public class Tune extends LinkedList<Line> {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+	
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public boolean isPortraitLayout() {
 		return false;
@@ -79,7 +87,14 @@ public class Tune extends LinkedList<Line> {
 		
 		return null;
 	}
+	
+	public Tune() {
+		name = "";
+		author = "";
+		type = "";
+	}
 
-	private String name = "";
-	private String author = "";
+	private String name;
+	private String author;
+	private String type;
 }

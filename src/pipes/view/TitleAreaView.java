@@ -1,13 +1,11 @@
 package pipes.view;
 
-import pipes.model.Tune;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
+import pipes.model.Tune;
 
 public class TitleAreaView {
 	
@@ -34,20 +32,23 @@ public class TitleAreaView {
 		if (subMetrics == null)
 			subMetrics = g.getFontMetrics(subFont);
 
+		// Draw the title, centered in large text
 		String tuneName = tune.getName();
 		g.setFont(titleFont);
 		g.drawString(tuneName, x+(width-titleMetrics.stringWidth(tuneName))/2, y+(height+titleMetrics.getHeight())/2);
 
-		String tuneAuthor = tune.getAuthor();
+		// Align the tune author on the right side
 		g.setFont(subFont);
-		g.drawString(leftText, x, y+height);
+		String tuneAuthor = tune.getAuthor();
 		int rightWidth = subMetrics.stringWidth(tuneAuthor);
 		g.drawString(tuneAuthor, x+width-rightWidth, y+height);
+		
+		// Align the tune type on the left side
+		g.drawString(tune.getType(), x, y+height);
 	}
 	
 	public TitleAreaView(Tune tune) {
 		this.tune = tune;
-		leftText = new SimpleDateFormat("MMMMM yyyy").format(new Date());
 		titleFont = new Font("Times New Roman", Font.BOLD, 24);
 		subFont = new Font("Times New Roman", Font.BOLD, 16);
 	}
@@ -57,7 +58,6 @@ public class TitleAreaView {
 	private Font subFont;
 	private FontMetrics titleMetrics;
 	private FontMetrics subMetrics;
-	private String leftText;
 
 	private int height;
 	private int width;
