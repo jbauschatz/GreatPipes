@@ -40,6 +40,10 @@ public class NoteView implements MelodyElementView {
 		return y;
 	}
 	
+	public int getNoteWidth() {
+		return headWidth;
+	}
+	
 	public Note getNote() {
 		return note;
 	}

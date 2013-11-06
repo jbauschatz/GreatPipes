@@ -3,35 +3,28 @@ package pipes.editing.actions;
 import pipes.model.Measure;
 import pipes.model.Note;
 
-public class DeleteNoteAction implements EditAction {
+public class DeleteNoteAction extends ContextSensitiveEdit {
 
 	public void execute() {
 		enclosingMeasure.remove(index);
 
-		if (legalizeNoteAfter != null)
-			legalizeNoteAfter.execute();
+		super.execute();
 	}
 
 	public void undo() {
 		enclosingMeasure.addNote(index, targetNote);
 
-		if (legalizeNoteAfter != null)
-			legalizeNoteAfter.undo();
+		super.undo();
 	}
 
 	public DeleteNoteAction(Note toRemove, Measure enclosingMeasure) {
+		super(toRemove.getTune().getNoteBefore(toRemove), toRemove.getTune().getNoteAfter(toRemove));
 		this.enclosingMeasure = enclosingMeasure;
 		targetNote = toRemove;
 		index = enclosingMeasure.indexOf(targetNote);
-
-		Note noteAfter = toRemove.getTune().getNoteAfter(toRemove);
-		if (noteAfter != null)
-			legalizeNoteAfter = new LegalizeEmbellishmentAction(noteAfter);
 	}
 
 	private Measure enclosingMeasure;
 	private Note targetNote;
 	private int index;
-
-	private LegalizeEmbellishmentAction legalizeNoteAfter;
 }

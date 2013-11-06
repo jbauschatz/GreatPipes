@@ -10,7 +10,7 @@ import pipes.model.Pitch;
 
 public class LineView {
 	public MeasureView getMeasure(int x, int y) {
-		for (MeasureView m : measures) {
+		for (MeasureView m : measureViews) {
 			if (m.contains(x, y))
 				return m;
 		}
@@ -58,14 +58,34 @@ public class LineView {
 		g.drawLine(x, staffY+staffHeight, x+width, staffY+staffHeight);
 
 		// Draw each measure
-		for (MeasureView m : measures)
+		for (MeasureView m : measureViews)
 			m.draw(g);
+		
+		// Draw ties
+		for (TieView tie : ties)
+			tie.draw(g);
 	}
 	
 	public void updateMusic() {
-		measures = new LinkedList<MeasureView>();
+		measureViews = new LinkedList<MeasureView>();
 		for (Measure m : line)
-			measures.add(new MeasureView(m, this));
+			measureViews.add(new MeasureView(m, this));
+		
+		ties = new LinkedList<TieView>();
+		for (MeasureView measureView : measureViews) {
+			Measure measure = measureView.getMeasure();
+			if (!measure.isEmpty() && measure.getLast().getIsTiedForward()) {
+				if (measure != line.getLast()) {
+					NoteView last = measureView.getView(measure.getLast());
+					
+					MeasureView nextMeasureView = measureViews.get(measureViews.indexOf(measureView)+1);
+					NoteView first = nextMeasureView.getView(nextMeasureView.getMeasure().getFirst());
+					ties.add(new TieView(measureView, last, first));
+				} else {
+					// TODO - Ties across lines
+				}
+			}
+		}
 	}
 	
 	public void setDimensions(int x, int y, int width, int height, int staffHeight) {
@@ -81,9 +101,9 @@ public class LineView {
 		// Size and place each measure
 		int measureWidth = width / line.size();
 		int measureX = x;
-		for (MeasureView m : measures) {
+		for (MeasureView m : measureViews) {
 			// Give the last MeasureView the remainder of the space
-			if (m == measures.getLast())
+			if (m == measureViews.getLast())
 				m.setDimensions(measureX, staffY, width-measureX+x, staffHeight);
 			else
 				m.setDimensions(measureX, staffY, measureWidth, staffHeight);
@@ -102,7 +122,8 @@ public class LineView {
 	}
 	
 	private Line line;
-	private LinkedList<MeasureView> measures;
+	private LinkedList<MeasureView> measureViews;
+	private LinkedList<TieView> ties;
 	
 	private int x;
 	private int y;

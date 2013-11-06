@@ -27,6 +27,20 @@ public class Note implements MelodyElement {
 	public String toString() {
 		return pitch + "-" + beatDivision.denominator;
 	}
+
+	/**
+	 * Whether this Note is tied to the following Note
+	 */
+	public boolean getIsTiedForward() {
+		return isTied;
+	}
+
+	/**
+	 * Sets whether this Note is tied to the following Note
+	 */
+	public void setIsTiedForward(boolean tied) {
+		isTied = tied;
+	}
 	
 	public int getNumDots() {
 		return numDots;
@@ -112,4 +126,5 @@ public class Note implements MelodyElement {
 	private EmbellishmentFamily embellishmentFamily;
 	private Pitch pitch;
 	private int numDots;
+	private boolean isTied;
 }

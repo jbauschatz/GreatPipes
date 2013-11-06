@@ -64,6 +64,10 @@ public class Toolbar extends JPanel implements TuneEditListener {
 		JToggleButton dotButton = new ToolButton(new ToggleDotTool(view, controller), "toggle_dot_icon");
 		add(dotButton);
 		toolGroup.add(dotButton);
+		
+		JToggleButton tieButton = new ToolButton(new ToggleTieTool(view, controller), "toggle_tie_icon");
+		add(tieButton);
+		toolGroup.add(tieButton);
 
 		JToggleButton addThirty = new ToolButton(new AddNoteTool(BeatDivision.THIRTY_SECOND, view, controller), "thirty_note_icon");
 		add(addThirty);

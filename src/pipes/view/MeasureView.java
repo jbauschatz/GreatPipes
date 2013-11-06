@@ -24,6 +24,10 @@ public class MeasureView {
 		
 		return null;
 	}
+	
+	public NoteView getView(Note n) {
+		return (NoteView)elementViews.get(n);
+	}
 
 	public Note getNoteToLeft(int x) {
 		if (measure.isEmpty())
@@ -65,6 +69,9 @@ public class MeasureView {
 
 		for (StickAndBeamDrawer beam : beams)
 			beam.draw(g);
+		
+		for (TieView tie : ties)
+			tie.draw(g);
 	}
 	
 	public void setDimensions(int x, int y, int width, int height) {
@@ -161,6 +168,22 @@ public class MeasureView {
 			beams.add(new StickAndBeamDrawer(groupViews, this));
 		}
 		
+		// Create ties
+		ties = new LinkedList<TieView>();
+		Note tied = null;
+		for (Note n : measure) {
+			if (n.getIsTiedForward()) {
+				if (tied != null)
+					ties.add(new TieView(this, (NoteView)elementViews.get(tied), (NoteView)elementViews.get(n)));
+				tied = n;
+			} else if (tied != null) {
+				ties.add(new TieView(this, (NoteView)elementViews.get(tied), (NoteView)elementViews.get(n)));
+				tied = null;
+			} else {
+				tied = null;
+			}
+		}
+		
 		// Add a time signature view
 		if (measure.isTimeSignatureChange())
 			elementViews.put(measure.getTimeSignature(), 
@@ -177,4 +200,5 @@ public class MeasureView {
 
 	private HashMap<MelodyElement, MelodyElementView> elementViews;
 	private LinkedList<StickAndBeamDrawer> beams;
+	private LinkedList<TieView> ties;
 }

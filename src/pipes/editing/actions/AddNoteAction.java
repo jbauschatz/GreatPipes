@@ -3,7 +3,7 @@ package pipes.editing.actions;
 import pipes.model.Measure;
 import pipes.model.Note;
 
-public class AddNoteAction implements EditAction {
+public class AddNoteAction extends ContextSensitiveEdit {
 
 	public boolean isLegal() {
 		return measure.getDuration() + addThis.getDuration() <= measure.getTimeSignature().getMeasureDuration();
@@ -11,14 +11,14 @@ public class AddNoteAction implements EditAction {
 	
 	public void execute() {
 		measure.insertAfter(addThis, afterThis);
-		if (legalizeNextNote != null)
-			legalizeNextNote.execute();
+
+		super.execute();
 	}
 
 	public void undo() {
 		measure.remove(addThis);
-		if (legalizeNextNote != null)
-			legalizeNextNote.undo();
+
+		super.undo();
 	}
 
 	public Note getNoteAdded() {
@@ -26,18 +26,13 @@ public class AddNoteAction implements EditAction {
 	}
 	
 	public AddNoteAction(Note addThis, Note afterThis, Measure measure) {
+		super(afterThis, addThis.getTune().getNoteAfter(afterThis));
 		this.addThis = addThis;
 		this.afterThis = afterThis;
 		this.measure = measure;
-
-		Note noteAfter = addThis.getTune().getNoteAfter(afterThis);
-		if (noteAfter != null)
-			legalizeNextNote = new LegalizeEmbellishmentAction(noteAfter);
 	}
 
 	private Note addThis;
 	private Note afterThis;
 	private Measure measure;
-
-	private LegalizeEmbellishmentAction legalizeNextNote;
 }

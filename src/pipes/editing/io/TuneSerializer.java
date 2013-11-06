@@ -64,6 +64,9 @@ public class TuneSerializer {
 						w.write(n.getPitch().shortName+"-"+n.getBeatDivision().denominator);
 						for (int i = 0; i<n.getNumDots(); ++i)
 							w.write(".");
+						
+						if (n.getIsTiedForward())
+							w.write(" -");
 					}
 					
 					w.write(" |");
@@ -87,6 +90,7 @@ public class TuneSerializer {
 		
 		TimeSignature currentTime = null;
 		EmbellishmentFamily family = null;
+		Note lastNoteSeen = null;
 		for (LineContext l : tuneContext.line()) {
 			Line tuneLine = new Line();
 			tune.add(tuneLine);
@@ -103,12 +107,14 @@ public class TuneSerializer {
 				for (MelodyElementContext me : m.melodyElement()) {
 					if (me.EMBELLISHMENT() != null) {
 						family = EmbellishmentFamily.getByName(me.EMBELLISHMENT().getText());
+					} else if (me.TIE() != null) {
+						lastNoteSeen.setIsTiedForward(true);						
 					} else if (me.note() != null) {
-						Note n = Note.fromString(tune, me.note().getText());
-						tuneMeasure.addNote(n);
+						lastNoteSeen = Note.fromString(tune, me.note().getText());
+						tuneMeasure.addNote(lastNoteSeen);
 						
 						if (family != null)
-							n.setEmbellishmentFamily(family);
+							lastNoteSeen.setEmbellishmentFamily(family);
 						
 						family = null;
 					}

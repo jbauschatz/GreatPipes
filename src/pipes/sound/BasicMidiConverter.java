@@ -4,6 +4,7 @@ import pipes.model.BeatDivision;
 import pipes.model.Line;
 import pipes.model.Measure;
 import pipes.model.Note;
+import pipes.model.Pitch;
 import pipes.model.Tune;
 import pipes.model.embellishment.Embellishment;
 import pipes.model.embellishment.GraceNote;
@@ -13,6 +14,10 @@ public class BasicMidiConverter implements TuneToMidiConverter {
 	public MidiTune convert(Tune tune) {
 		MidiTune midi = new MidiTune(ticksPerQuarter);
 		
+		boolean isBuildingTiedRun = false;
+		Pitch tiedPitch = null;
+		int tiedTime = 0;
+		
 		for (Line l : tune) {
 			for (Measure m : l) {
 				for (Note n : m) {
@@ -21,7 +26,22 @@ public class BasicMidiConverter implements TuneToMidiConverter {
 						for (GraceNote g : e)
 							midi.appendNote(g.pitch, g.isLong ? longGraceNoteTicks : shortGraceNoteTicks);
 					}
-					midi.appendNote(n.getPitch(), ticksPerTimeUnit*n.getDuration());
+					int noteTime = ticksPerTimeUnit*n.getDuration();
+					if (n.getIsTiedForward()) {
+						tiedPitch = n.getPitch();
+						tiedTime += noteTime;
+						isBuildingTiedRun = true;
+					} else {
+						if (isBuildingTiedRun) {
+							// This note is the end of a tied run
+							midi.appendNote(tiedPitch, tiedTime + noteTime);
+						} else {
+							// There is no tie involved, just play the note
+							midi.appendNote(n.getPitch(), noteTime);
+						}
+						isBuildingTiedRun = false;
+						tiedTime = 0;
+					}
 				}
 				
 				// Fill the unused time in the measure with silence

@@ -17,11 +17,11 @@ public class TuneParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__2=1, T__1=2, T__0=3, TEXT=4, TimeSignature=5, NOTENAME=6, NUMBER=7, 
+		T__1=1, T__0=2, TEXT=3, TimeSignature=4, NOTENAME=5, NUMBER=6, TIE=7, 
 		EMBELLISHMENT=8, WS=9, LINE=10;
 	public static final String[] tokenNames = {
-		"<INVALID>", "'.'", "'-'", "'|'", "TEXT", "TimeSignature", "NOTENAME", 
-		"NUMBER", "EMBELLISHMENT", "WS", "LINE"
+		"<INVALID>", "'.'", "'|'", "TEXT", "TimeSignature", "NOTENAME", "NUMBER", 
+		"'-'", "EMBELLISHMENT", "WS", "LINE"
 	};
 	public static final int
 		RULE_tune = 0, RULE_name = 1, RULE_author = 2, RULE_type = 3, RULE_line = 4, 
@@ -272,7 +272,7 @@ public class TuneParser extends Parser {
 				setState(41); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << 3) | (1L << TimeSignature) | (1L << NOTENAME) | (1L << EMBELLISHMENT) | (1L << WS))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << 2) | (1L << TimeSignature) | (1L << NOTENAME) | (1L << TIE) | (1L << EMBELLISHMENT) | (1L << WS))) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -338,7 +338,7 @@ public class TuneParser extends Parser {
 			setState(54);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==NOTENAME || _la==EMBELLISHMENT) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NOTENAME) | (1L << TIE) | (1L << EMBELLISHMENT))) != 0)) {
 				{
 				{
 				setState(49); melodyElement();
@@ -357,7 +357,7 @@ public class TuneParser extends Parser {
 				}
 			}
 
-			setState(60); match(3);
+			setState(60); match(2);
 			}
 		}
 		catch (RecognitionException re) {
@@ -375,6 +375,7 @@ public class TuneParser extends Parser {
 		public NoteContext note() {
 			return getRuleContext(NoteContext.class,0);
 		}
+		public TerminalNode TIE() { return getToken(TuneParser.TIE, 0); }
 		public TerminalNode EMBELLISHMENT() { return getToken(TuneParser.EMBELLISHMENT, 0); }
 		public MelodyElementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -394,7 +395,7 @@ public class TuneParser extends Parser {
 		MelodyElementContext _localctx = new MelodyElementContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_melodyElement);
 		try {
-			setState(64);
+			setState(65);
 			switch (_input.LA(1)) {
 			case EMBELLISHMENT:
 				enterOuterAlt(_localctx, 1);
@@ -406,6 +407,12 @@ public class TuneParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(63); note();
+				}
+				break;
+			case TIE:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(64); match(TIE);
 				}
 				break;
 			default:
@@ -447,19 +454,19 @@ public class TuneParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(66); match(NOTENAME);
-			setState(67); match(2);
-			setState(68); match(NUMBER);
-			setState(72);
+			setState(67); match(NOTENAME);
+			setState(68); match(TIE);
+			setState(69); match(NUMBER);
+			setState(73);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==1) {
 				{
 				{
-				setState(69); match(1);
+				setState(70); match(1);
 				}
 				}
-				setState(74);
+				setState(75);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -477,25 +484,26 @@ public class TuneParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\fN\4\2\t\2\4\3\t"+
+		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\fO\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\3\2\3\2\3\2"+
 		"\3\2\3\2\3\2\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\2\3\2\3\3\3\3\3\4\3\4\3"+
 		"\5\3\5\3\6\6\6*\n\6\r\6\16\6+\3\7\5\7/\n\7\3\7\5\7\62\n\7\3\7\3\7\3\7"+
-		"\7\7\67\n\7\f\7\16\7:\13\7\3\7\5\7=\n\7\3\7\3\7\3\b\3\b\5\bC\n\b\3\t\3"+
-		"\t\3\t\3\t\7\tI\n\t\f\t\16\tL\13\t\3\t\2\n\2\4\6\b\n\f\16\20\2\2M\2\22"+
-		"\3\2\2\2\4\"\3\2\2\2\6$\3\2\2\2\b&\3\2\2\2\n)\3\2\2\2\f.\3\2\2\2\16B\3"+
-		"\2\2\2\20D\3\2\2\2\22\23\5\4\3\2\23\24\7\f\2\2\24\25\5\6\4\2\25\26\7\f"+
-		"\2\2\26\27\5\b\5\2\27\35\7\f\2\2\30\31\5\n\6\2\31\32\7\f\2\2\32\34\3\2"+
-		"\2\2\33\30\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36 \3\2\2"+
-		"\2\37\35\3\2\2\2 !\5\n\6\2!\3\3\2\2\2\"#\7\6\2\2#\5\3\2\2\2$%\7\6\2\2"+
-		"%\7\3\2\2\2&\'\7\6\2\2\'\t\3\2\2\2(*\5\f\7\2)(\3\2\2\2*+\3\2\2\2+)\3\2"+
-		"\2\2+,\3\2\2\2,\13\3\2\2\2-/\7\7\2\2.-\3\2\2\2./\3\2\2\2/\61\3\2\2\2\60"+
-		"\62\7\13\2\2\61\60\3\2\2\2\61\62\3\2\2\2\628\3\2\2\2\63\64\5\16\b\2\64"+
-		"\65\7\13\2\2\65\67\3\2\2\2\66\63\3\2\2\2\67:\3\2\2\28\66\3\2\2\289\3\2"+
-		"\2\29<\3\2\2\2:8\3\2\2\2;=\7\13\2\2<;\3\2\2\2<=\3\2\2\2=>\3\2\2\2>?\7"+
-		"\5\2\2?\r\3\2\2\2@C\7\n\2\2AC\5\20\t\2B@\3\2\2\2BA\3\2\2\2C\17\3\2\2\2"+
-		"DE\7\b\2\2EF\7\4\2\2FJ\7\t\2\2GI\7\3\2\2HG\3\2\2\2IL\3\2\2\2JH\3\2\2\2"+
-		"JK\3\2\2\2K\21\3\2\2\2LJ\3\2\2\2\n\35+.\618<BJ";
+		"\7\7\67\n\7\f\7\16\7:\13\7\3\7\5\7=\n\7\3\7\3\7\3\b\3\b\3\b\5\bD\n\b\3"+
+		"\t\3\t\3\t\3\t\7\tJ\n\t\f\t\16\tM\13\t\3\t\2\n\2\4\6\b\n\f\16\20\2\2O"+
+		"\2\22\3\2\2\2\4\"\3\2\2\2\6$\3\2\2\2\b&\3\2\2\2\n)\3\2\2\2\f.\3\2\2\2"+
+		"\16C\3\2\2\2\20E\3\2\2\2\22\23\5\4\3\2\23\24\7\f\2\2\24\25\5\6\4\2\25"+
+		"\26\7\f\2\2\26\27\5\b\5\2\27\35\7\f\2\2\30\31\5\n\6\2\31\32\7\f\2\2\32"+
+		"\34\3\2\2\2\33\30\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36\3\2\2\2\36"+
+		" \3\2\2\2\37\35\3\2\2\2 !\5\n\6\2!\3\3\2\2\2\"#\7\5\2\2#\5\3\2\2\2$%\7"+
+		"\5\2\2%\7\3\2\2\2&\'\7\5\2\2\'\t\3\2\2\2(*\5\f\7\2)(\3\2\2\2*+\3\2\2\2"+
+		"+)\3\2\2\2+,\3\2\2\2,\13\3\2\2\2-/\7\6\2\2.-\3\2\2\2./\3\2\2\2/\61\3\2"+
+		"\2\2\60\62\7\13\2\2\61\60\3\2\2\2\61\62\3\2\2\2\628\3\2\2\2\63\64\5\16"+
+		"\b\2\64\65\7\13\2\2\65\67\3\2\2\2\66\63\3\2\2\2\67:\3\2\2\28\66\3\2\2"+
+		"\289\3\2\2\29<\3\2\2\2:8\3\2\2\2;=\7\13\2\2<;\3\2\2\2<=\3\2\2\2=>\3\2"+
+		"\2\2>?\7\4\2\2?\r\3\2\2\2@D\7\n\2\2AD\5\20\t\2BD\7\t\2\2C@\3\2\2\2CA\3"+
+		"\2\2\2CB\3\2\2\2D\17\3\2\2\2EF\7\7\2\2FG\7\t\2\2GK\7\b\2\2HJ\7\3\2\2I"+
+		"H\3\2\2\2JM\3\2\2\2KI\3\2\2\2KL\3\2\2\2L\21\3\2\2\2MK\3\2\2\2\n\35+.\61"+
+		"8<CK";
 	public static final ATN _ATN =
 		ATNSimulator.deserialize(_serializedATN.toCharArray());
 	static {

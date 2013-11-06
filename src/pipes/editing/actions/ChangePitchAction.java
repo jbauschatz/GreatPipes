@@ -3,41 +3,32 @@ package pipes.editing.actions;
 import pipes.model.Note;
 import pipes.model.Pitch;
 
-public class ChangePitchAction implements EditAction {
+public class ChangePitchAction extends ContextSensitiveEdit {
 	
 	public void execute() {
-		note.setPitch(newPitch);
-		
+		note.setPitch(newPitch);		
 		legalizeNote.execute();
 		
-		if (legalizeNextNote != null)
-			legalizeNextNote.execute();
+		super.execute();
 	}
 	
 	public void undo() {
-		note.setPitch(oldPitch);
-		
+		note.setPitch(oldPitch);		
 		legalizeNote.undo();
 		
-		if (legalizeNextNote != null)
-			legalizeNextNote.undo();
+		super.undo();
 	}
 	
 	public ChangePitchAction(Note note, Pitch newPitch) {
+		super(note.getTune().getNoteBefore(note), note.getTune().getNoteAfter(note));
 		this.note = note;
 		this.newPitch = newPitch;
 		this.oldPitch = note.getPitch();
 		
-		legalizeNote = new LegalizeEmbellishmentAction(note);
-		
-		Note nextNote = note.getTune().getNoteAfter(note);
-		if (nextNote != null) {
-			legalizeNextNote = new LegalizeEmbellishmentAction(nextNote);
-		}
+		legalizeNote = new LegalizeNoteAction(note);
 	}
 
-	private LegalizeEmbellishmentAction legalizeNote;
-	private LegalizeEmbellishmentAction legalizeNextNote;
+	private LegalizeNoteAction legalizeNote;
 	private Note note;
 	private Pitch oldPitch;
 	private Pitch newPitch;
