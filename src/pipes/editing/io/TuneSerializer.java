@@ -87,6 +87,7 @@ public class TuneSerializer {
 		TuneContext tuneContext = parser.tune();
 		tune.setName(stripFirstLast(tuneContext.getChild(0).getText()));
 		tune.setAuthor(stripFirstLast(tuneContext.getChild(2).getText()));
+		tune.setType(stripFirstLast(tuneContext.getChild(4).getText()));
 		
 		TimeSignature currentTime = null;
 		EmbellishmentFamily family = null;
