@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.print.PrinterException;
 import java.io.IOException;
 
 import javax.swing.JComboBox;
@@ -119,6 +120,14 @@ public class AppView extends JFrame implements TuneEditListener {
 		saveAsItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveAs();
+			}
+		});
+		
+		JMenuItem printItem = new JMenuItem("Print");
+		fileMenu.add(printItem);
+		printItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				print();
 			}
 		});
 
@@ -249,6 +258,14 @@ public class AppView extends JFrame implements TuneEditListener {
 			} else {
 				break;
 			}
+		}
+	}
+	
+	private void print() {
+		try {
+			PrintController.print(tuneView.getTune());
+		} catch (PrinterException e) {
+			JOptionPane.showMessageDialog(this, "Error encountered while printing:\n" + e.getMessage());
 		}
 	}
 
