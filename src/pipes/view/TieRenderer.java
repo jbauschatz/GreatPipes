@@ -3,7 +3,7 @@ package pipes.view;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import pipes.model.MelodyElement;
+import pipes.model.Note;
 
 
 public class TieRenderer implements MelodyElementRenderer {
@@ -38,8 +38,12 @@ public class TieRenderer implements MelodyElementRenderer {
 		g.drawArc(x, y, width, height, 180, -180);
 	}
 
-	public MelodyElement getElement() {
-		return null;
+	public Note getElement() {
+		return from.getNote();
+	}
+	
+	public Note getTieStart() {
+		return from.getNote();
 	}
 
 	public void setHighlight(boolean b) {

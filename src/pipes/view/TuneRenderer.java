@@ -48,8 +48,8 @@ public class TuneRenderer {
 			if (l.containsPoint(x, y)) {
 				lineView = l;
 				measureView = l.getMeasure(x, y);
+				elementView = l.getElementAt(x, y);				
 				if (measureView != null) {
-					elementView = measureView.getRenderer(x, y);
 					left = measureView.getNoteToLeft(x);
 					center = measureView.getRendererHorizontallyAt(x);
 					right = measureView.getNoteToRight(x);
