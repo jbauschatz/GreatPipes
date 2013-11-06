@@ -49,7 +49,7 @@ public class TuneRenderer {
 				lineView = l;
 				measureView = l.getMeasure(x, y);
 				if (measureView != null) {
-					elementView = measureView.getRRenderer(x, y);
+					elementView = measureView.getRenderer(x, y);
 					left = measureView.getNoteToLeft(x);
 					center = measureView.getRendererHorizontallyAt(x);
 					right = measureView.getNoteToRight(x);
@@ -89,8 +89,8 @@ public class TuneRenderer {
 		// Layout lines
 		int lineY = sheetTop + title.getHeight() + 80;
 		for (LineRenderer lv : lines) {
-			lv.setDimensions(sheetLeft + (sheetWidth-lineWidth)/2, lineY, lineWidth, 50, 30);			
-			lineY += 80;
+			lv.setDimensions(sheetLeft + (sheetWidth-lineWidth)/2, lineY, lineWidth, 100, 30);			
+			lineY += 100;
 		}
 	}
 	
@@ -103,21 +103,20 @@ public class TuneRenderer {
 	}
 	
 	public void updateHighlight(int x, int y) {
+		
 		for (LineRenderer l : lines) {
 			if (l.containsPoint(x, y)) {
-				MeasureRenderer measureView = l.getMeasure(x, y);
-				if (measureView != null) {
-					MelodyElementRenderer elementView = measureView.getRRenderer(x, y);
-					if (elementView != null) {
-						elementView.setHighlight(true);
-						if (highlight != null && highlight != elementView)
-							highlight.setHighlight(false);
-						highlight = elementView;
-					} else {
-						if (highlight != null)
-							highlight.setHighlight(false);
-						highlight = null;
-					}
+				MelodyElementRenderer elementView = l.getElementAt(x, y); 
+				
+				if (elementView != null) {
+					elementView.setHighlight(true);
+					if (highlight != null && highlight != elementView)
+						highlight.setHighlight(false);
+					highlight = elementView;
+				} else {
+					if (highlight != null)
+						highlight.setHighlight(false);
+					highlight = null;
 				}
 			}
 		}

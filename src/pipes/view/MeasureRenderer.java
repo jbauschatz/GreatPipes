@@ -13,13 +13,18 @@ import pipes.model.TimeSignature;
 public class MeasureRenderer {
 	public boolean contains(int x, int y) {
 		return x >= this.x && x < this.x+width
-			&& y >= this.y-20 && y < this.y+height+20;
+			&& lineView.verticallyContains(y);
 	}
 
-	public MelodyElementRenderer getRRenderer(int x, int y) {
+	public MelodyElementRenderer getRenderer(int x, int y) {
 		for (MelodyElementRenderer v : elementRenderers.values()) {
 			if (v.contains(x, y))
 				return v;
+		}
+		
+		for (TieRenderer tie : ties) {
+			if (tie.contains(x, y))
+				return tie;
 		}
 		
 		return null;

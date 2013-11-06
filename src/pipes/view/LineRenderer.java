@@ -18,9 +18,30 @@ public class LineRenderer {
 		return null;
 	}
 	
+	public MelodyElementRenderer getElementAt(int x, int y) {
+		MelodyElementRenderer found = null;
+		for (MeasureRenderer m : measureRenderers) {
+			if (m.contains(x, y))
+				found = m.getRenderer(x, y);
+		}
+		
+		if (found == null) {
+			for (TieRenderer tie : crossMeasureTies) {
+				if (tie.contains(x, y))
+					return tie;
+			}
+		}
+		
+		return found;
+	}
+	
+	public boolean verticallyContains(int y) {
+		return y >= this.y && y < this.y+height;
+	}
+	
 	public boolean containsPoint(int x, int y) {
 		return x >= this.x && x < this.x+width
-			&& y >= this.y && y < this.y+height;
+			&& verticallyContains(y);
 	}
 	
 	public int getLineSpacing() {
@@ -48,7 +69,7 @@ public class LineRenderer {
 		return Pitch.values()[2*(getYForPitch(Pitch.LOW_G) - y) / lineSpacing];
 	}
 	
-	public void render(Graphics g) {		
+	public void render(Graphics g) {
 		// Draw staff
 		g.setColor(Color.black);
 		for (int l = 0; l<4; ++l) {
@@ -62,7 +83,7 @@ public class LineRenderer {
 			m.render(g);
 		
 		// Draw ties
-		for (TieRenderer tie : ties)
+		for (TieRenderer tie : crossMeasureTies)
 			tie.render(g);
 	}
 	
@@ -71,7 +92,7 @@ public class LineRenderer {
 		for (Measure m : line)
 			measureRenderers.add(new MeasureRenderer(m, this));
 		
-		ties = new LinkedList<TieRenderer>();
+		crossMeasureTies = new LinkedList<TieRenderer>();
 		for (MeasureRenderer measureRend : measureRenderers) {
 			Measure measure = measureRend.getMeasure();
 			if (!measure.isEmpty() && measure.getLast().getIsTiedForward()) {
@@ -80,7 +101,7 @@ public class LineRenderer {
 					
 					MeasureRenderer nextMeasureRend = measureRenderers.get(measureRenderers.indexOf(measureRend)+1);
 					NoteRenderer first = nextMeasureRend.getRenderer(nextMeasureRend.getMeasure().getFirst());
-					ties.add(new TieRenderer(measureRend, last, first));
+					crossMeasureTies.add(new TieRenderer(measureRend, last, first));
 				} else {
 					// TODO - Ties across lines
 				}
@@ -123,7 +144,7 @@ public class LineRenderer {
 	
 	private Line line;
 	private LinkedList<MeasureRenderer> measureRenderers;
-	private LinkedList<TieRenderer> ties;
+	private LinkedList<TieRenderer> crossMeasureTies;
 	
 	private int x;
 	private int y;

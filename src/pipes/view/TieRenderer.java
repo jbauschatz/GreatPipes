@@ -9,32 +9,32 @@ import pipes.model.MelodyElement;
 public class TieRenderer implements MelodyElementRenderer {
 	
 	public int getWidth() {
-		return 0;
+		return width;
 	}
 
 	public int getX() {
-		return 0;
+		return x;
 	}
 
 	public void setX(int x) {
 	}
 
 	public boolean contains(int x, int y) {
-		return false;
+		return x >= this.x && x <= this.x + width
+			&& y >= this.y && y <= this.y + height;
 	}
 
 	public boolean horizontallyContains(int x) {
-		return false;
+		return x >= this.x && x <= this.x + width;
 	}
 
 	public void render(Graphics g) {
+		width = to.getNoteX() - from.getNoteX();
+		height = measure.getLineRenderer().getLineSpacing()*2;
+		x = from.getNoteX() + from.getNoteWidth()/2;
+		y = measure.getLineRenderer().getStaffTop() - 2*height;
+
 		g.setColor(isHighlighted ? Color.GREEN : Color.BLACK);
-		
-		int width = to.getNoteX() - from.getNoteX();
-		int height = measure.getLineRenderer().getLineSpacing()*2;
-		int x = from.getNoteX() + from.getNoteWidth()/2;
-		int y = measure.getLineRenderer().getStaffTop() - 2*height;
-		
 		g.drawArc(x, y, width, height, 180, -180);
 	}
 
@@ -56,4 +56,8 @@ public class TieRenderer implements MelodyElementRenderer {
 	private NoteRenderer from;
 	private NoteRenderer to;
 	private boolean isHighlighted;
+	private int x;
+	private int y;
+	private int width;
+	private int height;
 }
