@@ -1,8 +1,8 @@
 package pipes.view.tools;
 
 import pipes.view.LocationInfo;
-import pipes.view.NoteView;
-import pipes.view.TuneView;
+import pipes.view.NoteRenderer;
+import pipes.view.TunePanel;
 import pipes.editing.TuneEditController;
 import pipes.editing.actions.DeleteElementAction;
 import pipes.editing.actions.DeleteNoteAction;
@@ -10,20 +10,20 @@ import pipes.editing.actions.DeleteNoteAction;
 public class DeleteTool extends EditTool {
 	public void mouseClicked(int x, int y) {
 		LocationInfo info = view.getInfoAt(x, y);
-		if (info.elementView != null) {
-			if (info.elementView instanceof NoteView)
-				controller.execute(new DeleteNoteAction(((NoteView)info.elementView).getElement(), info.measureView.getMeasure()));
+		if (info.elementRenderer != null) {
+			if (info.elementRenderer instanceof NoteRenderer)
+				controller.execute(new DeleteNoteAction(((NoteRenderer)info.elementRenderer).getElement(), info.measureRenderer.getMeasure()));
 			else
-				controller.execute(new DeleteElementAction(info.elementView.getElement(), info.measureView.getMeasure()));
+				controller.execute(new DeleteElementAction(info.elementRenderer.getElement(), info.measureRenderer.getMeasure()));
 		}
 	}
 	
-	public DeleteTool(TuneView view, TuneEditController controller) {
+	public DeleteTool(TunePanel view, TuneEditController controller) {
 		super("Delete");
 		this.view = view;
 		this.controller = controller;
 	}
 	
-	private TuneView view;
+	private TunePanel view;
 	private TuneEditController controller;
 }

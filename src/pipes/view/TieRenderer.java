@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import pipes.model.MelodyElement;
 
 
-public class TieView implements MelodyElementView {
+public class TieRenderer implements MelodyElementRenderer {
 	
 	public int getWidth() {
 		return 0;
@@ -27,13 +27,13 @@ public class TieView implements MelodyElementView {
 		return false;
 	}
 
-	public void draw(Graphics g) {
+	public void render(Graphics g) {
 		g.setColor(isHighlighted ? Color.GREEN : Color.BLACK);
 		
 		int width = to.getNoteX() - from.getNoteX();
-		int height = view.getLineView().getLineSpacing()*2;
+		int height = measure.getLineRenderer().getLineSpacing()*2;
 		int x = from.getNoteX() + from.getNoteWidth()/2;
-		int y = view.getLineView().getStaffTop() - 2*height;
+		int y = measure.getLineRenderer().getStaffTop() - 2*height;
 		
 		g.drawArc(x, y, width, height, 180, -180);
 	}
@@ -46,14 +46,14 @@ public class TieView implements MelodyElementView {
 		isHighlighted = b;
 	}
 	
-	public TieView(MeasureView view, NoteView from, NoteView to) {
-		this.view = view;
+	public TieRenderer(MeasureRenderer measure, NoteRenderer from, NoteRenderer to) {
+		this.measure = measure;
 		this.from = from;
 		this.to = to;
 	}
 	
-	private MeasureView view;
-	private NoteView from;
-	private NoteView to;
+	private MeasureRenderer measure;
+	private NoteRenderer from;
+	private NoteRenderer to;
 	private boolean isHighlighted;
 }

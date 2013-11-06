@@ -10,14 +10,14 @@ import pipes.model.MelodyElement;
 import pipes.model.Note;
 import pipes.model.TimeSignature;
 
-public class MeasureView {
+public class MeasureRenderer {
 	public boolean contains(int x, int y) {
 		return x >= this.x && x < this.x+width
 			&& y >= this.y-20 && y < this.y+height+20;
 	}
 
-	public MelodyElementView getView(int x, int y) {
-		for (MelodyElementView v : elementViews.values()) {
+	public MelodyElementRenderer getRRenderer(int x, int y) {
+		for (MelodyElementRenderer v : elementRenderers.values()) {
 			if (v.contains(x, y))
 				return v;
 		}
@@ -25,8 +25,8 @@ public class MeasureView {
 		return null;
 	}
 	
-	public NoteView getView(Note n) {
-		return (NoteView)elementViews.get(n);
+	public NoteRenderer getRenderer(Note n) {
+		return (NoteRenderer)elementRenderers.get(n);
 	}
 
 	public Note getNoteToLeft(int x) {
@@ -35,7 +35,7 @@ public class MeasureView {
 		
 		Note left = null;
 		for (Note n : measure) {			
-			MelodyElementView view = elementViews.get(n);
+			MelodyElementRenderer view = elementRenderers.get(n);
 			if (view.getX() > x)
 				break;
 			
@@ -49,8 +49,8 @@ public class MeasureView {
 		return null;
 	}
 
-	public MelodyElementView getViewHorizontallyAt(int x) {
-		for (MelodyElementView v : elementViews.values()) {
+	public MelodyElementRenderer getRendererHorizontallyAt(int x) {
+		for (MelodyElementRenderer v : elementRenderers.values()) {
 			if (v.horizontallyContains(x))
 				return v;
 		}
@@ -58,20 +58,20 @@ public class MeasureView {
 		return null;
 	}
 	
-	public void draw(Graphics g) {
+	public void render(Graphics g) {
 		int x = this.x;
 
 		g.setColor(Color.black);
 		g.drawLine(x+width, y, x+width, y+height);
 
-		for (MelodyElementView v : elementViews.values())
-			v.draw(g);
+		for (MelodyElementRenderer v : elementRenderers.values())
+			v.render(g);
 
-		for (StickAndBeamDrawer beam : beams)
-			beam.draw(g);
+		for (StickAndBeamRenderer beam : beams)
+			beam.render(g);
 		
-		for (TieView tie : ties)
-			tie.draw(g);
+		for (TieRenderer tie : ties)
+			tie.render(g);
 	}
 	
 	public void setDimensions(int x, int y, int width, int height) {
@@ -86,7 +86,7 @@ public class MeasureView {
 
 		// Space taken by the time signature, clef, key signature, etc
 		if (measure.isTimeSignatureChange()) {
-			MelodyElementView timeView = elementViews.get(time);
+			MelodyElementRenderer timeView = elementRenderers.get(time);
 			spaceTaken += timeView.getWidth();
 			timeView.setX(x);
 			x += timeView.getWidth();
@@ -94,10 +94,10 @@ public class MeasureView {
 		
 		// Space taken by notes and embellishments
 		for (Note note : measure) {
-			NoteView noteView = (NoteView)elementViews.get(note);
+			NoteRenderer noteView = (NoteRenderer)elementRenderers.get(note);
 			
 			if (note.hasEmbellishment()) {
-				EmbellishmentView embView = (EmbellishmentView)elementViews.get(note.getEmbellishment());
+				EmbellishmentRenderer embView = (EmbellishmentRenderer)elementRenderers.get(note.getEmbellishment());
 				embView.setDimensions(lineView.getLineSpacing()-2, 4);
 				spaceTaken += embView.getWidth();
 			}
@@ -115,19 +115,19 @@ public class MeasureView {
 		// Place the notes
 		for (Note n : measure) {
 			if (n.hasEmbellishment()) {
-				MelodyElementView embView = elementViews.get(n.getEmbellishment());
+				MelodyElementRenderer embView = elementRenderers.get(n.getEmbellishment());
 				embView.setX(x);
 				x += embView.getWidth();
 			}
 			
 			int notePadding = noteSpacing * n.getDuration();
-			MelodyElementView noteView = elementViews.get(n);
+			MelodyElementRenderer noteView = elementRenderers.get(n);
 			noteView.setX(x);
 			x += noteView.getWidth() + notePadding;
 		}
 	}
 		
-	public LineView getLineView() {
+	public LineRenderer getLineRenderer() {
 		return lineView;
 	}
 	
@@ -135,49 +135,49 @@ public class MeasureView {
 		return measure;
 	}
 	
-	public MeasureView(Measure m, LineView lineView) {
+	public MeasureRenderer(Measure m, LineRenderer lineView) {
 		measure = m;
 		this.lineView = lineView;
 		
-		constructViews();
+		constructRenderers();
 	}
 	
-	public void constructViews() {		
+	public void constructRenderers() {		
 		// Create views for all the notes in the measure
-		elementViews = new HashMap<MelodyElement, MelodyElementView>();
+		elementRenderers = new HashMap<MelodyElement, MelodyElementRenderer>();
 		for (Note n : measure) {
 			if (n.hasEmbellishment()) {
-				EmbellishmentView embView = new EmbellishmentView(n.getEmbellishment(), this);
-				elementViews.put(n.getEmbellishment(), embView);
+				EmbellishmentRenderer embView = new EmbellishmentRenderer(n.getEmbellishment(), this);
+				elementRenderers.put(n.getEmbellishment(), embView);
 			}
 			
-			NoteView noteView = new NoteView(n, this);
-			elementViews.put(n, noteView);
+			NoteRenderer noteView = new NoteRenderer(n, this);
+			elementRenderers.put(n, noteView);
 		}
 		
 		BeamGroupingStrategy beamGrouping = BeamGroupingStrategy.getStrategy(measure.getTimeSignature());
 		
 		// Group the notes into beams
-		beams = new LinkedList<StickAndBeamDrawer>();
+		beams = new LinkedList<StickAndBeamRenderer>();
 		Iterable<Iterable<Note>> beamedGroups = beamGrouping.getNoteGroups(measure);
 		for (Iterable<Note> beamedGroup : beamedGroups) {
-			LinkedList<NoteView> groupViews = new LinkedList<NoteView>();
+			LinkedList<NoteRenderer> groupViews = new LinkedList<NoteRenderer>();
 			for (Note n : beamedGroup)
-				groupViews.add((NoteView) elementViews.get(n));
+				groupViews.add((NoteRenderer) elementRenderers.get(n));
 			
-			beams.add(new StickAndBeamDrawer(groupViews, this));
+			beams.add(new StickAndBeamRenderer(groupViews, this));
 		}
 		
 		// Create ties
-		ties = new LinkedList<TieView>();
+		ties = new LinkedList<TieRenderer>();
 		Note tied = null;
 		for (Note n : measure) {
 			if (n.getIsTiedForward()) {
 				if (tied != null)
-					ties.add(new TieView(this, (NoteView)elementViews.get(tied), (NoteView)elementViews.get(n)));
+					ties.add(new TieRenderer(this, (NoteRenderer)elementRenderers.get(tied), (NoteRenderer)elementRenderers.get(n)));
 				tied = n;
 			} else if (tied != null) {
-				ties.add(new TieView(this, (NoteView)elementViews.get(tied), (NoteView)elementViews.get(n)));
+				ties.add(new TieRenderer(this, (NoteRenderer)elementRenderers.get(tied), (NoteRenderer)elementRenderers.get(n)));
 				tied = null;
 			} else {
 				tied = null;
@@ -186,19 +186,19 @@ public class MeasureView {
 		
 		// Add a time signature view
 		if (measure.isTimeSignatureChange())
-			elementViews.put(measure.getTimeSignature(), 
-					new TimeSignatureView(measure.getTimeSignature(), this));
+			elementRenderers.put(measure.getTimeSignature(), 
+					new TimeSignatureRenderer(measure.getTimeSignature(), this));
 	}
 	
 	private Measure measure;
-	private LineView lineView;
+	private LineRenderer lineView;
 	
 	private int x;
 	private int y;
 	private int width;
 	private int height;
 
-	private HashMap<MelodyElement, MelodyElementView> elementViews;
-	private LinkedList<StickAndBeamDrawer> beams;
-	private LinkedList<TieView> ties;
+	private HashMap<MelodyElement, MelodyElementRenderer> elementRenderers;
+	private LinkedList<StickAndBeamRenderer> beams;
+	private LinkedList<TieRenderer> ties;
 }

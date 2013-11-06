@@ -7,15 +7,15 @@ import java.util.List;
 import pipes.model.BeatDivision;
 import pipes.model.Pitch;
 
-public class StickAndBeamDrawer {
-	public void draw(Graphics g) {
+public class StickAndBeamRenderer {
+	public void render(Graphics g) {
 		g.setColor(Color.BLACK);
-		int spacing = measure.getLineView().getLineSpacing();
+		int spacing = measure.getLineRenderer().getLineSpacing();
 		int stickLength = 4*spacing;
-		int bottomLine = measure.getLineView().getYForPitch(Pitch.LOW_G) + stickLength;
+		int bottomLine = measure.getLineRenderer().getYForPitch(Pitch.LOW_G) + stickLength;
 		
 		if (notes.length == 1) {
-			NoteView v = notes[0];
+			NoteRenderer v = notes[0];
 			int x = v.getNoteX();
 			int y = v.getNoteY();
 
@@ -28,8 +28,8 @@ public class StickAndBeamDrawer {
 			}
 		} else {
 			for (int n = 0; n<notes.length-1; ++n) {
-				NoteView v = notes[n];
-				NoteView right = notes[n+1];
+				NoteRenderer v = notes[n];
+				NoteRenderer right = notes[n+1];
 				int beamY = bottomLine;
 				for (int d = BeatDivision.EIGHTH.denominator; d<=v.getNote().getBeatDivision().denominator; d*=2) {
 					if (d <= right.getNote().getBeatDivision().denominator) {
@@ -46,8 +46,8 @@ public class StickAndBeamDrawer {
 				g.drawLine(v.getNoteX(), v.getNoteY(), v.getNoteX(), bottomLine);
 			}
 			
-			NoteView right = notes[notes.length-1];
-			NoteView penult = notes[notes.length-2];
+			NoteRenderer right = notes[notes.length-1];
+			NoteRenderer penult = notes[notes.length-2];
 			int beamY = bottomLine;
 			for (int d = BeatDivision.EIGHTH.denominator; d<=right.getNote().getBeatDivision().denominator; d*=2) {
 				if (d <= penult.getNote().getBeatDivision().denominator) {
@@ -66,17 +66,17 @@ public class StickAndBeamDrawer {
 		g.fillRect(leftx, y - 3, rightx - leftx, 4);
 	}
 
-	public StickAndBeamDrawer(List<NoteView> noteViews, MeasureView measure) {
+	public StickAndBeamRenderer(List<NoteRenderer> noteViews, MeasureRenderer measure) {
 		this.measure = measure;
-		notes = noteViews.toArray(new NoteView[noteViews.size()]);
+		notes = noteViews.toArray(new NoteRenderer[noteViews.size()]);
 		
 	}
 
-	public StickAndBeamDrawer(NoteView note, MeasureView measure) {
+	public StickAndBeamRenderer(NoteRenderer note, MeasureRenderer measure) {
 		this.measure = measure;
-		notes = new NoteView[]{note};
+		notes = new NoteRenderer[]{note};
 	}
 	
-	private NoteView[] notes;
-	private MeasureView measure;
+	private NoteRenderer[] notes;
+	private MeasureRenderer measure;
 }

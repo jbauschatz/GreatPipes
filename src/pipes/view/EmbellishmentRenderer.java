@@ -7,7 +7,7 @@ import pipes.model.Pitch;
 import pipes.model.embellishment.Embellishment;
 import pipes.model.embellishment.GraceNote;
 
-public class EmbellishmentView implements MelodyElementView {
+public class EmbellishmentRenderer implements MelodyElementRenderer {
 	public boolean contains(int x, int y) {
 		return x >= this.x && x < this.x+getWidth()
 			&& y >= top && y <= bottom;
@@ -25,7 +25,7 @@ public class EmbellishmentView implements MelodyElementView {
 		highlighted = b;
 	}
 	
-	public void draw(Graphics g) {
+	public void render(Graphics g) {
 		g.setColor(highlighted ? Color.green : Color.black);
 		for (int i = 0; i<emb.size(); ++i)
 			drawGraceNote(g, xs[i], headYs[i], tailYs[i], emb.element().pitch);
@@ -48,7 +48,7 @@ public class EmbellishmentView implements MelodyElementView {
 		this.x = x;
 		
 		x += margin;
-		stickLength = measureView.getLineView().getLineSpacing() * 3;
+		stickLength = measureView.getLineRenderer().getLineSpacing() * 3;
 
 		top = Integer.MAX_VALUE;
 		bottom = Integer.MIN_VALUE;
@@ -57,7 +57,7 @@ public class EmbellishmentView implements MelodyElementView {
 		for (int i = 0; i<emb.size(); ++i) {
 			GraceNote g = emb.get(i);
 			xs[i] = x;
-			headYs[i] = measureView.getLineView().getYForPitch(g.pitch);
+			headYs[i] = measureView.getLineRenderer().getYForPitch(g.pitch);
 			
 			top = Math.min(top, headYs[i] - stickLength);
 			bottom = Math.max(bottom,  headYs[i] + headWidth/2);
@@ -106,14 +106,14 @@ public class EmbellishmentView implements MelodyElementView {
 		tailYs = new int[emb.size()];
 	}
 	
-	public EmbellishmentView(Embellishment emb, MeasureView measureView) {
+	public EmbellishmentRenderer(Embellishment emb, MeasureRenderer measureView) {
 		this.emb = emb;
 		this.measureView = measureView;
 		beamWidth = 2;
 	}
 	
 	private Embellishment emb;
-	private MeasureView measureView;
+	private MeasureRenderer measureView;
 	
 	private int x;
 	private int headWidth;

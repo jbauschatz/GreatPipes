@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import pipes.model.Tune;
 
-public class TuneView extends JPanel {
+public class TunePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public void paint(Graphics g) {
@@ -27,10 +27,6 @@ public class TuneView extends JPanel {
 		g.drawRect(sheetRect.x, sheetRect.y, sheetRect.width, sheetRect.height);
 		
 		renderer.render(g);
-	}
-	
-	public Tune getTune() {
-		return tune;
 	}
 
 	public void setTune(Tune t) {
@@ -53,7 +49,7 @@ public class TuneView extends JPanel {
 		return renderer.getInfoAt(x, y);
 	}
 	
-	public TuneView() {
+	public TunePanel() {
 		setOpaque(true);
 		
 		addMouseMotionListener(new MouseMotionListener() {

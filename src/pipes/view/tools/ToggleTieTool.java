@@ -4,16 +4,16 @@ import pipes.editing.TuneEditController;
 import pipes.editing.actions.SetTieAction;
 import pipes.model.Note;
 import pipes.view.LocationInfo;
-import pipes.view.NoteView;
-import pipes.view.TuneView;
+import pipes.view.NoteRenderer;
+import pipes.view.TunePanel;
 
 public class ToggleTieTool extends EditTool {
 
 	public void mouseClicked(int x, int y) {
 		LocationInfo info = view.getInfoAt(x, y);
-		if (info.elementView != null) {
-			if (info.elementView instanceof NoteView) {
-				Note n = ((NoteView)info.elementView).getElement();
+		if (info.elementRenderer != null) {
+			if (info.elementRenderer instanceof NoteRenderer) {
+				Note n = ((NoteRenderer)info.elementRenderer).getElement();
 				SetTieAction action = new SetTieAction(n, !n.getIsTiedForward(), controller.getTune());
 								
 				if (action.isLegal())
@@ -22,12 +22,12 @@ public class ToggleTieTool extends EditTool {
 		}
 	}
 	
-	public ToggleTieTool(TuneView view, TuneEditController controller) {
+	public ToggleTieTool(TunePanel view, TuneEditController controller) {
 		super("Tie");
 		this.view = view;
 		this.controller = controller;
 	}
 	
-	private TuneView view;
+	private TunePanel view;
 	private TuneEditController controller;
 }

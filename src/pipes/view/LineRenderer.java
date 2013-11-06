@@ -8,9 +8,9 @@ import pipes.model.Line;
 import pipes.model.Measure;
 import pipes.model.Pitch;
 
-public class LineView {
-	public MeasureView getMeasure(int x, int y) {
-		for (MeasureView m : measureViews) {
+public class LineRenderer {
+	public MeasureRenderer getMeasure(int x, int y) {
+		for (MeasureRenderer m : measureRenderers) {
 			if (m.contains(x, y))
 				return m;
 		}
@@ -48,7 +48,7 @@ public class LineView {
 		return Pitch.values()[2*(getYForPitch(Pitch.LOW_G) - y) / lineSpacing];
 	}
 	
-	public void draw(Graphics g) {		
+	public void render(Graphics g) {		
 		// Draw staff
 		g.setColor(Color.black);
 		for (int l = 0; l<4; ++l) {
@@ -58,29 +58,29 @@ public class LineView {
 		g.drawLine(x, staffY+staffHeight, x+width, staffY+staffHeight);
 
 		// Draw each measure
-		for (MeasureView m : measureViews)
-			m.draw(g);
+		for (MeasureRenderer m : measureRenderers)
+			m.render(g);
 		
 		// Draw ties
-		for (TieView tie : ties)
-			tie.draw(g);
+		for (TieRenderer tie : ties)
+			tie.render(g);
 	}
 	
 	public void updateMusic() {
-		measureViews = new LinkedList<MeasureView>();
+		measureRenderers = new LinkedList<MeasureRenderer>();
 		for (Measure m : line)
-			measureViews.add(new MeasureView(m, this));
+			measureRenderers.add(new MeasureRenderer(m, this));
 		
-		ties = new LinkedList<TieView>();
-		for (MeasureView measureView : measureViews) {
-			Measure measure = measureView.getMeasure();
+		ties = new LinkedList<TieRenderer>();
+		for (MeasureRenderer measureRend : measureRenderers) {
+			Measure measure = measureRend.getMeasure();
 			if (!measure.isEmpty() && measure.getLast().getIsTiedForward()) {
 				if (measure != line.getLast()) {
-					NoteView last = measureView.getView(measure.getLast());
+					NoteRenderer last = measureRend.getRenderer(measure.getLast());
 					
-					MeasureView nextMeasureView = measureViews.get(measureViews.indexOf(measureView)+1);
-					NoteView first = nextMeasureView.getView(nextMeasureView.getMeasure().getFirst());
-					ties.add(new TieView(measureView, last, first));
+					MeasureRenderer nextMeasureRend = measureRenderers.get(measureRenderers.indexOf(measureRend)+1);
+					NoteRenderer first = nextMeasureRend.getRenderer(nextMeasureRend.getMeasure().getFirst());
+					ties.add(new TieRenderer(measureRend, last, first));
 				} else {
 					// TODO - Ties across lines
 				}
@@ -101,9 +101,9 @@ public class LineView {
 		// Size and place each measure
 		int measureWidth = width / line.size();
 		int measureX = x;
-		for (MeasureView m : measureViews) {
+		for (MeasureRenderer m : measureRenderers) {
 			// Give the last MeasureView the remainder of the space
-			if (m == measureViews.getLast())
+			if (m == measureRenderers.getLast())
 				m.setDimensions(measureX, staffY, width-measureX+x, staffHeight);
 			else
 				m.setDimensions(measureX, staffY, measureWidth, staffHeight);
@@ -111,7 +111,7 @@ public class LineView {
 		}
 	}
 	
-	public LineView(Line l) {
+	public LineRenderer(Line l) {
 		line = l;
 		
 		updateMusic();
@@ -122,8 +122,8 @@ public class LineView {
 	}
 	
 	private Line line;
-	private LinkedList<MeasureView> measureViews;
-	private LinkedList<TieView> ties;
+	private LinkedList<MeasureRenderer> measureRenderers;
+	private LinkedList<TieRenderer> ties;
 	
 	private int x;
 	private int y;

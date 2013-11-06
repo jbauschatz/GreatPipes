@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import pipes.model.Note;
 import pipes.model.Pitch;
 
-public class NoteView implements MelodyElementView {
+public class NoteRenderer implements MelodyElementRenderer {
 	public boolean contains(int x, int y) {
 		return x >= this.x && x < this.x+getWidth()
 			&& y >= getHeadY() && y < getHeadY()+headHeight;
@@ -65,10 +65,10 @@ public class NoteView implements MelodyElementView {
 		this.headHeight = headHeight;
 		this.leftMargin = leftMargin;
 		this.rightMargin = rightMargin;
-		y = measure.getLineView().getYForPitch(note.getPitch());
+		y = measure.getLineRenderer().getYForPitch(note.getPitch());
 	}
 	
-	public void draw(Graphics g) {
+	public void render(Graphics g) {
 		g.setColor(highlighted ? Color.GREEN : Color.black);
 		int headY = y-headHeight/2-1;
 		
@@ -87,13 +87,13 @@ public class NoteView implements MelodyElementView {
 			g.drawLine(x, y, x+leftMargin+headWidth+rightMargin, y);
 	}
 	
-	public NoteView(Note n, MeasureView measureView) {
+	public NoteRenderer(Note n, MeasureRenderer measureView) {
 		measure = measureView;
 		note = n;
 	}
 	
 	private Note note;
-	private MeasureView measure;
+	private MeasureRenderer measure;
 	
 	private int x;
 	private int y;

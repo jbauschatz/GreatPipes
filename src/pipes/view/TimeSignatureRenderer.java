@@ -6,7 +6,7 @@ import java.awt.Graphics;
 
 import pipes.model.TimeSignature;
 
-public class TimeSignatureView implements MelodyElementView {
+public class TimeSignatureRenderer implements MelodyElementRenderer {
 
 	public int getWidth() {
 		return 30;
@@ -28,9 +28,9 @@ public class TimeSignatureView implements MelodyElementView {
 		return false;
 	}
 
-	public void draw(Graphics g) {
-		int top = enclosingMeasure.getLineView().getStaffTop();
-		int bottom = enclosingMeasure.getLineView().getStaffBottom();
+	public void render(Graphics g) {
+		int top = enclosingMeasure.getLineRenderer().getStaffTop();
+		int bottom = enclosingMeasure.getLineRenderer().getStaffBottom();
 		int middle = top + (bottom-top)/2;
 		
 		g.setColor(Color.black);
@@ -47,7 +47,7 @@ public class TimeSignatureView implements MelodyElementView {
 		
 	}
 
-	public TimeSignatureView(TimeSignature sig, MeasureView enclosingMeasure) {
+	public TimeSignatureRenderer(TimeSignature sig, MeasureRenderer enclosingMeasure) {
 		model = sig;
 		this.enclosingMeasure = enclosingMeasure;
 		font = new Font("Times New Roman", Font.PLAIN, 16);
@@ -56,5 +56,5 @@ public class TimeSignatureView implements MelodyElementView {
 	private Font font;
 	private int x;
 	private TimeSignature model;
-	private MeasureView enclosingMeasure;
+	private MeasureRenderer enclosingMeasure;
 }

@@ -15,7 +15,7 @@ import pipes.editing.TuneEditListener;
 import pipes.editing.actions.EditAction;
 import pipes.model.BeatDivision;
 import pipes.model.embellishment.EmbellishmentFamily;
-import pipes.view.TuneView;
+import pipes.view.TunePanel;
 
 public class Toolbar extends JPanel implements TuneEditListener {
 	private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public class Toolbar extends JPanel implements TuneEditListener {
 		redoButton.setEnabled(controller.canRedo());
 	}
 	
-	public Toolbar(TuneView view, final TuneEditController controller) {
+	public Toolbar(TunePanel view, final TuneEditController controller) {
 		this.controller = controller;
 		controller.addEditListener(this);
 		

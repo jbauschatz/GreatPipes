@@ -7,7 +7,7 @@ import java.awt.Graphics;
 
 import pipes.model.Tune;
 
-public class TitleAreaView {
+public class TitleAreaRenderer {
 	
 	public void setSize(int width, int height) {
 		this.width = width;
@@ -23,7 +23,7 @@ public class TitleAreaView {
 		return height;
 	}
 	
-	public void draw(Graphics g) {
+	public void render(Graphics g) {
 		g.setColor(Color.black);
 		
 		if (titleMetrics == null)
@@ -47,7 +47,7 @@ public class TitleAreaView {
 		g.drawString(tune.getType(), x, y+height);
 	}
 	
-	public TitleAreaView(Tune tune) {
+	public TitleAreaRenderer(Tune tune) {
 		this.tune = tune;
 		titleFont = new Font("Times New Roman", Font.BOLD, 24);
 		subFont = new Font("Times New Roman", Font.BOLD, 16);

@@ -33,19 +33,19 @@ import pipes.model.TimeSignature;
 import pipes.model.Tune;
 import pipes.view.tools.Toolbar;
 
-public class AppView extends JFrame implements TuneEditListener {
+public class AppWindow extends JFrame implements TuneEditListener {
 	private static final long serialVersionUID = 1L;
 	private static final String WINDOW_CAPTION = "Great Pipes";
 
 	public static void main(String... arg) {
-		new AppView();
+		new AppWindow();
 	}
 	
 	public void tuneEdited(EditAction ation) {
 		updateTitle();
 	}
 	
-	public AppView() {
+	public AppWindow() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
@@ -53,17 +53,17 @@ public class AppView extends JFrame implements TuneEditListener {
 			e1.printStackTrace();
 		}
 		
-		tuneView = new TuneView();
-		JScrollPane tuneScroller = new JScrollPane(tuneView);
+		tunePanel = new TunePanel();
+		JScrollPane tuneScroller = new JScrollPane(tunePanel);
 
-		controller = new TuneEditController(tuneView);
+		controller = new TuneEditController(tunePanel);
 		controller.addEditListener(this);
 		controller.newTune(NewTuneParameters.DEFAULT);
 		
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(tuneScroller, BorderLayout.CENTER);
 		
-		Toolbar toolbar = new Toolbar(tuneView, controller);
+		Toolbar toolbar = new Toolbar(tunePanel, controller);
 		getContentPane().add(toolbar, BorderLayout.NORTH);
 
 		buildMenu();
@@ -76,7 +76,7 @@ public class AppView extends JFrame implements TuneEditListener {
 		
 		addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
-				tuneView.updateMusic();
+				tunePanel.updateMusic();
 			}
 		});
 	}
@@ -263,7 +263,7 @@ public class AppView extends JFrame implements TuneEditListener {
 	
 	private void print() {
 		try {
-			PrintController.print(tuneView.getTune());
+			PrintController.print(controller.getTune());
 		} catch (PrinterException e) {
 			JOptionPane.showMessageDialog(this, "Error encountered while printing:\n" + e.getMessage());
 		}
@@ -314,5 +314,5 @@ public class AppView extends JFrame implements TuneEditListener {
 	}
 
 	private TuneEditController controller;
-	private TuneView tuneView;
+	private TunePanel tunePanel;
 }

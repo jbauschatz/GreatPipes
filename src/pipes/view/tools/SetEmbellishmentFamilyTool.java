@@ -2,10 +2,10 @@ package pipes.view.tools;
 
 import pipes.model.Note;
 import pipes.model.embellishment.EmbellishmentFamily;
-import pipes.view.EmbellishmentView;
+import pipes.view.EmbellishmentRenderer;
 import pipes.view.LocationInfo;
-import pipes.view.NoteView;
-import pipes.view.TuneView;
+import pipes.view.NoteRenderer;
+import pipes.view.TunePanel;
 import pipes.editing.TuneEditController;
 import pipes.editing.actions.SetEmbellishmentFamilyAction;
 
@@ -16,10 +16,10 @@ public class SetEmbellishmentFamilyTool extends EditTool {
 		
 		if (info.centeredElement != null) {
 			Note n = null;
-			if (info.centeredElement instanceof NoteView)
-				n = ((NoteView)info.centeredElement).getElement();
-			else if (info.centeredElement instanceof EmbellishmentView)
-				n = ((EmbellishmentView)info.centeredElement).getElement().getNote();
+			if (info.centeredElement instanceof NoteRenderer)
+				n = ((NoteRenderer)info.centeredElement).getElement();
+			else if (info.centeredElement instanceof EmbellishmentRenderer)
+				n = ((EmbellishmentRenderer)info.centeredElement).getElement().getNote();
 
 			SetEmbellishmentFamilyAction action = new SetEmbellishmentFamilyAction(n, embellishment);
 			if (action.isLegal())
@@ -27,14 +27,14 @@ public class SetEmbellishmentFamilyTool extends EditTool {
 		}
 	}
 	
-	public SetEmbellishmentFamilyTool(TuneView view, TuneEditController controller, EmbellishmentFamily embellishment) {
+	public SetEmbellishmentFamilyTool(TunePanel view, TuneEditController controller, EmbellishmentFamily embellishment) {
 		super(embellishment.getName());
 		this.view = view;
 		this.controller = controller;
 		this.embellishment = embellishment;
 	}
 	
-	private TuneView view;
+	private TunePanel view;
 	private TuneEditController controller;
 	private EmbellishmentFamily embellishment;
 }

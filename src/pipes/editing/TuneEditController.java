@@ -14,7 +14,7 @@ import pipes.model.NewTuneParameters;
 import pipes.model.Tune;
 import pipes.model.TuneFactory;
 import pipes.sound.TunePlayer;
-import pipes.view.TuneView;
+import pipes.view.TunePanel;
 import pipes.view.tools.EditTool;
 import pipes.view.tools.NullTool;
 
@@ -169,7 +169,7 @@ public class TuneEditController {
 		history.clear();
 	}
 
-	public TuneEditController(final TuneView view) {
+	public TuneEditController(final TunePanel view) {
 		this.view = view;
 		player = new TunePlayer();
 		history = new TuneEditHistory();
@@ -214,7 +214,7 @@ public class TuneEditController {
 	}
 
 	private Tune tune;
-	private TuneView view;
+	private TunePanel view;
 	private TunePlayer player;
 	private EditTool currentTool;
 	private TuneEditHistory history;

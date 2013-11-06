@@ -27,31 +27,31 @@ public class TuneRenderer {
 	}
 	
 	public void render(Graphics g) {
-		title.draw(g);
+		title.render(g);
 		
 		if (lines != null) {
-			for (LineView lv : lines)
-				lv.draw(g);
+			for (LineRenderer lv : lines)
+				lv.render(g);
 		}
 	}
 	
 	public LocationInfo getInfoAt(int x, int y) {
-		LineView lineView = null;
-		MeasureView measureView = null;
-		MelodyElementView elementView = null;
+		LineRenderer lineView = null;
+		MeasureRenderer measureView = null;
+		MelodyElementRenderer elementView = null;
 		
 		Note left = null;
-		MelodyElementView center = null;
+		MelodyElementRenderer center = null;
 		Note right = null;
 		
-		for (LineView l : lines) {
+		for (LineRenderer l : lines) {
 			if (l.containsPoint(x, y)) {
 				lineView = l;
 				measureView = l.getMeasure(x, y);
 				if (measureView != null) {
-					elementView = measureView.getView(x, y);
+					elementView = measureView.getRRenderer(x, y);
 					left = measureView.getNoteToLeft(x);
-					center = measureView.getViewHorizontallyAt(x);
+					center = measureView.getRendererHorizontallyAt(x);
 					right = measureView.getNoteToRight(x);
 				}
 			}
@@ -60,11 +60,11 @@ public class TuneRenderer {
 	}
 	
 	private void updateMusic(int width, int height) {
-		title = new TitleAreaView(tune);
-		lines = new LinkedList<LineView>();
+		title = new TitleAreaRenderer(tune);
+		lines = new LinkedList<LineRenderer>();
 
 		for (Line l : tune)
-			lines.add(new LineView(l));
+			lines.add(new LineRenderer(l));
 
 		layoutMusic(width, height);
 	}
@@ -88,7 +88,7 @@ public class TuneRenderer {
 		
 		// Layout lines
 		int lineY = sheetTop + title.getHeight() + 80;
-		for (LineView lv : lines) {
+		for (LineRenderer lv : lines) {
 			lv.setDimensions(sheetLeft + (sheetWidth-lineWidth)/2, lineY, lineWidth, 50, 30);			
 			lineY += 80;
 		}
@@ -103,11 +103,11 @@ public class TuneRenderer {
 	}
 	
 	public void updateHighlight(int x, int y) {
-		for (LineView l : lines) {
+		for (LineRenderer l : lines) {
 			if (l.containsPoint(x, y)) {
-				MeasureView measureView = l.getMeasure(x, y);
+				MeasureRenderer measureView = l.getMeasure(x, y);
 				if (measureView != null) {
-					MelodyElementView elementView = measureView.getView(x, y);
+					MelodyElementRenderer elementView = measureView.getRRenderer(x, y);
 					if (elementView != null) {
 						elementView.setHighlight(true);
 						if (highlight != null && highlight != elementView)
@@ -132,8 +132,8 @@ public class TuneRenderer {
 	
 	private Tune tune;
 	
-	private TitleAreaView title;
-	private LinkedList<LineView> lines;
+	private TitleAreaRenderer title;
+	private LinkedList<LineRenderer> lines;
 	
-	private MelodyElementView highlight;
+	private MelodyElementRenderer highlight;
 }
