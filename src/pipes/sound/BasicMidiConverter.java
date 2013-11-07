@@ -21,12 +21,16 @@ public class BasicMidiConverter implements TuneToMidiConverter {
 		for (Line l : tune) {
 			for (Measure m : l) {
 				for (Note n : m) {
+					int embellishmentDuration = 0;
 					if (n.hasEmbellishment()) {
 						Embellishment e = n.getEmbellishment();
-						for (GraceNote g : e)
-							midi.appendNote(g.pitch, g.isLong ? longGraceNoteTicks : shortGraceNoteTicks);
+						for (GraceNote g : e) {
+							int graceDur = g.isLong ? longGraceNoteTicks : shortGraceNoteTicks;
+							embellishmentDuration += graceDur;
+							midi.appendNote(g.pitch, graceDur);
+						}
 					}
-					int noteTime = ticksPerTimeUnit*n.getDuration();
+					int noteTime = ticksPerTimeUnit*n.getDuration() - embellishmentDuration;
 					if (n.getIsTiedForward()) {
 						tiedPitch = n.getPitch();
 						tiedTime += noteTime;
@@ -72,8 +76,8 @@ public class BasicMidiConverter implements TuneToMidiConverter {
 		ticksPerQuarter = 128;
 		ticksPerTimeUnit = ticksPerQuarter / BeatDivision.QUARTER.duration;
 
-		shortGraceNoteTicks = ticksPerQuarter/10;
-		longGraceNoteTicks = 3*shortGraceNoteTicks/2;
+		shortGraceNoteTicks = ticksPerQuarter/14;
+		longGraceNoteTicks = 4*shortGraceNoteTicks/3;
 	}
 	
 	private int ticksPerQuarter;
