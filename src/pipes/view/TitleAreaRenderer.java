@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import pipes.model.Tune;
 
@@ -42,9 +44,16 @@ public class TitleAreaRenderer {
 		String tuneAuthor = tune.getAuthor();
 		int rightWidth = subMetrics.stringWidth(tuneAuthor);
 		g.drawString(tuneAuthor, x+width-rightWidth, y+height);
+
+        // Draw the month/year under the author
+        String tuneDate = tune.getDate();
+        g.setColor(Color.gray);
+        g.drawString(tuneDate, x+width-rightWidth, y+height+20);
+
 		
 		// Align the tune type on the left side
-		g.drawString(tune.getType(), x, y+height);
+        g.setColor(Color.black);
+        g.drawString(tune.getType(), x, y+height);
 	}
 	
 	public TitleAreaRenderer(Tune tune) {

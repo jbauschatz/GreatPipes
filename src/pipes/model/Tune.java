@@ -1,5 +1,7 @@
 package pipes.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 
 public class Tune extends LinkedList<Line> {
@@ -28,6 +30,14 @@ public class Tune extends LinkedList<Line> {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
 	public boolean isPortraitLayout() {
 		return false;
@@ -92,9 +102,11 @@ public class Tune extends LinkedList<Line> {
 		name = "";
 		author = "";
 		type = "";
+        date = new SimpleDateFormat("MMM YYYY").format(new Date());
 	}
 
 	private String name;
 	private String author;
 	private String type;
+    private String date;
 }
