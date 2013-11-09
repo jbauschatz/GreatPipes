@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 public class Tune extends LinkedList<Line> {
 	private static final long serialVersionUID = 1L;
+	public static final String[] TUNE_TYPES = {"March", "Strathspey", "Reel", "Jig", "Hornpipe", "Slow Air", "Retreat", "Waltz"};
 
 	public String getName() {
 		return name;

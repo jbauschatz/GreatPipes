@@ -23,6 +23,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import pipes.editing.TuneEditController;
 import pipes.editing.TuneEditListener;
 import pipes.editing.actions.EditAction;
@@ -218,7 +219,7 @@ public class AppWindow extends JFrame implements TuneEditListener {
 		// New tune
 		JTextField tuneName = new JTextField(NewTuneParameters.DEFAULT.getName(), 2);
 		JTextField tuneAuthor = new JTextField(NewTuneParameters.DEFAULT.getAuthor(), 2);
-		JTextField tuneType = new JTextField(NewTuneParameters.DEFAULT.getType(), 2);
+		JComboBox<String> tuneType = buildTuneTypeComboBox();
 		JTextField numLines = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getLines()), 2);
 		JTextField measuresPerLine = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getMeasuresPerLine()), 4);
 		JComboBox<TimeSignature> timeSigs = new JComboBox<TimeSignature>(TimeSignature.STANDARD_TIMES);
@@ -245,7 +246,7 @@ public class AppWindow extends JFrame implements TuneEditListener {
 				try {
 					String tuneNameChoice = tuneName.getText();
 					String tuneAuthorChoice = tuneAuthor.getText();
-					String tuneTypeChoice = tuneType.getText();
+					String tuneTypeChoice = tuneType.getSelectedItem().toString();
 					int numLinesChoice = Integer.parseInt(numLines.getText());
 					int measuresPerChoice = Integer.parseInt(measuresPerLine.getText());
 					TimeSignature timeSigChoice = (TimeSignature)timeSigs.getSelectedItem();
@@ -260,7 +261,7 @@ public class AppWindow extends JFrame implements TuneEditListener {
 			}
 		}
 	}
-	
+
 	private void print() {
 		try {
 			PrintController.print(controller.getTune());
@@ -274,7 +275,8 @@ public class AppWindow extends JFrame implements TuneEditListener {
 
         JTextField tuneName = new JTextField(currentTune.getName(), 2);
         JTextField tuneAuthor = new JTextField(currentTune.getAuthor(), 2);
-        JTextField tuneType = new JTextField(currentTune.getType(), 2);
+		JComboBox<String> tuneType = buildTuneTypeComboBox();
+		tuneType.setSelectedItem(currentTune.getType());
 
         JComponent[] message = new JComponent[]{
                 new JLabel("Name: "),
@@ -292,7 +294,7 @@ public class AppWindow extends JFrame implements TuneEditListener {
                 try {
                     String tuneNameChoice = tuneName.getText();
                     String tuneAuthorChoice = tuneAuthor.getText();
-                    String tuneTypeChoice = tuneType.getText();
+                    String tuneTypeChoice = tuneType.getSelectedItem().toString();
                     controller.editTune(new EditTuneParameters(tuneNameChoice, tuneAuthorChoice, tuneTypeChoice));
                     updateTitle();
                     valid = true;
@@ -311,6 +313,14 @@ public class AppWindow extends JFrame implements TuneEditListener {
 		} else {
 			setTitle(WINDOW_CAPTION);
 		}
+	}
+
+	private static JComboBox<String> buildTuneTypeComboBox()
+	{
+		JComboBox<String> tuneType = new JComboBox<>(Tune.TUNE_TYPES);
+		tuneType.setEditable(true);
+		AutoCompleteDecorator.decorate(tuneType);
+		return tuneType;
 	}
 
 	private TuneEditController controller;
