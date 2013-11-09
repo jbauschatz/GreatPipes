@@ -24,6 +24,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
 import pipes.editing.TuneEditController;
 import pipes.editing.TuneEditListener;
 import pipes.editing.actions.EditAction;
@@ -32,6 +33,7 @@ import pipes.model.EditTuneParameters;
 import pipes.model.NewTuneParameters;
 import pipes.model.TimeSignature;
 import pipes.model.Tune;
+import pipes.model.TuneType;
 import pipes.view.tools.Toolbar;
 
 public class AppWindow extends JFrame implements TuneEditListener {
@@ -219,7 +221,7 @@ public class AppWindow extends JFrame implements TuneEditListener {
 		// New tune
 		JTextField tuneName = new JTextField(NewTuneParameters.DEFAULT.getName(), 2);
 		JTextField tuneAuthor = new JTextField(NewTuneParameters.DEFAULT.getAuthor(), 2);
-		JComboBox<String> tuneType = buildTuneTypeComboBox();
+		JComboBox<TuneType> tuneType = buildTuneTypeComboBox();
 		JTextField numLines = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getLines()), 2);
 		JTextField measuresPerLine = new JTextField(String.valueOf(NewTuneParameters.DEFAULT.getMeasuresPerLine()), 4);
 		JComboBox<TimeSignature> timeSigs = new JComboBox<TimeSignature>(TimeSignature.STANDARD_TIMES);
@@ -275,7 +277,7 @@ public class AppWindow extends JFrame implements TuneEditListener {
 
         JTextField tuneName = new JTextField(currentTune.getName(), 2);
         JTextField tuneAuthor = new JTextField(currentTune.getAuthor(), 2);
-		JComboBox<String> tuneType = buildTuneTypeComboBox();
+		JComboBox<TuneType> tuneType = buildTuneTypeComboBox();
 		tuneType.setSelectedItem(currentTune.getType());
 
         JComponent[] message = new JComponent[]{
@@ -315,9 +317,8 @@ public class AppWindow extends JFrame implements TuneEditListener {
 		}
 	}
 
-	private static JComboBox<String> buildTuneTypeComboBox()
-	{
-		JComboBox<String> tuneType = new JComboBox<>(Tune.TUNE_TYPES);
+	private JComboBox<TuneType> buildTuneTypeComboBox() {
+		JComboBox<TuneType> tuneType = new JComboBox<>(TuneType.values());
 		tuneType.setEditable(true);
 		AutoCompleteDecorator.decorate(tuneType);
 		return tuneType;
