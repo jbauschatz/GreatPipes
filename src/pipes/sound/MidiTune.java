@@ -20,12 +20,13 @@ public class MidiTune {
 
 	public void appendNote(Pitch p, int ticks) {
 		try {
-			MidiEvent onEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, MELODY_TRACK, getMidiCode(p), 100), endTime);
+			int velocity = getVelocity(p);
+			MidiEvent onEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, MELODY_TRACK, getMidiCode(p), velocity), endTime);
 			mainTrack.add(onEvent);
 
 			endTime += ticks;
 	
-			MidiEvent offEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, MELODY_TRACK, getMidiCode(p), 100), endTime);
+			MidiEvent offEvent = new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, MELODY_TRACK, getMidiCode(p), velocity), endTime);
 			mainTrack.add(offEvent);
 		} catch (InvalidMidiDataException imde) {
 
@@ -85,6 +86,14 @@ public class MidiTune {
 			case LOW_G: return 55;
 			default: return 0;
 		}
+	}
+	
+	/**
+	 * Mimics the effect of the conical bore, that higher notes are quieter than lower ones.
+	 */
+	private int getVelocity(Pitch p) {
+		int k = 4;
+		return 100 + k - p.ordinal()*k;
 	}
 
 	private Track mainTrack;
