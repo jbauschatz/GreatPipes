@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import pipes.model.Tune;
 
@@ -49,7 +47,6 @@ public class TitleAreaRenderer {
         String tuneDate = tune.getDate();
         g.setColor(Color.gray);
         g.drawString(tuneDate, x+width-rightWidth, y+height+20);
-
 		
 		// Align the tune type on the left side
         g.setColor(Color.black);
