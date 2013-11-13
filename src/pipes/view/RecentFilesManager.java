@@ -32,14 +32,12 @@ public class RecentFilesManager {
                 paths.append(",");
             paths.append(file.getAbsolutePath());
         }
-        Preferences prefs = Preferences.userNodeForPackage(RecentFilesManager.class);
-        prefs.put(PREF_OPEN_RECENT_PATHS, paths.toString());
+        preferences.put(PREF_OPEN_RECENT_PATHS, paths.toString());
     }
 
     private void load() {
         recentFiles.clear();
-        Preferences prefs = Preferences.userNodeForPackage(RecentFilesManager.class);
-        String[] recentPaths = prefs.get(PREF_OPEN_RECENT_PATHS, "").split(",");
+        String[] recentPaths = preferences.get(PREF_OPEN_RECENT_PATHS, "").split(",");
         if (recentPaths != null) {
             for (final String path : recentPaths) {
                 File f = new File(path);
@@ -52,8 +50,10 @@ public class RecentFilesManager {
 
     public RecentFilesManager() {
         recentFiles = new ArrayList<>();
+        preferences = Preferences.userNodeForPackage(RecentFilesManager.class);
         load();
     }
 
-    private List<File> recentFiles;
+    private final List<File> recentFiles;
+    private final Preferences preferences;
 }
