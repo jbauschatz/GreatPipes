@@ -121,6 +121,17 @@ public class TuneRenderer {
 			}
 		}
 	}
+
+    public String getToolTipText(int x, int y) {
+        for (LineRenderer l : lines) {
+            if (l.containsPoint(x, y)) {
+                MelodyElementRenderer elementView = l.getElementAt(x, y);
+                if (elementView != null)
+                    return elementView.getToolTipText();
+            }
+        }
+        return null;
+    }
 	
 	private int sheetWidth;
 	private int sheetHeight;

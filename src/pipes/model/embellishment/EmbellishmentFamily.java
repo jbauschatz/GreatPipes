@@ -85,7 +85,12 @@ public abstract class EmbellishmentFamily {
 	 * @return a specific instance of Embellishment that represents the legal form based on the given Notes
 	 */
 	public abstract Embellishment getEmbellishment(Note noteBefore, Note embellishedNote);
-	
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
 	public EmbellishmentFamily(String name, String shortName) {
 		this.name = name;
 		this.shortName = shortName;

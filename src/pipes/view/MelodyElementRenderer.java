@@ -13,4 +13,5 @@ public interface MelodyElementRenderer {
 	public void render(Graphics g);
 	public MelodyElement getElement();
 	public void setHighlight(boolean b);
+    public String getToolTipText();
 }

@@ -1,19 +1,16 @@
 package pipes.view;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import pipes.model.Tune;
 
 public class TunePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	
+
 	public void paint(Graphics g) {
 		g.setColor(Color.GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -25,7 +22,7 @@ public class TunePanel extends JPanel {
 
 		g.setColor(Color.BLACK);
 		g.drawRect(sheetRect.x, sheetRect.y, sheetRect.width, sheetRect.height);
-		
+
 		renderer.render(g);
 	}
 
@@ -51,11 +48,13 @@ public class TunePanel extends JPanel {
 	
 	public TunePanel() {
 		setOpaque(true);
-		
+        ToolTipManager.sharedInstance().setInitialDelay(1000);
+
 		addMouseMotionListener(new MouseMotionListener() {
 			public void mouseMoved(MouseEvent e) {
 				renderer.updateHighlight(e.getX(), e.getY());
-				repaint();
+                setToolTipText(renderer.getToolTipText(e.getX(), e.getY()));
+                repaint();
 			}
 			public void mouseDragged(MouseEvent e) {
 			}

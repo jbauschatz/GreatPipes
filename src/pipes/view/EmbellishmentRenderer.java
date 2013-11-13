@@ -105,6 +105,10 @@ public class EmbellishmentRenderer implements MelodyElementRenderer {
 		headYs = new int[emb.size()];
 		tailYs = new int[emb.size()];
 	}
+
+    public String getToolTipText() {
+        return emb.toString();
+    }
 	
 	public EmbellishmentRenderer(Embellishment emb, MeasureRenderer measureView) {
 		this.emb = emb;

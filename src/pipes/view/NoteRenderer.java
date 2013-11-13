@@ -86,6 +86,10 @@ public class NoteRenderer implements MelodyElementRenderer {
 		if (note.getPitch() == Pitch.A)
 			g.drawLine(x, y, x+leftMargin+headWidth+rightMargin, y);
 	}
+
+    public String getToolTipText() {
+        return null;
+    }
 	
 	public NoteRenderer(Note n, MeasureRenderer measureView) {
 		measure = measureView;

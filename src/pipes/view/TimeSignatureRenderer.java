@@ -47,7 +47,11 @@ public class TimeSignatureRenderer implements MelodyElementRenderer {
 		
 	}
 
-	public TimeSignatureRenderer(TimeSignature sig, MeasureRenderer enclosingMeasure) {
+    public String getToolTipText() {
+        return null;
+    }
+
+    public TimeSignatureRenderer(TimeSignature sig, MeasureRenderer enclosingMeasure) {
 		model = sig;
 		this.enclosingMeasure = enclosingMeasure;
 		font = new Font("Times New Roman", Font.PLAIN, 16);

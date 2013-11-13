@@ -49,7 +49,11 @@ public class TieRenderer implements MelodyElementRenderer {
 	public void setHighlight(boolean b) {
 		isHighlighted = b;
 	}
-	
+
+    public String getToolTipText() {
+        return null;
+    }
+
 	public TieRenderer(MeasureRenderer measure, NoteRenderer from, NoteRenderer to) {
 		this.measure = measure;
 		this.from = from;
