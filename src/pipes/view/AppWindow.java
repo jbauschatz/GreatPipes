@@ -230,11 +230,11 @@ public class AppWindow extends JFrame implements TuneEditListener {
      * Opens the specified 'recent' file, but prompts the user to save first if necessary.
      * @param file File to open.
      */
-    private void openRecent(File file)
-    {
+    private void openRecent(File file) {
         // save changes
         if (checkSaveChanges()) return;
 
+        // open
         openFile(file);
     }
 
