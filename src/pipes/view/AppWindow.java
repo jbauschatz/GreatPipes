@@ -6,11 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.print.PrinterException;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
