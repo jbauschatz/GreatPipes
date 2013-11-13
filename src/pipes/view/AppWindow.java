@@ -6,21 +6,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.print.PrinterException;
+import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -55,13 +49,15 @@ public class AppWindow extends JFrame implements TuneEditListener {
 				| IllegalAccessException | UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		tunePanel = new TunePanel();
 		JScrollPane tuneScroller = new JScrollPane(tunePanel);
 
 		controller = new TuneEditController(tunePanel);
 		controller.addEditListener(this);
 		controller.newTune(NewTuneParameters.DEFAULT);
+
+        recentFilesManager = new RecentFilesManager();
 		
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(tuneScroller, BorderLayout.CENTER);
@@ -106,9 +102,35 @@ public class AppWindow extends JFrame implements TuneEditListener {
 		fileMenu.add(openItem);
 		openItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				open();
+                openDialog();
 			}
 		});
+
+        final JMenu openRecentMenu = new JMenu("Open Recent");
+        openRecentMenu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                openRecentMenu.removeAll();
+                final File[] recentFiles = recentFilesManager.getRecentFiles();
+                for (final File recentFile : recentFiles) {
+                    JMenuItem item = new JMenuItem(recentFile.getAbsolutePath());
+                    item.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            openRecent(recentFile);
+                        }
+                    });
+                    openRecentMenu.add(item);
+                }
+                if (openRecentMenu.getItemCount() == 0) {
+                    JMenuItem noRecentFilesItem = new JMenuItem("(no recent files)");
+                    noRecentFilesItem.setEnabled(false);
+                    openRecentMenu.add(noRecentFilesItem);
+                }
+            }
+            @Override public void menuDeselected(MenuEvent e) { }
+            @Override public void menuCanceled(MenuEvent e) { }
+        });
+        fileMenu.add(openRecentMenu);
 
 		JMenuItem saveItem = new JMenuItem("Save");
 		fileMenu.add(saveItem);
@@ -133,6 +155,14 @@ public class AppWindow extends JFrame implements TuneEditListener {
 				print();
 			}
 		});
+
+        JMenuItem exitItem = new JMenuItem("Exit");
+        fileMenu.add(exitItem);
+        exitItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                exit();
+            }
+        });
 
         // EDIT
 
@@ -181,44 +211,71 @@ public class AppWindow extends JFrame implements TuneEditListener {
 		}
 	}
 
-	private void open() {
+    /**
+     * Brings up the Open File Dialog, but promts the user to save first if necessary.
+     */
+	private void openDialog() {
 		// save changes
-		if (controller.getIsDirty()) {
-			int result = JOptionPane.showConfirmDialog(this, "Save changes to your tune?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (result == JOptionPane.CANCEL_OPTION)
-				return;
-			if (result == JOptionPane.YES_OPTION)
-				save();
-		}
-		
-		// open
+        if (checkSaveChanges()) return;
+
+        // open
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileFilter(new FileNameExtensionFilter("Great Pipes tune file", TuneSerializer.FILE_EXTENSION));
 		chooser.setMultiSelectionEnabled(false);
 		chooser.setAcceptAllFileFilterUsed(false);
 		
 		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			try {
-				controller.loadTune(chooser.getSelectedFile());
-				updateTitle();
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(this, "An error occured while loading the file.");
-				e.printStackTrace();
-			}
+            openFile(chooser.getSelectedFile());
 		}
 	}
+
+    /**
+     * Opens the specified 'recent' file, but prompts the user to save first if necessary.
+     * @param file File to open.
+     */
+    private void openRecent(File file)
+    {
+        // save changes
+        if (checkSaveChanges()) return;
+
+        openFile(file);
+    }
+
+    /**
+     * Opens the specified File with no save check.
+     * @param file File to open.
+     */
+    private void openFile(File file) {
+        try {
+            controller.loadTune(file);
+            recentFilesManager.addRecentFile(file);
+            updateTitle();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "An error occurred while loading the file.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Prompts the user to save changes to their tune, if changes have been made.
+     * @return True if the user clicked "Cancel", false if user clicked "Yes" or "No"
+     */
+    private boolean checkSaveChanges() {
+        if (controller.getIsDirty()) {
+            int result = JOptionPane.showConfirmDialog(this, "Save changes to your tune?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (result == JOptionPane.CANCEL_OPTION)
+                return true;
+            if (result == JOptionPane.YES_OPTION)
+                save();
+        }
+        return false;
+    }
 	
 	private void newTune() {
 		// save changes
-		if (controller.getIsDirty()) {
-			int result = JOptionPane.showConfirmDialog(this, "Save changes to your tune?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (result == JOptionPane.CANCEL_OPTION)
-				return;
-			if (result == JOptionPane.YES_OPTION)
-				save();
-		}
-		
-		// New tune
+        if (checkSaveChanges()) return;
+
+        // New tune
 		JTextField tuneName = new JTextField(NewTuneParameters.DEFAULT.getName(), 2);
 		JTextField tuneAuthor = new JTextField(NewTuneParameters.DEFAULT.getAuthor(), 2);
 		JComboBox<TuneType> tuneType = buildTuneTypeComboBox();
@@ -271,6 +328,11 @@ public class AppWindow extends JFrame implements TuneEditListener {
 			JOptionPane.showMessageDialog(this, "Error encountered while printing:\n" + e.getMessage());
 		}
 	}
+
+    private void exit() {
+        if (checkSaveChanges()) return;
+        System.exit(0);
+    }
 
     private void editTuneProperties() {
         Tune currentTune = controller.getTune();
@@ -326,4 +388,5 @@ public class AppWindow extends JFrame implements TuneEditListener {
 
 	private TuneEditController controller;
 	private TunePanel tunePanel;
+    private RecentFilesManager recentFilesManager;
 }
