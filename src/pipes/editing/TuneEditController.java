@@ -80,7 +80,14 @@ public class TuneEditController {
 	 * Subscribes a listener to receive calls when an EditAction is executed upon the Tune
 	 */
 	public void addEditListener(TuneEditListener l) {
-		listeners.add(l);
+		editListeners.add(l);
+	}
+
+	/**
+	 * Subscribes a listener to receive calls the selected EditTool changes
+	 */
+	public void addToolListener(ToolSelectionListener l) {
+		toolListeners.add(l);
 	}
 
 	/**
@@ -88,6 +95,8 @@ public class TuneEditController {
 	 */
 	public void setCurrentTool(EditTool tool) {
 		currentTool = tool;
+		for (ToolSelectionListener listener : toolListeners)
+			listener.ToolSelected(tool);
 	}
 
 	/**
@@ -199,17 +208,19 @@ public class TuneEditController {
 			}
 		});
 		
-		listeners = new LinkedList<TuneEditListener>();
-		listeners.add(new TuneEditListener() {
+		editListeners = new LinkedList<TuneEditListener>();
+		editListeners.add(new TuneEditListener() {
 			public void tuneEdited(EditAction action) {
 				view.updateMusic();
 			}
 		});
-		listeners.add(player);
+		editListeners.add(player);
+		
+		toolListeners = new LinkedList<>();
 	}
 
 	private void notifyEdit(EditAction action) {
-		for (TuneEditListener l : listeners)
+		for (TuneEditListener l : editListeners)
 			l.tuneEdited(action);
 	}
 
@@ -222,5 +233,6 @@ public class TuneEditController {
 	private boolean isDirty;
 	private File editingFile;
 
-	private LinkedList<TuneEditListener> listeners;
+	private LinkedList<TuneEditListener> editListeners;
+	private LinkedList<ToolSelectionListener> toolListeners;
 }

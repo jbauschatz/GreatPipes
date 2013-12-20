@@ -9,7 +9,19 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -25,6 +37,7 @@ import pipes.model.NewTuneParameters;
 import pipes.model.TimeSignature;
 import pipes.model.Tune;
 import pipes.model.TuneType;
+import pipes.view.tools.ToolMenu;
 import pipes.view.tools.Toolbar;
 
 public class AppWindow extends JFrame implements TuneEditListener {
@@ -174,6 +187,9 @@ public class AppWindow extends JFrame implements TuneEditListener {
                 editTuneProperties();
             }
         });
+        
+        // TOOLS
+        menuBar.add(new ToolMenu(controller, tunePanel));        
     }
 
     private void save() {

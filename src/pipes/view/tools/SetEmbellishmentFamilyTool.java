@@ -27,6 +27,10 @@ public class SetEmbellishmentFamilyTool extends EditTool {
 		}
 	}
 	
+	public EmbellishmentFamily getEmbellishment() {
+		return embellishment;
+	}
+
 	public SetEmbellishmentFamilyTool(TunePanel view, TuneEditController controller, EmbellishmentFamily embellishment) {
 		super(embellishment.getName());
 		this.view = view;
