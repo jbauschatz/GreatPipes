@@ -80,6 +80,7 @@ public class AppWindow extends JFrame implements TuneEditListener {
 		updateTitle();
 		setSize(1200, 900);
 		setLocationRelativeTo(null);
+		setExtendedState(MAXIMIZED_BOTH);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
