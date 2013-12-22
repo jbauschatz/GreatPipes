@@ -1,22 +1,22 @@
 package pipes.editing;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
 import pipes.editing.actions.EditAction;
 import pipes.editing.io.TuneSerializer;
-import pipes.model.EditTuneParameters;
-import pipes.model.NewTuneParameters;
-import pipes.model.Tune;
-import pipes.model.TuneFactory;
+import pipes.model.*;
 import pipes.sound.TunePlayer;
+import pipes.view.LocationInfo;
 import pipes.view.TunePanel;
 import pipes.view.tools.EditTool;
 import pipes.view.tools.NullTool;
+import pipes.view.tools.ToolContextMenu;
+
+import javax.swing.*;
 
 /**
  * Controls the editing of a Tune from a logical perspective, as independent of the UI as possible.
@@ -184,29 +184,35 @@ public class TuneEditController {
 		history = new TuneEditHistory();
 		currentTool = new NullTool();
 		
-		view.addMouseListener(new MouseListener() {
-			public void mouseReleased(MouseEvent e) {
-				currentTool.mouseUp(e.getX(), e.getY());
-			}
-			public void mousePressed(MouseEvent e) {
-				currentTool.mouseDown(e.getX(), e.getY());
-			}
-			public void mouseExited(MouseEvent e) {
-			}
-			public void mouseEntered(MouseEvent e) {
-			}
-			public void mouseClicked(MouseEvent e) {
-				currentTool.mouseClicked(e.getX(), e.getY());
-			}
-		});
-		
-		view.addMouseMotionListener(new MouseMotionListener() {
-			public void mouseMoved(MouseEvent e) {
-			}
-			public void mouseDragged(MouseEvent e) {
-				currentTool.mouseDragged(e.getX(), e.getY());
-			}
-		});
+		view.addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    contextMenu(e.getX(), e.getY());
+                } else {
+                    currentTool.mouseUp(e.getX(), e.getY());
+                }
+            }
+
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    contextMenu(e.getX(), e.getY());
+                } else {
+                    currentTool.mouseUp(e.getX(), e.getY());
+                }
+            }
+
+            public void mouseClicked(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    contextMenu(e.getX(), e.getY());
+                } else {
+                    currentTool.mouseUp(e.getX(), e.getY());
+                }
+            }
+
+            public void mouseDragged(MouseEvent e) {
+                currentTool.mouseDragged(e.getX(), e.getY());
+            }
+        });
 		
 		editListeners = new LinkedList<TuneEditListener>();
 		editListeners.add(new TuneEditListener() {
@@ -218,6 +224,15 @@ public class TuneEditController {
 		
 		toolListeners = new LinkedList<>();
 	}
+
+    private void contextMenu(int x, int y) {
+        LocationInfo info = view.getInfoAt(x, y);
+
+        if (ToolContextMenu.hasContextMenu(info)) {
+            JPopupMenu menu = ToolContextMenu.getContextMenu(info, this);
+            menu.show(view, x, y);
+        }
+    }
 
 	private void notifyEdit(EditAction action) {
 		for (TuneEditListener l : editListeners)
