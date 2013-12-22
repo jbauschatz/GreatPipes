@@ -212,7 +212,7 @@ public class TuneEditController {
             public void mouseDragged(MouseEvent e) {
                 currentTool.mouseDragged(e.getX(), e.getY());
             }
-        });
+            });
 		
 		editListeners = new LinkedList<TuneEditListener>();
 		editListeners.add(new TuneEditListener() {
