@@ -69,6 +69,11 @@ public class MeasureRenderer {
 		g.setColor(Color.black);
 		g.drawLine(x+width, y, x+width, y+height);
 
+		if (openRepeat != null)
+			openRepeat.render(g);
+		if (closeRepeat != null)
+			closeRepeat.render(g);
+		
 		for (MelodyElementRenderer v : elementRenderers.values())
 			v.render(g);
 
@@ -90,6 +95,16 @@ public class MeasureRenderer {
 		int spaceTaken = 0;
 
 		// Space taken by the time signature, clef, key signature, etc
+		if (measure.hasOpenRepeat()) {
+			openRepeat.doLayout();
+			spaceTaken += openRepeat.getWidth();
+			x += openRepeat.getWidth();
+		}
+		if (measure.hasCloseRepeat()) {
+			closeRepeat.doLayout();
+			spaceTaken += closeRepeat.getWidth();
+		}
+		
 		if (measure.isTimeSignatureChange()) {
 			MelodyElementRenderer timeView = elementRenderers.get(time);
 			spaceTaken += timeView.getWidth();
@@ -134,6 +149,14 @@ public class MeasureRenderer {
 		
 	public LineRenderer getLineRenderer() {
 		return lineView;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getWidth() {
+		return width;
 	}
 	
 	public Measure getMeasure() {
@@ -193,10 +216,23 @@ public class MeasureRenderer {
 		if (measure.isTimeSignatureChange())
 			elementRenderers.put(measure.getTimeSignature(), 
 					new TimeSignatureRenderer(measure.getTimeSignature(), this));
+		
+		// Add repeat signs
+		if (measure.hasOpenRepeat())
+			openRepeat = new RepeatRenderer(this, true);
+		else
+			openRepeat = null;
+		
+		if (measure.hasCloseRepeat())
+			closeRepeat = new RepeatRenderer(this, false);
+		else
+			closeRepeat = null;
 	}
 	
 	private Measure measure;
 	private LineRenderer lineView;
+	private RepeatRenderer openRepeat;
+	private RepeatRenderer closeRepeat;
 	
 	private int x;
 	private int y;

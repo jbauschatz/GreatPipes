@@ -82,6 +82,22 @@ public class Measure implements Iterable<Note> {
 		return d;
 	}
 	
+	public boolean hasOpenRepeat() {
+		return openRepeat;
+	}
+
+	public void setOpenRepeat(boolean openRepeat) {
+		this.openRepeat = openRepeat;
+	}
+
+	public boolean hasCloseRepeat() {
+		return closeRepeat;
+	}
+
+	public void setCloseRepeat(boolean closeRepeat) {
+		this.closeRepeat = closeRepeat;
+	}
+
 	public Measure(TimeSignature timeSignature) {
 		this.timeSignature = timeSignature;
 		internal = new LinkedList<Note>();
@@ -90,4 +106,6 @@ public class Measure implements Iterable<Note> {
 	private LinkedList<Note> internal;
 	private TimeSignature timeSignature;
 	private boolean isTimeSignatureChange;
+	private boolean openRepeat;
+	private boolean closeRepeat;
 }

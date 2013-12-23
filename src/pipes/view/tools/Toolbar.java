@@ -92,6 +92,14 @@ public class Toolbar extends JPanel implements TuneEditListener {
 		JToggleButton addWhole = new ToolButton(new AddNoteTool(BeatDivision.WHOLE, view, controller), "whole_note_icon");
 		add(addWhole);
 		toolGroup.add(addWhole);
+
+		JToggleButton toggleOpen = new ToolButton(new ToggleRepeatTool(controller, view, true), "open_repeat");
+		add(toggleOpen);
+		toolGroup.add(toggleOpen);
+		
+		JToggleButton toggleClose = new ToolButton(new ToggleRepeatTool(controller, view, false), "close_repeat");
+		add(toggleClose);
+		toolGroup.add(toggleClose);
 		
 		for (EmbellishmentFamily f : EmbellishmentFamily.EMBELLISHMENTS) {
 			JToggleButton eButton = new ToolButton(new SetEmbellishmentFamilyTool(view, controller, f), f.getShortName()+"_icon");
