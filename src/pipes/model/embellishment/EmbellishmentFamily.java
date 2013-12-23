@@ -3,6 +3,10 @@ package pipes.model.embellishment;
 import java.util.HashMap;
 
 import pipes.model.Note;
+import pipes.model.embellishment.grip.BubblyNote;
+import pipes.model.embellishment.grip.Crunluath;
+import pipes.model.embellishment.grip.Grip;
+import pipes.model.embellishment.grip.Taorluath;
 
 /**
  * Represents the range of forms an Embellishment could take based on the Notes it could be placed on.
@@ -29,23 +33,15 @@ public abstract class EmbellishmentFamily {
 	public static final EmbellishmentFamily GRIP = new Grip();
 	public static final EmbellishmentFamily TAOR = new Taorluath();
 	public static final EmbellishmentFamily CRUN = new Crunluath();
+	public static final EmbellishmentFamily BUBBLY = new BubblyNote();
 	
-	public static final EmbellishmentFamily[] EMBELLISHMENTS = {THROW, BIRL, DOUBLING, STRIKE, GRIP, TAOR, CRUN, G_GRACE, D_GRACE, E_GRACE, A_GRACE};
+	public static final EmbellishmentFamily[] EMBELLISHMENTS = {THROW, BIRL, DOUBLING, STRIKE, GRIP, TAOR, BUBBLY, CRUN, G_GRACE, D_GRACE, E_GRACE, A_GRACE};
 	
 	private static final HashMap<String, EmbellishmentFamily> familiesByNames = new HashMap<String, EmbellishmentFamily>() {
 		private static final long serialVersionUID = 1L;
 		{
-			put(THROW.getShortName(), THROW);
-			put(BIRL.getShortName(), BIRL);
-			put(DOUBLING.getShortName(), DOUBLING);
-			put(STRIKE.getShortName(), STRIKE);
-			put(GRIP.getShortName(), GRIP);
-			put(TAOR.getShortName(), TAOR);
-			put(CRUN.getShortName(), CRUN);
-			put(A_GRACE.getShortName(), A_GRACE);
-			put(G_GRACE.getShortName(), G_GRACE);
-			put(D_GRACE.getShortName(), D_GRACE);
-			put(E_GRACE.getShortName(), E_GRACE);
+			for (EmbellishmentFamily fam : EMBELLISHMENTS)
+				put(fam.getShortName(), fam);
 		}
 	};
 	

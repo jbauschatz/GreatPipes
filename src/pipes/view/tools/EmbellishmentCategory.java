@@ -23,6 +23,7 @@ public class EmbellishmentCategory {
 		CATEGORIES.add(new EmbellishmentCategory("Grips",
 				EmbellishmentFamily.GRIP,
 				EmbellishmentFamily.TAOR,
+				EmbellishmentFamily.BUBBLY,
 				EmbellishmentFamily.CRUN));
 		
 		CATEGORIES.add(new EmbellishmentCategory("Birls",

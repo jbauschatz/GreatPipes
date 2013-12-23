@@ -1,7 +1,10 @@
-package pipes.model.embellishment;
+package pipes.model.embellishment.grip;
 
 import pipes.model.Note;
 import pipes.model.Pitch;
+import pipes.model.embellishment.Embellishment;
+import pipes.model.embellishment.EmbellishmentFamily;
+import pipes.model.embellishment.GraceNote;
 
 public class Grip extends EmbellishmentFamily {
 

@@ -31,6 +31,7 @@ EMBELLISHMENT :
 	| 'birl'
 	| 'grip'
 	| 'taor'
+	| 'bbly'
 	| 'crun' ;
 WS : ( '\t' | ' ' )+ ;
 LINE : '\r'? '\n' ;

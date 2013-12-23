@@ -20,12 +20,12 @@ public class GraceNote {
 		return new GraceNote(pitch, true);
 	}
 	
-	private GraceNote(Pitch pitch) {
+	public GraceNote(Pitch pitch) {
 		this.pitch = pitch;
 		isLong = false;
 	}
 	
-	private GraceNote(Pitch pitch, boolean isLong) {
+	public GraceNote(Pitch pitch, boolean isLong) {
 		this.pitch = pitch;
 		this.isLong = isLong;
 	}
