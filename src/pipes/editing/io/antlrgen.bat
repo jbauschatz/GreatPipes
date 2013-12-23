@@ -1,1 +1,1 @@
-java -cp C:\Javalib\antlr-4.1-complete.jar org.antlr.v4.Tool Tune.g4
+java -cp ../../../../libs/antlr-4.1-complete.jar org.antlr.v4.Tool Tune.g4

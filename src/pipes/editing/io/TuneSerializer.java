@@ -48,16 +48,14 @@ public class TuneSerializer {
 				firstLine = false;
 	
 				for (Measure m : l) {
-					boolean firstInMeasure = true;
-					if (m.isTimeSignatureChange()) {
+					if (m.hasOpenRepeat())
+						w.write("|: ");
+					
+					if (m.isTimeSignatureChange())
 						w.write("[" + m.getTimeSignature() + "]");
-						firstInMeasure = false;
-					}
 					
 					for (Note n : m) {
-						if (!firstInMeasure)
-							w.write(" ");
-						firstInMeasure = false;
+						w.write(" ");
 	
 						if (n.hasEmbellishment())
 							w.write(n.getEmbellishmentFamily().getShortName() + " ");
@@ -68,6 +66,9 @@ public class TuneSerializer {
 						if (n.getIsTiedForward())
 							w.write(" -");
 					}
+					
+					if (m.hasCloseRepeat())
+						w.write(" :|");
 					
 					w.write(" |");
 				}
@@ -97,14 +98,21 @@ public class TuneSerializer {
 			tune.add(tuneLine);
 			for (MeasureContext m : l.measure()) {
 				Measure tuneMeasure;
+		
 				if (m.TimeSignature() == null) {
 					tuneMeasure = new Measure(currentTime);
 				} else {
 					currentTime = TimeSignature.fromString(m.TimeSignature().getText());
 					tuneMeasure = new Measure(currentTime);
 					tuneMeasure.setIsTimeSignatureChange(true);
-				}
+				}			
 				tuneLine.add(tuneMeasure);
+
+				if (m.START_REPEAT() != null)
+					tuneMeasure.setOpenRepeat(true);
+				if (m.END_REPEAT() != null)
+					tuneMeasure.setCloseRepeat(true);
+				
 				for (MelodyElementContext me : m.melodyElement()) {
 					if (me.EMBELLISHMENT() != null) {
 						family = EmbellishmentFamily.getByName(me.EMBELLISHMENT().getText());

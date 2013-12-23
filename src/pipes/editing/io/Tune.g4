@@ -11,13 +11,15 @@ author : TEXT ;
 type : TEXT ;
 TEXT : '[' ('A'..'Z'|'a'..'z'|'0'..'9'|' '|','|'.')* ']' ;
 line    : measure+  ;
-measure : (TimeSignature)? WS? (melodyElement WS)* WS? '|' ;
+measure : (START_REPEAT WS)? (TimeSignature)? WS? (melodyElement WS)* (END_REPEAT WS)? '|' ;
 TimeSignature : '[' NUMBER '/' NUMBER ']' ;
 melodyElement : EMBELLISHMENT | note | TIE ;
 note : NOTENAME '-' NUMBER '.'* ;
 NOTENAME : 'g' | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'G' | 'A' ;
 NUMBER : ('0'..'9')+ ;
 TIE : '-' ;
+START_REPEAT : '|:' ;
+END_REPEAT : ':|' ;
 EMBELLISHMENT :
 	'\'A' 
 	| '\'G' 
