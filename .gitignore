@@ -1,0 +1,7 @@
+.project
+.classpath
+/src/pipes/editing/io/TuneBaseListener.java
+/src/pipes/editing/io/TuneLexer.java
+/src/pipes/editing/io/TuneLexer.tokens
+/src/pipes/editing/io/TuneSerializer.java
+/bin
