@@ -12,7 +12,10 @@ public class ToggleRepeatTool extends EditTool {
 		LocationInfo info = view.getInfoAt(x, y);
 		if (info.measureRenderer != null) {
 			Measure measure = info.measureRenderer.getMeasure();
-			controller.execute(new ToggleRepeatAction(measure, openRepeat));
+			
+			// Don't add a repeat to the front of the tune
+			if (!openRepeat || measure != controller.getTune().getFirst().getFirst())
+				controller.execute(new ToggleRepeatAction(measure, openRepeat));
 		}
 	}
 
